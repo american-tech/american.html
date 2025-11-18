@@ -1,2 +1,2640 @@
-# american.html
-american.html
+# index.html
+index.html
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محفظة العملات المشفرة الأمريكية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+        
+        /* تنسيقات واجهة التسجيل */
+        .auth-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .welcome-section {
+            flex: 1;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            color: white;
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255,215,0,0.1) 0%, transparent 50%);
+            z-index: 1;
+        }
+        
+        .welcome-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .welcome-section h1 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #ffd700, #ffed4e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .welcome-section p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            color: #cccccc;
+            max-width: 500px;
+            text-align: center;
+        }
+        
+        .features {
+            list-style: none;
+            margin-top: 30px;
+        }
+        
+        .features li {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+            color: #e6e6e6;
+            justify-content: center;
+        }
+        
+        .features li i {
+            margin-left: 15px;
+            font-size: 1.3rem;
+            color: #ffd700;
+        }
+        
+        .form-section {
+            flex: 1;
+            background: #ffffff;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .form-container {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+        
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .form-header h2 {
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .form-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: #fafafa;
+        }
+        
+        .form-control:focus {
+            border-color: #ffd700;
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+            outline: none;
+            background: white;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            left: 15px;
+            top: 45px;
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .buttons-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #000;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .btn-secondary:hover {
+            background: #e8e8e8;
+        }
+        
+        .form-footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .form-footer a {
+            color: #ffd700;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .login-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .remember-me input {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .forgot-password {
+            color: #ffd700;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        /* تنسيقات واجهة المحفظة */
+        .wallet-container {
+            display: none;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a1a 100%);
+            padding: 20px;
+            position: relative;
+        }
+        
+        .wallet-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-top: 40px;
+        }
+        
+        .wallet-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #ffd700, #ffed4e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+        
+        .wallet-header h2 {
+            font-size: 1.5rem;
+            color: #cccccc;
+            font-weight: normal;
+        }
+        
+        /* زر اللغة في أعلى اليسار */
+        .language-selector {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+        }
+        
+        .language-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #cccccc;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .language-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(30, 30, 30, 0.95);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 5px;
+            min-width: 200px;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+        }
+        
+        .language-dropdown.show {
+            display: block;
+        }
+        
+        .language-option {
+            padding: 8px 12px;
+            color: #cccccc;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 4px;
+        }
+        
+        .language-option:hover {
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+        }
+        
+        /* زر أنا في أعلى اليمين */
+        .user-info {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #cccccc;
+        }
+        
+        .user-menu {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-btn {
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .user-btn:hover {
+            background: rgba(255, 215, 0, 0.3);
+        }
+        
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: rgba(30, 30, 30, 0.95);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 5px;
+            min-width: 180px;
+            display: none;
+            z-index: 1000;
+        }
+        
+        .user-dropdown.show {
+            display: block;
+        }
+        
+        .user-email {
+            padding: 8px 12px;
+            color: #ffd700;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 8px;
+            font-size: 0.8rem;
+        }
+        
+        .logout-btn {
+            background: rgba(255, 100, 100, 0.2);
+            color: #ff8a8a;
+            border: 1px solid rgba(255, 100, 100, 0.3);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.8rem;
+            width: 100%;
+            text-align: right;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255, 100, 100, 0.3);
+        }
+        
+        /* شريط التنقل في الأسفل */
+        .wallet-nav {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            display: flex;
+            justify-content: space-around;
+            background: rgba(30, 30, 30, 0.95);
+            padding: 15px 10px;
+            border-top: 1px solid rgba(255, 215, 0, 0.2);
+            z-index: 100;
+        }
+        
+        .nav-btn {
+            background: transparent;
+            border: none;
+            color: #cccccc;
+            padding: 12px 5px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            flex: 1;
+            max-width: 80px;
+        }
+        
+        .nav-btn.active {
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+        }
+        
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-btn i {
+            font-size: 1.2rem;
+        }
+        
+        /* بطاقة الرصيد */
+        .balance-card {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+            text-align: center;
+            color: #000;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .balance-label {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            opacity: 0.8;
+        }
+        
+        .balance-amount {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .balance-equivalent {
+            font-size: 1rem;
+            opacity: 0.7;
+        }
+        
+        /* قائمة العملات */
+        .currency-list {
+            background: rgba(30, 30, 30, 0.9);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .currency-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .currency-item:last-child {
+            border-bottom: none;
+        }
+        
+        .currency-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .currency-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .currency-icon.usdt {
+            background: rgba(38, 161, 123, 0.2);
+            color: #26a17b;
+        }
+        
+        .currency-icon.btc {
+            background: rgba(247, 147, 26, 0.2);
+            color: #f7931a;
+        }
+        
+        .currency-icon.eth {
+            background: rgba(98, 126, 234, 0.2);
+            color: #627eea;
+        }
+        
+        .currency-details h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .currency-details span {
+            font-size: 0.9rem;
+            color: #cccccc;
+        }
+        
+        .currency-amount {
+            text-align: right;
+        }
+        
+        .currency-amount .amount {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .currency-amount .value {
+            font-size: 0.9rem;
+            color: #cccccc;
+        }
+        
+        /* بطاقة السحب */
+        .send-card {
+            background: rgba(30, 30, 30, 0.9);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            display: none;
+        }
+        
+        .send-form {
+            margin-top: 20px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        
+        .send-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        /* سجل المعاملات */
+        .transactions-card {
+            background: rgba(30, 30, 30, 0.9);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            display: none;
+        }
+        
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+        
+        .transaction-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .transaction-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .transaction-icon.receive {
+            background: rgba(0, 255, 0, 0.2);
+            color: #00cc00;
+        }
+        
+        .transaction-icon.send {
+            background: rgba(255, 100, 100, 0.2);
+            color: #ff8a8a;
+        }
+        
+        .transaction-details h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .transaction-details span {
+            font-size: 0.9rem;
+            color: #cccccc;
+        }
+        
+        .transaction-amount {
+            text-align: right;
+        }
+        
+        .transaction-amount.receive {
+            color: #00cc00;
+        }
+        
+        .transaction-amount.send {
+            color: #ff8a8a;
+        }
+        
+        .no-transactions {
+            text-align: center;
+            padding: 40px;
+            color: #cccccc;
+        }
+        
+        /* الإشعارات */
+        .notifications-card {
+            background: rgba(30, 30, 30, 0.9);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            display: none;
+        }
+        
+        .notification-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+        
+        .notification-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+        }
+        
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+        }
+        
+        .notification-details h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .notification-details span {
+            font-size: 0.9rem;
+            color: #cccccc;
+        }
+        
+        .notification-time {
+            font-size: 0.8rem;
+            color: #888;
+        }
+        
+        .no-notifications {
+            text-align: center;
+            padding: 40px;
+            color: #cccccc;
+        }
+        
+        /* بطاقة تعبئة الرصيد */
+        .receive-card {
+            background: rgba(30, 30, 30, 0.9);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            display: none;
+        }
+        
+        .receive-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .receive-header h3 {
+            font-size: 1.6rem;
+            color: #ffd700;
+        }
+        
+        .fee-badge {
+            background: linear-gradient(135deg, #00b09b, #96c93d);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        
+        .description {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #a0a0a0;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+        
+        hr {
+            border: none;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 30px 0;
+        }
+        
+        .on-chain-title {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.3rem;
+            color: #ffd700;
+        }
+        
+        .networks-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 35px;
+        }
+        
+        .network-option {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+            position: relative;
+        }
+        
+        .network-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .network-option.active {
+            background: rgba(255, 215, 0, 0.2);
+            border: 1px solid #ffd700;
+            transform: translateY(-3px);
+        }
+        
+        .network-option .icon {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        /* أشكال الرموز الأصلية */
+        .icon.erc20 {
+            color: #3c3c3d;
+        }
+        
+        .icon.trc20 {
+            color: #ff060a;
+        }
+        
+        .icon.sol {
+            color: #00ffbd;
+        }
+        
+        .icon.bep20 {
+            color: #f0b90b;
+        }
+        
+        .icon.btc {
+            color: #f7931a;
+        }
+        
+        .icon.eth {
+            color: #627eea;
+        }
+        
+        .network-symbol {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 0.8rem;
+            color: #00cc00;
+            background: rgba(0, 255, 0, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .network-symbol.usdt {
+            color: #26a17b;
+            background: rgba(38, 161, 123, 0.1);
+        }
+        
+        .network-symbol.btc {
+            color: #f7931a;
+            background: rgba(247, 147, 26, 0.1);
+        }
+        
+        .address-section {
+            margin-top: 25px;
+        }
+        
+        .address-label {
+            margin-bottom: 15px;
+            color: #a0a0a0;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+        
+        .address-box {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            padding: 20px;
+            word-break: break-all;
+            text-align: center;
+            font-family: monospace;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+            color: #ffd700;
+            line-height: 1.6;
+        }
+        
+        .address-box:hover {
+            background: rgba(0, 0, 0, 0.7);
+        }
+        
+        .address-box.copied {
+            background: rgba(0, 200, 0, 0.2);
+            border-color: #00cc00;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .wallet-btn {
+            flex: 1;
+            padding: 15px;
+            border-radius: 12px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .wallet-btn-primary {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #000;
+        }
+        
+        .wallet-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+        
+        .wallet-btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .wallet-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .warning {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 100, 100, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 100, 100, 0.3);
+            text-align: center;
+            font-size: 1rem;
+            color: #ff8a8a;
+        }
+        
+        .network-info {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1rem;
+            color: #ffed4e;
+            display: none;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7);
+            display: none;
+            z-index: 1000;
+            border: 1px solid #ffd700;
+        }
+        
+        /* قسم VIP */
+        .vip-card {
+            background: rgba(30, 30, 30, 0.9);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            display: none;
+        }
+        
+        .vip-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .vip-header h3 {
+            font-size: 1.6rem;
+            color: #ffd700;
+        }
+        
+        .vip-badge {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #000;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        
+        .vip-levels {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .vip-level {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            transition: all 0.3s;
+        }
+        
+        .vip-level:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .vip-level-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .vip-level-title {
+            font-size: 1.3rem;
+            color: #ffd700;
+            font-weight: bold;
+        }
+        
+        .vip-level-img {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #000;
+        }
+        
+        .vip-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .vip-detail {
+            text-align: center;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+        }
+        
+        .vip-detail-label {
+            font-size: 0.9rem;
+            color: #cccccc;
+            margin-bottom: 5px;
+        }
+        
+        .vip-detail-value {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        
+        .vip-profit {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .vip-profit-item {
+            text-align: center;
+            padding: 8px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 8px;
+        }
+        
+        .vip-profit-label {
+            font-size: 0.8rem;
+            color: #cccccc;
+            margin-bottom: 3px;
+        }
+        
+        .vip-profit-value {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #ffed4e;
+        }
+        
+        .vip-open-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .vip-open-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+        
+        .vip-open-btn:disabled {
+            background: #666;
+            color: #999;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* مؤشر التحميل */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 215, 0, 0.3);
+            border-radius: 50%;
+            border-top-color: #ffd700;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        .loading-text {
+            margin-top: 15px;
+            color: #ffd700;
+            font-size: 1.1rem;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* تحسينات للشاشات الصغيرة */
+        @media (max-width: 768px) {
+            .auth-container {
+                flex-direction: column;
+            }
+            
+            .welcome-section, .form-section {
+                padding: 40px 20px;
+            }
+            
+            .networks-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .buttons-group {
+                flex-direction: column;
+            }
+            
+            .wallet-nav {
+                padding: 10px 5px;
+            }
+            
+            .nav-btn {
+                font-size: 0.7rem;
+                padding: 8px 3px;
+            }
+            
+            .nav-btn i {
+                font-size: 1rem;
+            }
+            
+            .currency-list, .send-card, .receive-card, .transactions-card, .notifications-card, .vip-card {
+                margin: 10px;
+                padding: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .wallet-header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .balance-amount {
+                font-size: 2rem;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+            
+            .wallet-btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- مؤشر التحميل -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <p class="loading-text">جاري التحميل...</p>
+    </div>
+    
+    <div class="container">
+        <div class="auth-container" id="authContainer">
+            <div class="welcome-section">
+                <div class="welcome-content">
+                    <h1>محفظة العملات المشفرة الأمريكية</h1>
+                    <p>انضم إلى مجتمعاتنا واستفد من جميع المزايا التي نقدمها. سجل الآن وابدأ رحلتك معنا.</p>
+                    <ul class="features">
+                        <li><i class="fas fa-check"></i> وصول سريع وسهل</li>
+                        <li><i class="fas fa-check"></i> تجربة مستخدم محسنة</li>
+                        <li><i class="fas fa-check"></i> دعم فني متواصل</li>
+                        <li><i class="fas fa-check"></i> تحديثات مستمرة</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <div class="form-container">
+                    <!-- نموذج التسجيل -->
+                    <form class="register-form" id="registrationForm">
+                        <div class="success-message" id="successMessage">
+                            <i class="fas fa-check-circle"></i> تم إنشاء حسابك بنجاح! يتم توجيهك إلى المحفظة...
+                        </div>
+                        
+                        <div class="error-message" id="errorMessage"></div>
+                        
+                        <div class="form-header">
+                            <h2>التسجيل عن طريق البريد الإلكتروني</h2>
+                            <p>املأ النموذج أدناه لإنشاء حساب جديد</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">بريد إلكتروني</label>
+                            <input type="email" id="email" class="form-control" placeholder="أدخل بريدك الإلكتروني" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password">كلمة المرور</label>
+                            <input type="password" id="password" class="form-control" placeholder="أدخل كلمة المرور" required>
+                            <button type="button" class="password-toggle" id="togglePassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirmPassword">تأكيد كلمة المرور</label>
+                            <input type="password" id="confirmPassword" class="form-control" placeholder="أعد إدخال كلمة المرور" required>
+                            <button type="button" class="password-toggle" id="toggleConfirmPassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="invitationCode">شفرة الدعوة</label>
+                            <input type="text" id="invitationCode" class="form-control" placeholder="أدخل شفرة الدعوة" value="INVITE2026VIP" readonly required>
+                        </div>
+                        
+                        <div class="buttons-group">
+                            <button type="submit" class="btn btn-primary">اشتراك</button>
+                            <button type="button" class="btn btn-secondary" id="showLoginBtn">تسجيل الدخول</button>
+                        </div>
+                        
+                        <div class="form-footer">
+                            <p>بالنقر على "اشتراك"، فإنك توافق على <a href="#">شروط الخدمة</a> و<a href="#">سياسة الخصوصية</a></p>
+                        </div>
+                    </form>
+                    
+                    <!-- نموذج تسجيل الدخول -->
+                    <form class="login-form" id="loginForm" style="display: none;">
+                        <div class="error-message" id="loginErrorMessage"></div>
+                        
+                        <div class="form-header">
+                            <h2>تسجيل الدخول</h2>
+                            <p>أدخل بياناتك للدخول إلى حسابك</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="loginEmail">بريد إلكتروني</label>
+                            <input type="email" id="loginEmail" class="form-control" placeholder="أدخل بريدك الإلكتروني" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="loginPassword">كلمة المرور</label>
+                            <input type="password" id="loginPassword" class="form-control" placeholder="أدخل كلمة المرور" required>
+                            <button type="button" class="password-toggle" id="toggleLoginPassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="login-options">
+                            <div class="remember-me">
+                                <input type="checkbox" id="rememberMe">
+                                <label for="rememberMe">تذكرني</label>
+                            </div>
+                            <a href="#" class="forgot-password">نسيت كلمة المرور؟</a>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" style="margin-bottom: 15px;">تسجيل الدخول</button>
+                        <button type="button" class="btn btn-secondary" id="showRegisterBtn">إنشاء حساب جديد</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- واجهة المحفظة (تظهر بعد التسجيل) -->
+        <div class="wallet-container" id="walletContainer">
+            <!-- زر اللغة في أعلى اليسار -->
+            <div class="language-selector">
+                <button class="language-btn" id="languageBtn">
+                    <i class="fas fa-globe"></i>
+                    عربي
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="language-dropdown" id="languageDropdown">
+                    <div class="language-option" data-lang="pl">Polski</div>
+                    <div class="language-option" data-lang="en">English</div>
+                    <div class="language-option" data-lang="fr">Français</div>
+                    <div class="language-option" data-lang="it">italiano</div>
+                    <div class="language-option" data-lang="ja">日本語</div>
+                    <div class="language-option" data-lang="ko">한국인</div>
+                    <div class="language-option" data-lang="de">Deutsch</div>
+                    <div class="language-option" data-lang="ru">Русский</div>
+                    <div class="language-option" data-lang="vi">Tiếng Việt</div>
+                    <div class="language-option" data-lang="pt">Português</div>
+                    <div class="language-option" data-lang="tr">Türkçe</div>
+                    <div class="language-option" data-lang="es">español</div>
+                    <div class="language-option" data-lang="fa">فارسی</div>
+                    <div class="language-option" data-lang="ar">عربي</div>
+                    <div class="language-option" data-lang="id">bahasa Indonesia</div>
+                    <div class="language-option" data-lang="el">Ελληνικά</div>
+                    <div class="language-option" data-lang="ms">Melayu</div>
+                    <div class="language-option" data-lang="th">แบบไทย</div>
+                    <div class="language-option" data-lang="la">Latinus</div>
+                    <div class="language-option" data-lang="hi">हिंदी</div>
+                    <div class="language-option" data-lang="bn">বাংলা</div>
+                    <div class="language-option" data-lang="ur">اردو</div>
+                    <div class="language-option" data-lang="zh-Hant">繁体中文</div>
+                    <div class="language-option" data-lang="sq">shqiptare</div>
+                </div>
+            </div>
+            
+            <!-- زر أنا في أعلى اليمين -->
+            <div class="user-info">
+                <div class="user-menu">
+                    <button class="user-btn" id="userBtn">
+                        <i class="fas fa-user"></i>
+                        أنا
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="user-email" id="userEmailDisplay">user@example.com</div>
+                        <button class="logout-btn" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            تسجيل الخروج
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="wallet-header">
+                <h1>محفظة العملات المشفرة الأمريكية</h1>
+                <h2 id="walletSubtitle">الرصيد</h2>
+            </div>
+            
+            <!-- بطاقة الرصيد -->
+            <div class="balance-card" id="balanceCard">
+                <div class="balance-label">إجمالي الرصيد</div>
+                <div class="balance-amount" id="totalBalance">$0.00</div>
+                <div class="balance-equivalent" id="balanceEquivalent">≈ 0.000000 BTC</div>
+            </div>
+            
+            <!-- قائمة العملات -->
+            <div class="currency-list" id="currencyList">
+                <div class="currency-item">
+                    <div class="currency-info">
+                        <div class="currency-icon usdt">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class="currency-details">
+                            <h3>USDT</h3>
+                            <span>Tether</span>
+                        </div>
+                    </div>
+                    <div class="currency-amount">
+                        <div class="amount" id="usdtAmount">0.00 USDT</div>
+                        <div class="value" id="usdtValue">$0.00</div>
+                    </div>
+                </div>
+                
+                <div class="currency-item">
+                    <div class="currency-info">
+                        <div class="currency-icon btc">
+                            <i class="fab fa-bitcoin"></i>
+                        </div>
+                        <div class="currency-details">
+                            <h3>Bitcoin</h3>
+                            <span>BTC</span>
+                        </div>
+                    </div>
+                    <div class="currency-amount">
+                        <div class="amount" id="btcAmount">0.000000 BTC</div>
+                        <div class="value" id="btcValue">$0.00</div>
+                    </div>
+                </div>
+                
+                <div class="currency-item">
+                    <div class="currency-info">
+                        <div class="currency-icon eth">
+                            <i class="fab fa-ethereum"></i>
+                        </div>
+                        <div class="currency-details">
+                            <h3>Ethereum</h3>
+                            <span>ETH</span>
+                        </div>
+                    </div>
+                    <div class="currency-amount">
+                        <div class="amount" id="ethAmount">0.00 ETH</div>
+                        <div class="value" id="ethValue">$0.00</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- بطاقة السحب -->
+            <div class="send-card" id="sendCard">
+                <div class="receive-header">
+                    <h3>سحب الأموال</h3>
+                    <div class="fee-badge">منخفض الرسوم</div>
+                </div>
+                
+                <div class="description">
+                    اسحب الأموال بسرعة وأمان إلى أي عنوان محفظة حول العالم.
+                </div>
+                
+                <form class="send-form" id="sendForm">
+                    <div class="form-group">
+                        <label for="sendCurrency">اختر العملة</label>
+                        <select id="sendCurrency" class="form-control" required>
+                            <option value="USDT">USDT - Tether</option>
+                            <option value="BTC">BTC - Bitcoin</option>
+                            <option value="ETH">ETH - Ethereum</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="sendAddress">عنوان المحفظة المستلم</label>
+                        <input type="text" id="sendAddress" class="form-control" placeholder="أدخل عنوان المحفظة" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="sendAmount">المبلغ</label>
+                            <input type="number" id="sendAmount" class="form-control" placeholder="0.00" step="0.000001" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="sendNetwork">الشبكة</label>
+                            <select id="sendNetwork" class="form-control" required>
+                                <option value="ERC20">ERC20</option>
+                                <option value="TRC20">TRC20</option>
+                                <option value="BEP20">BEP20</option>
+                                <option value="BTC">BTC Network</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="send-actions">
+                        <button type="submit" class="wallet-btn wallet-btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                            سحب الآن
+                        </button>
+                        <button type="button" class="wallet-btn wallet-btn-secondary" id="cancelSend">
+                            إلغاء
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- سجل المعاملات -->
+            <div class="transactions-card" id="transactionsCard">
+                <div class="receive-header">
+                    <h3>سجل المعاملات</h3>
+                    <div class="fee-badge">آخر النشاطات</div>
+                </div>
+                
+                <div id="transactionsList">
+                    <div class="no-transactions">
+                        <i class="fas fa-history" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
+                        <p>لا توجد معاملات حتى الآن</p>
+                        <small>سيظهر سجل المعاملات هنا بعد إجراء أول عملية</small>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- الإشعارات -->
+            <div class="notifications-card" id="notificationsCard">
+                <div class="receive-header">
+                    <h3>الإشعارات</h3>
+                    <div class="fee-badge">جديد</div>
+                </div>
+                <div id="notificationsList">
+                    <div class="no-notifications">
+                        <i class="fas fa-bell" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
+                        <p>لا توجد إشعارات</p>
+                        <small>سيتم إعلامك هنا بأي تحديثات جديدة</small>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- بطاقة تعبئة الرصيد -->
+            <div class="receive-card" id="receiveCard">
+                <div class="receive-header">
+                    <h3>تعبئة الرصيد</h3>
+                    <div class="fee-badge">سهل وسريع</div>
+                </div>
+                
+                <div class="description">
+                    قم بمشاركة هذا العنوان ودع المرسلين يستخدمون محفظة خارجية لدفع المبلغ لك.
+                </div>
+                
+                <hr>
+                
+                <div class="on-chain-title">تعبئة الرصيد على الشبكة</div>
+                
+                <div class="networks-grid" id="networksGrid">
+                    <div class="network-option active" data-network="ERC20">
+                        <span class="network-symbol usdt">USDT</span>
+                        <div class="icon erc20">
+                            <i class="fab fa-ethereum"></i>
+                        </div>
+                        <div>ERC20</div>
+                    </div>
+                    <div class="network-option" data-network="TRC20">
+                        <span class="network-symbol usdt">USDT</span>
+                        <div class="icon trc20">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div>TRC20</div>
+                    </div>
+                    <div class="network-option" data-network="SOL">
+                        <span class="network-symbol usdt">USDT</span>
+                        <div class="icon sol">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div>SOL</div>
+                    </div>
+                    <div class="network-option" data-network="BEP20">
+                        <span class="network-symbol usdt">USDT</span>
+                        <div class="icon bep20">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div>BEP20</div>
+                    </div>
+                    <div class="network-option" data-network="BTC">
+                        <span class="network-symbol btc">BTC</span>
+                        <div class="icon btc">
+                            <i class="fab fa-bitcoin"></i>
+                        </div>
+                        <div>BTC</div>
+                    </div>
+                    <div class="network-option" data-network="ETH">
+                        <span class="network-symbol usdt">USDT</span>
+                        <div class="icon eth">
+                            <i class="fab fa-ethereum"></i>
+                        </div>
+                        <div>ETH</div>
+                    </div>
+                </div>
+                
+                <div class="address-section">
+                    <div class="address-label">عنوانك</div>
+                    <div class="address-box" id="addressBox">
+                        0x8574dE94D5DF925e8C9Db6282527Fd1539F9eD85
+                    </div>
+                    
+                    <div class="network-info" id="networkInfo">
+                        فقط رمز USDT على شبكة ERC20 يُرسل إلى هذا العنوان
+                    </div>
+                    
+                    <div class="actions">
+                        <button class="wallet-btn wallet-btn-primary" id="shareBtn">
+                            <i class="fas fa-share-alt"></i>
+                            مشاركة
+                        </button>
+                        <button class="wallet-btn wallet-btn-secondary" id="copyBtn">
+                            <i class="far fa-copy"></i>
+                            نسخ العنوان
+                        </button>
+                    </div>
+                    
+                    <div class="warning">
+                        انقر على العنوان ليتم النسخ تلقائياً
+                    </div>
+                </div>
+            </div>
+            
+            <!-- قسم VIP -->
+            <div class="vip-card" id="vipCard">
+                <div class="vip-header">
+                    <h3>كبار الشخصيات VIP</h3>
+                    <div class="vip-badge">مميز</div>
+                </div>
+                
+                <div class="vip-levels" id="vipLevels">
+                    <!-- سيتم إضافة مستويات VIP هنا عبر JavaScript -->
+                </div>
+            </div>
+            
+            <!-- شريط التنقل في الأسفل -->
+            <div class="wallet-nav">
+                <button class="nav-btn active" id="balanceBtn">
+                    <i class="fas fa-wallet"></i>
+                    الرصيد
+                </button>
+                <button class="nav-btn" id="sendBtn">
+                    <i class="fas fa-paper-plane"></i>
+                    سحب
+                </button>
+                <button class="nav-btn" id="receiveBtn">
+                    <i class="fas fa-qrcode"></i>
+                    تعبئة
+                </button>
+                <button class="nav-btn" id="vipBtn">
+                    <i class="fas fa-crown"></i>
+                    VIP
+                </button>
+                <button class="nav-btn" id="transactionsBtn">
+                    <i class="fas fa-history"></i>
+                    المعاملات
+                </button>
+                <button class="nav-btn" id="notificationsBtn">
+                    <i class="fas fa-bell"></i>
+                    الإشعارات
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="toast" id="toast">تم نسخ العنوان إلى الحافظة</div>
+    
+    <script>
+// عناصر DOM
+const authContainer = document.getElementById('authContainer');
+const walletContainer = document.getElementById('walletContainer');
+const registrationForm = document.getElementById('registrationForm');
+const loginForm = document.getElementById('loginForm');
+const showLoginBtn = document.getElementById('showLoginBtn');
+const showRegisterBtn = document.getElementById('showRegisterBtn');
+const successMessage = document.getElementById('successMessage');
+const errorMessage = document.getElementById('errorMessage');
+const loginErrorMessage = document.getElementById('loginErrorMessage');
+const userEmailDisplay = document.getElementById('userEmailDisplay');
+const userBtn = document.getElementById('userBtn');
+const userDropdown = document.getElementById('userDropdown');
+const logoutBtn = document.getElementById('logoutBtn');
+const languageBtn = document.getElementById('languageBtn');
+const languageDropdown = document.getElementById('languageDropdown');
+
+// عناصر التنقل
+const balanceBtn = document.getElementById('balanceBtn');
+const sendBtn = document.getElementById('sendBtn');
+const receiveBtn = document.getElementById('receiveBtn');
+const vipBtn = document.getElementById('vipBtn');
+const transactionsBtn = document.getElementById('transactionsBtn');
+const notificationsBtn = document.getElementById('notificationsBtn');
+const walletSubtitle = document.getElementById('walletSubtitle');
+
+// عناصر الأقسام
+const balanceCard = document.getElementById('balanceCard');
+const currencyList = document.getElementById('currencyList');
+const sendCard = document.getElementById('sendCard');
+const transactionsCard = document.getElementById('transactionsCard');
+const notificationsCard = document.getElementById('notificationsCard');
+const receiveCard = document.getElementById('receiveCard');
+const vipCard = document.getElementById('vipCard');
+const vipLevels = document.getElementById('vipLevels');
+
+// عناصر الرصيد
+const totalBalance = document.getElementById('totalBalance');
+const balanceEquivalent = document.getElementById('balanceEquivalent');
+const usdtAmount = document.getElementById('usdtAmount');
+const usdtValue = document.getElementById('usdtValue');
+const btcAmount = document.getElementById('btcAmount');
+const btcValue = document.getElementById('btcValue');
+const ethAmount = document.getElementById('ethAmount');
+const ethValue = document.getElementById('ethValue');
+
+// عناصر السحب
+const sendForm = document.getElementById('sendForm');
+const cancelSend = document.getElementById('cancelSend');
+
+// عناصر تعبئة الرصيد
+const addressBox = document.getElementById('addressBox');
+const copyBtn = document.getElementById('copyBtn');
+const shareBtn = document.getElementById('shareBtn');
+const toast = document.getElementById('toast');
+const networkOptions = document.querySelectorAll('.network-option');
+const networkInfo = document.getElementById('networkInfo');
+
+// عناصر إظهار كلمة المرور
+const togglePassword = document.getElementById('togglePassword');
+const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+const toggleLoginPassword = document.getElementById('toggleLoginPassword');
+
+// قوائم البيانات
+const transactionsList = document.getElementById('transactionsList');
+const notificationsList = document.getElementById('notificationsList');
+
+// بيانات المستخدمين
+let users = JSON.parse(localStorage.getItem('cryptoWalletUsers')) || [];
+let currentUser = null;
+
+// بيانات الرصيد - بدء من الصفر
+let walletData = JSON.parse(localStorage.getItem('walletData')) || {
+    total: 0,
+    equivalent: "0.000000 BTC",
+    currencies: {
+        usdt: { amount: 0, value: 0 },
+        btc: { amount: 0, value: 0 },
+        eth: { amount: 0, value: 0 }
+    }
+};
+
+// بيانات المعاملات - بدء من الصفر
+let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+
+// بيانات الإشعارات - بدء من الصفر
+let notifications = JSON.parse(localStorage.getItem('notifications')) || [];
+
+// بيانات VIP
+const vipLevelsData = [
+    { level: 1, dailyTasks: 1, simpleInterest: 6.00, dailyProfit: 6.00, totalProfit: 1095.00, openPrice: 12.00 },
+    { level: 2, dailyTasks: 1, simpleInterest: 15.00, dailyProfit: 15.00, totalProfit: 4745.00, openPrice: 52.00 },
+    { level: 3, dailyTasks: 1, simpleInterest: 35.00, dailyProfit: 35.00, totalProfit: 9490.00, openPrice: 100.00 },
+    { level: 4, dailyTasks: 1, simpleInterest: 100.00, dailyProfit: 100.00, totalProfit: 29930.00, openPrice: 300.00 },
+    { level: 5, dailyTasks: 1, simpleInterest: 160.00, dailyProfit: 160.00, totalProfit: 52925.00, openPrice: 500.00 },
+    { level: 6, dailyTasks: 1, simpleInterest: 500.00, dailyProfit: 500.00, totalProfit: 174835.00, openPrice: 1500.00 },
+    { level: 7, dailyTasks: 1, simpleInterest: 1200.00, dailyProfit: 1200.00, totalProfit: 393470.00, openPrice: 3000.00 },
+    { level: 8, dailyTasks: 1, simpleInterest: 2500.00, dailyProfit: 2500.00, totalProfit: 730000.00, openPrice: 5000.00 },
+    { level: 9, dailyTasks: 1, simpleInterest: 4900.00, dailyProfit: 4900.00, totalProfit: 1659290.00, openPrice: 10000.00 },
+    { level: 10, dailyTasks: 1, simpleInterest: 19000.00, dailyProfit: 19000.00, totalProfit: 6460135.00, openPrice: 30000.00 },
+    { level: 11, dailyTasks: 1, simpleInterest: 85000.00, dailyProfit: 85000.00, totalProfit: 29863570.00, openPrice: 90000.00 }
+];
+
+// عناوين لكل شبكة
+const addresses = {
+    'ERC20': '0x8574dE94D5DF925e8C9Db6282527Fd1539F9eD85',
+    'TRC20': 'TN8rsodYN8HNnBum853uENLrDDXL6BDMHk',
+    'SOL': 'Hwnc8ypNMFkpEH7JP1GXgHUaYAS5fPgUhPyrtmip2zim',
+    'BEP20': '0x8574dE94D5DF925e8C9Db6282527Fd1539F9eD85',
+    'BTC': 'bc1qyd3hk0cklrz4gqqkdlxj9gra3mw63wvxrvfqkm',
+    'ETH': '0x8574dE94D5DF925e8C9Db6282527Fd1539F9eD85'
+};
+
+// معلومات لكل شبكة
+const networkMessages = {
+    'ERC20': 'فقط رمز USDT على شبكة ERC20 يُرسل إلى هذا العنوان',
+    'TRC20': 'فقط رمز USDT على شبكة TRC20 يُرسل إلى هذا العنوان',
+    'SOL': 'فقط رمز USDT على شبكة SOL يُرسل إلى هذا العنوان',
+    'BEP20': 'فقط رمز USDT على شبكة BEP20 يُرسل إلى هذا العنوان',
+    'BTC': 'فقط Bitcoin يُرسل إلى هذا العنوان',
+    'ETH': 'فقط رمز USDT على شبكة ETH يُرسل إلى هذا العنوان'
+};
+
+// تهيئة الصفحة
+function initializePage() {
+    checkLoggedInUser();
+    setupEventListeners();
+    updateBalanceDisplay();
+    updateTransactionsDisplay();
+    updateNotificationsDisplay();
+    updateVipLevelsDisplay();
+    
+    // إضافة مستخدم تجريبي للاختبار إذا لم يكن موجوداً
+    if (users.length === 0) {
+        users.push({
+            email: 'test@example.com',
+            password: '123456',
+            registrationDate: new Date().toISOString()
+        });
+        localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
+    }
+    
+    // تحديث الشبكة عند تغييرها
+    networkOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            const network = this.getAttribute('data-network');
+            addressBox.textContent = addresses[network];
+            networkInfo.textContent = networkMessages[network];
+            networkInfo.style.display = 'block';
+        });
+    });
+}
+
+// تحديث عرض الرصيد
+function updateBalanceDisplay() {
+    totalBalance.textContent = `$${walletData.total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    balanceEquivalent.textContent = `≈ ${walletData.equivalent}`;
+    
+    usdtAmount.textContent = `${walletData.currencies.usdt.amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} USDT`;
+    usdtValue.textContent = `$${walletData.currencies.usdt.value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    
+    btcAmount.textContent = `${walletData.currencies.btc.amount.toFixed(6)} BTC`;
+    btcValue.textContent = `$${walletData.currencies.btc.value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    
+    ethAmount.textContent = `${walletData.currencies.eth.amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} ETH`;
+    ethValue.textContent = `$${walletData.currencies.eth.value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    
+    // حفظ البيانات المحدثة
+    localStorage.setItem('walletData', JSON.stringify(walletData));
+}
+
+// تحديث عرض المعاملات
+function updateTransactionsDisplay() {
+    if (transactions.length === 0) {
+        transactionsList.innerHTML = `
+            <div class="no-transactions">
+                <i class="fas fa-history" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
+                <p>لا توجد معاملات حتى الآن</p>
+                <small>سيظهر سجل المعاملات هنا بعد إجراء أول عملية</small>
+            </div>
+        `;
+        return;
+    }
+    
+    transactionsList.innerHTML = transactions.map(transaction => `
+        <div class="transaction-item" data-transaction-id="${transaction.id}">
+            <div class="transaction-info">
+                <div class="transaction-icon ${transaction.type}">
+                    <i class="fas fa-${transaction.type === 'receive' ? 'arrow-down' : 'arrow-up'}"></i>
+                </div>
+                <div class="transaction-details">
+                    <h3>${transaction.description}</h3>
+                    <span>${transaction.date} • <span class="transaction-status" style="color: ${transaction.status === 'مكتمل' ? '#00cc00' : '#ffd700'}">${transaction.status}</span></span>
+                </div>
+            </div>
+            <div class="transaction-amount ${transaction.type}">
+                <div class="amount">${transaction.amount}</div>
+                <div class="value">${transaction.value}</div>
+            </div>
+        </div>
+    `).join('');
+}
+
+// تحديث عرض الإشعارات
+function updateNotificationsDisplay() {
+    if (notifications.length === 0) {
+        notificationsList.innerHTML = `
+            <div class="no-notifications">
+                <i class="fas fa-bell" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
+                <p>لا توجد إشعارات</p>
+                <small>سيتم إعلامك هنا بأي تحديثات جديدة</small>
+            </div>
+        `;
+        return;
+    }
+    
+    notificationsList.innerHTML = notifications.map(notification => `
+        <div class="notification-item">
+            <div class="notification-info">
+                <div class="notification-icon">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <div class="notification-details">
+                    <h3>${notification.title}</h3>
+                    <span>${notification.message}</span>
+                </div>
+            </div>
+            <div class="notification-time">${notification.time}</div>
+        </div>
+    `).join('');
+}
+
+// تحديث عرض مستويات VIP
+function updateVipLevelsDisplay() {
+    vipLevels.innerHTML = vipLevelsData.map(level => `
+        <div class="vip-level">
+            <div class="vip-level-header">
+                <div class="vip-level-title">VIP${level.level}</div>
+                <div class="vip-level-img">VIP</div>
+            </div>
+            <div class="vip-details">
+                <div class="vip-detail">
+                    <div class="vip-detail-label">مهمات يوميه</div>
+                    <div class="vip-detail-value">${level.dailyTasks}</div>
+                </div>
+                <div class="vip-detail">
+                    <div class="vip-detail-label">مصلحة بسيطة</div>
+                    <div class="vip-detail-value">${level.simpleInterest.toFixed(2)}</div>
+                </div>
+            </div>
+            <div class="vip-profit">
+                <div class="vip-profit-item">
+                    <div class="vip-profit-label">الربح اليومي</div>
+                    <div class="vip-profit-value">${level.dailyProfit.toFixed(2)} USDT</div>
+                </div>
+                <div class="vip-profit-item">
+                    <div class="vip-profit-label">إجمالي الربح</div>
+                    <div class="vip-profit-value">${level.totalProfit.toLocaleString()} USDT</div>
+                </div>
+            </div>
+            <button class="vip-open-btn" onclick="openVipLevel(${level.level}, ${level.openPrice})">
+                ${level.openPrice.toLocaleString()} USDT افتح الآن
+            </button>
+        </div>
+    `).join('');
+}
+
+// التحقق من وجود مستخدم مسجل الدخول
+function checkLoggedInUser() {
+    const loggedInUser = localStorage.getItem('cryptoWalletCurrentUser');
+    if (loggedInUser) {
+        currentUser = loggedInUser;
+        showWalletInterface();
+        userEmailDisplay.textContent = loggedInUser;
+    }
+}
+
+// إعداد جميع event listeners
+function setupEventListeners() {
+    // إظهار/إخفاء القائمة المنسدلة للغة
+    languageBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        languageDropdown.classList.toggle('show');
+    });
+    
+    // إظهار/إخفاء القائمة المنسدلة للمستخدم
+    userBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        userDropdown.classList.toggle('show');
+    });
+    
+    // إغلاق القوائم المنسدلة عند النقر خارجها
+    document.addEventListener('click', function() {
+        languageDropdown.classList.remove('show');
+        userDropdown.classList.remove('show');
+    });
+    
+    // منع إغلاق القوائم عند النقر داخلها
+    languageDropdown.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+    
+    userDropdown.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+    
+    // تغيير اللغة
+    document.querySelectorAll('.language-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const lang = this.getAttribute('data-lang');
+            changeLanguage(lang);
+            languageBtn.innerHTML = `<i class="fas fa-globe"></i> ${this.textContent} <i class="fas fa-chevron-down"></i>`;
+            languageDropdown.classList.remove('show');
+        });
+    });
+    
+    // التنقل بين الأقسام
+    balanceBtn.addEventListener('click', function() {
+        showBalanceSection();
+    });
+    
+    sendBtn.addEventListener('click', function() {
+        showSendSection();
+    });
+    
+    receiveBtn.addEventListener('click', function() {
+        showReceiveSection();
+    });
+    
+    vipBtn.addEventListener('click', function() {
+        showVipSection();
+    });
+    
+    transactionsBtn.addEventListener('click', function() {
+        showTransactionsSection();
+    });
+    
+    notificationsBtn.addEventListener('click', function() {
+        showNotificationsSection();
+    });
+    
+    // إلغاء السحب
+    cancelSend.addEventListener('click', function() {
+        showBalanceSection();
+    });
+    
+    // معالجة نموذج السحب
+    sendForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        handleSendTransaction();
+    });
+    
+    // عرض نموذج تسجيل الدخول
+    showLoginBtn.addEventListener('click', function() {
+        showLoginForm();
+    });
+    
+    // عرض نموذج التسجيل
+    showRegisterBtn.addEventListener('click', function() {
+        showRegisterForm();
+    });
+    
+    // معالجة نموذج التسجيل
+    registrationForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        handleRegistration();
+    });
+    
+    // معالجة نموذج تسجيل الدخول
+    loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        handleLogin();
+    });
+    
+    // تسجيل الخروج
+    logoutBtn.addEventListener('click', function() {
+        handleLogout();
+    });
+    
+    // نسخ العنوان
+    copyBtn.addEventListener('click', function() {
+        copyToClipboard(addressBox.textContent);
+        addressBox.classList.add('copied');
+        setTimeout(() => {
+            addressBox.classList.remove('copied');
+        }, 1000);
+    });
+    
+    addressBox.addEventListener('click', function() {
+        copyToClipboard(addressBox.textContent);
+        addressBox.classList.add('copied');
+        setTimeout(() => {
+            addressBox.classList.remove('copied');
+        }, 1000);
+    });
+    
+    // مشاركة العنوان
+    shareBtn.addEventListener('click', function() {
+        if (navigator.share) {
+            navigator.share({
+                title: 'عنوان محفظتي - محفظة العملات المشفرة الأمريكية',
+                text: 'استخدم هذا العنوان لإرسال العملات:',
+                url: addressBox.textContent
+            });
+        } else {
+            copyToClipboard(addressBox.textContent);
+            showToast('تم نسخ العنوان إلى الحافظة');
+        }
+    });
+    
+    // تغيير الشبكة المحددة
+    networkOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            networkOptions.forEach(opt => opt.classList.remove('active'));
+            this.classList.add('active');
+            
+            const network = this.getAttribute('data-network');
+            addressBox.textContent = addresses[network];
+            
+            networkInfo.textContent = networkMessages[network];
+            networkInfo.style.display = 'block';
+        });
+    });
+    
+    // إظهار/إخفاء كلمة المرور
+    togglePassword.addEventListener('click', function() {
+        const passwordInput = document.getElementById('password');
+        togglePasswordVisibility(passwordInput, this);
+    });
+    
+    toggleConfirmPassword.addEventListener('click', function() {
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        togglePasswordVisibility(confirmPasswordInput, this);
+    });
+    
+    toggleLoginPassword.addEventListener('click', function() {
+        const loginPasswordInput = document.getElementById('loginPassword');
+        togglePasswordVisibility(loginPasswordInput, this);
+    });
+}
+
+// تغيير اللغة
+function changeLanguage(lang) {
+    showToast(`تم تغيير اللغة إلى ${lang}`);
+}
+
+// عرض قسم الرصيد
+function showBalanceSection() {
+    resetNavButtons();
+    balanceBtn.classList.add('active');
+    walletSubtitle.textContent = 'الرصيد';
+    
+    // إظهار العناصر الخاصة بالرصيد
+    balanceCard.style.display = 'block';
+    currencyList.style.display = 'block';
+    
+    // إخفاء جميع الأقسام الأخرى
+    sendCard.style.display = 'none';
+    transactionsCard.style.display = 'none';
+    receiveCard.style.display = 'none';
+    vipCard.style.display = 'none';
+    notificationsCard.style.display = 'none';
+}
+
+// عرض قسم السحب
+function showSendSection() {
+    resetNavButtons();
+    sendBtn.classList.add('active');
+    walletSubtitle.textContent = 'سحب الأموال';
+    
+    // إظهار قسم السحب
+    sendCard.style.display = 'block';
+    
+    // إخفاء جميع الأقسام الأخرى
+    balanceCard.style.display = 'none';
+    currencyList.style.display = 'none';
+    transactionsCard.style.display = 'none';
+    receiveCard.style.display = 'none';
+    vipCard.style.display = 'none';
+    notificationsCard.style.display = 'none';
+}
+
+// عرض قسم تعبئة الرصيد
+function showReceiveSection() {
+    resetNavButtons();
+    receiveBtn.classList.add('active');
+    walletSubtitle.textContent = 'تعبئة الرصيد';
+    
+    // إظهار قسم تعبئة الرصيد
+    receiveCard.style.display = 'block';
+    
+    // إخفاء جميع الأقسام الأخرى
+    balanceCard.style.display = 'none';
+    currencyList.style.display = 'none';
+    sendCard.style.display = 'none';
+    transactionsCard.style.display = 'none';
+    vipCard.style.display = 'none';
+    notificationsCard.style.display = 'none';
+}
+
+// عرض قسم VIP
+function showVipSection() {
+    resetNavButtons();
+    vipBtn.classList.add('active');
+    walletSubtitle.textContent = 'كبار الشخصيات VIP';
+    
+    // إظهار قسم VIP
+    vipCard.style.display = 'block';
+    
+    // إخفاء جميع الأقسام الأخرى
+    balanceCard.style.display = 'none';
+    currencyList.style.display = 'none';
+    sendCard.style.display = 'none';
+    transactionsCard.style.display = 'none';
+    receiveCard.style.display = 'none';
+    notificationsCard.style.display = 'none';
+}
+
+// عرض قسم المعاملات
+function showTransactionsSection() {
+    resetNavButtons();
+    transactionsBtn.classList.add('active');
+    walletSubtitle.textContent = 'سجل المعاملات';
+    
+    // إظهار قسم المعاملات
+    transactionsCard.style.display = 'block';
+    
+    // إخفاء جميع الأقسام الأخرى
+    balanceCard.style.display = 'none';
+    currencyList.style.display = 'none';
+    sendCard.style.display = 'none';
+    receiveCard.style.display = 'none';
+    vipCard.style.display = 'none';
+    notificationsCard.style.display = 'none';
+}
+
+// عرض قسم الإشعارات
+function showNotificationsSection() {
+    resetNavButtons();
+    notificationsBtn.classList.add('active');
+    walletSubtitle.textContent = 'الإشعارات';
+    
+    // إظهار قسم الإشعارات
+    notificationsCard.style.display = 'block';
+    
+    // إخفاء جميع الأقسام الأخرى
+    balanceCard.style.display = 'none';
+    currencyList.style.display = 'none';
+    sendCard.style.display = 'none';
+    receiveCard.style.display = 'none';
+    vipCard.style.display = 'none';
+    transactionsCard.style.display = 'none';
+}
+
+// إعادة تعيين أزرار التنقل
+function resetNavButtons() {
+    balanceBtn.classList.remove('active');
+    sendBtn.classList.remove('active');
+    receiveBtn.classList.remove('active');
+    vipBtn.classList.remove('active');
+    transactionsBtn.classList.remove('active');
+    notificationsBtn.classList.remove('active');
+}
+
+// معالجة إرسال المعاملة
+function handleSendTransaction() {
+    const currency = document.getElementById('sendCurrency').value;
+    const address = document.getElementById('sendAddress').value;
+    const amount = parseFloat(document.getElementById('sendAmount').value);
+    const network = document.getElementById('sendNetwork').value;
+    
+    if (amount <= 0) {
+        showError('يرجى إدخال مبلغ صحيح');
+        return;
+    }
+    
+    if (!address) {
+        showError('يرجى إدخال عنوان المحفظة');
+        return;
+    }
+    
+    // التحقق من صحة العنوان (محاكاة)
+    if (address.length < 10) {
+        showError('عنوان المحفظة غير صحيح');
+        return;
+    }
+    
+    // إظهار مؤشر التحميل
+    showLoading();
+    
+    // محاكاة عملية السحب
+    setTimeout(() => {
+        const transactionId = 'TX' + Date.now();
+        const transaction = {
+            id: transactionId,
+            type: 'send',
+            description: `سحب ${currency}`,
+            amount: `-${amount} ${currency}`,
+            value: `$${(amount * 1).toLocaleString()}`,
+            date: new Date().toLocaleDateString('ar-EG'),
+            status: 'قيد المعالجة',
+            currency: currency,
+            address: address,
+            network: network,
+            timestamp: new Date().toISOString()
+        };
+        
+        // إضافة المعاملة للسجل
+        transactions.unshift(transaction);
+        
+        // إضافة إشعار
+        addNotification(`تم بدء سحب ${currency}`, `جاري معالجة سحب ${amount} ${currency}`, 'الآن');
+        
+        // حفظ البيانات
+        localStorage.setItem('transactions', JSON.stringify(transactions));
+        
+        // تحديث العرض
+        updateTransactionsDisplay();
+        
+        // إخفاء مؤشر التحميل
+        hideLoading();
+        
+        // إظهار رسالة نجاح
+        showToast('تم بدء معالجة المعاملة!');
+        
+        // العودة لشاشة الرصيد
+        showBalanceSection();
+        
+        // إعادة تعيين النموذج
+        sendForm.reset();
+    }, 2000);
+}
+
+// عرض نموذج تسجيل الدخول
+function showLoginForm() {
+    registrationForm.style.display = 'none';
+    loginForm.style.display = 'block';
+    errorMessage.style.display = 'none';
+    successMessage.style.display = 'none';
+}
+
+// عرض نموذج التسجيل
+function showRegisterForm() {
+    loginForm.style.display = 'none';
+    registrationForm.style.display = 'block';
+    loginErrorMessage.style.display = 'none';
+    successMessage.style.display = 'none';
+}
+
+// عرض واجهة المحفظة
+function showWalletInterface() {
+    authContainer.style.display = 'none';
+    walletContainer.style.display = 'block';
+    showBalanceSection(); // عرض الرصيد افتراضياً
+}
+
+// معالجة التسجيل
+function handleRegistration() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const invitationCode = document.getElementById('invitationCode').value;
+    
+    // إظهار مؤشر التحميل
+    showLoading();
+    
+    // التحقق من تطابق كلمات المرور
+    if (password !== confirmPassword) {
+        hideLoading();
+        showError('كلمات المرور غير متطابقة. يرجى المحاولة مرة أخرى.');
+        return;
+    }
+    
+    // التحقق من صيغة البريد الإلكتروني
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+        hideLoading();
+        showError('يرجى إدخال بريد إلكتروني صحيح.');
+        return;
+    }
+    
+    // التحقق من قوة كلمة المرور (اختياري)
+    if (password.length < 6) {
+        hideLoading();
+        showError('كلمة المرور يجب أن تكون 6 أحرف على الأقل.');
+        return;
+    }
+    
+    // التحقق من عدم وجود حساب بنفس البريد الإلكتروني
+    if (users.find(user => user.email === email)) {
+        hideLoading();
+        showError('هذا البريد الإلكتروني مسجل بالفعل. يرجى استخدام بريد إلكتروني آخر.');
+        return;
+    }
+    
+    // محاكاة تأخير الشبكة
+    setTimeout(() => {
+        // حفظ المستخدم
+        users.push({
+            email: email,
+            password: password,
+            registrationDate: new Date().toISOString()
+        });
+        
+        // حفظ في localStorage
+        localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
+        localStorage.setItem('cryptoWalletCurrentUser', email);
+        
+        currentUser = email;
+        
+        // إخفاء مؤشر التحميل
+        hideLoading();
+        
+        // عرض رسالة النجاح
+        successMessage.style.display = 'block';
+        
+        // إضافة إشعار ترحيبي
+        addNotification('مرحباً بك!', 'تم إنشاء حسابك بنجاح. ابدأ باستكشاف ميزات المحفظة.', 'الآن');
+        
+        // الانتقال إلى واجهة المحفظة بعد 2 ثانية
+        setTimeout(function() {
+            showWalletInterface();
+            userEmailDisplay.textContent = email;
+        }, 2000);
+    }, 1500);
+}
+
+// معالجة تسجيل الدخول
+function handleLogin() {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    
+    // التحقق من بيانات المستخدم
+    const user = users.find(user => user.email === email && user.password === password);
+    
+    if (user) {
+        currentUser = email;
+        localStorage.setItem('cryptoWalletCurrentUser', email);
+        showWalletInterface();
+        userEmailDisplay.textContent = email;
+    } else {
+        showLoginError('البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى.');
+    }
+}
+
+// معالجة تسجيل الخروج
+function handleLogout() {
+    currentUser = null;
+    localStorage.removeItem('cryptoWalletCurrentUser');
+    walletContainer.style.display = 'none';
+    authContainer.style.display = 'flex';
+    showRegisterForm();
+    registrationForm.reset();
+    loginForm.reset();
+    userDropdown.classList.remove('show');
+}
+
+// وظائف المحفظة
+function copyToClipboard(text) {
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+            showToast('تم نسخ العنوان إلى الحافظة');
+        }).catch(err => {
+            fallbackCopyToClipboard(text);
+        });
+    } else {
+        fallbackCopyToClipboard(text);
+    }
+}
+
+function fallbackCopyToClipboard(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textArea);
+    showToast('تم نسخ العنوان إلى الحافظة');
+}
+
+function showToast(message = 'تم النسخ إلى الحافظة') {
+    toast.textContent = message;
+    toast.style.display = 'block';
+    setTimeout(() => {
+        toast.style.display = 'none';
+    }, 2000);
+}
+
+// وظائف التحسينات الجديدة
+function showLoading() {
+    document.getElementById('loadingOverlay').style.display = 'flex';
+}
+
+function hideLoading() {
+    document.getElementById('loadingOverlay').style.display = 'none';
+}
+
+function showError(message) {
+    errorMessage.textContent = message;
+    errorMessage.style.display = 'block';
+    
+    // إخفاء الرسالة بعد 5 ثوان
+    setTimeout(() => {
+        errorMessage.style.display = 'none';
+    }, 5000);
+}
+
+function showLoginError(message) {
+    loginErrorMessage.textContent = message;
+    loginErrorMessage.style.display = 'block';
+    
+    // إخفاء الرسالة بعد 5 ثوان
+    setTimeout(() => {
+        loginErrorMessage.style.display = 'none';
+    }, 5000);
+}
+
+// وظائف VIP - عند الضغط على "افتح الآن" يفتح قسم تعبئة الرصيد
+function openVipLevel(level, price) {
+    if (walletData.currencies.usdt.amount < price) {
+        showError(`رصيدك غير كافٍ لفتح VIP${level}. تحتاج ${price} USDT`);
+        return;
+    }
+    
+    // إظهار مؤشر التحميل
+    showLoading();
+    
+    // محاكاة عملية فتح VIP
+    setTimeout(() => {
+        // خصم المبلغ
+        walletData.currencies.usdt.amount -= price;
+        walletData.total = walletData.currencies.usdt.amount + walletData.currencies.btc.value + walletData.currencies.eth.value;
+        
+        // إضافة معاملة
+        const transactionId = 'VIP' + Date.now();
+        const transaction = {
+            id: transactionId,
+            type: 'send',
+            description: `فتح VIP${level}`,
+            amount: `-${price} USDT`,
+            value: `$${price}`,
+            date: new Date().toLocaleDateString('ar-EG'),
+            status: 'مكتمل',
+            currency: 'USDT',
+            address: 'نظام VIP',
+            network: 'VIP',
+            timestamp: new Date().toISOString()
+        };
+        
+        transactions.unshift(transaction);
+        
+        // إضافة إشعار
+        addNotification(`تم فتح VIP${level}`, `تم فتح مستوى VIP${level} بنجاح. استمتع بالمزايا الحصرية!`, 'الآن');
+        
+        // حفظ البيانات
+        localStorage.setItem('walletData', JSON.stringify(walletData));
+        localStorage.setItem('transactions', JSON.stringify(transactions));
+        
+        // تحديث العرض
+        updateBalanceDisplay();
+        updateTransactionsDisplay();
+        
+        // إخفاء مؤشر التحميل
+        hideLoading();
+        
+        // إظهار رسالة نجاح
+        showToast(`تم فتح VIP${level} بنجاح!`);
+        
+        // الانتقال إلى قسم تعبئة الرصيد
+        showReceiveSection();
+    }, 2000);
+}
+
+// وظيفة إظهار/إخفاء كلمة المرور
+function togglePasswordVisibility(passwordInput, toggleButton) {
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleButton.innerHTML = '<i class="fas fa-eye-slash"></i>';
+    } else {
+        passwordInput.type = 'password';
+        toggleButton.innerHTML = '<i class="fas fa-eye"></i>';
+    }
+}
+
+// إضافة إشعار
+function addNotification(title, message, time) {
+    const notification = {
+        id: Date.now(),
+        title: title,
+        message: message,
+        time: time,
+        read: false
+    };
+    
+    notifications.unshift(notification);
+    localStorage.setItem('notifications', JSON.stringify(notifications));
+    updateNotificationsDisplay();
+}
+
+// بدء التطبيق عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+    initializePage();
+});
+</script>
+</body>
+</hhtml
