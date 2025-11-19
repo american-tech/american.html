@@ -313,7 +313,7 @@
             background: rgba(255, 255, 255, 0.1);
             color: #cccccc;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 8px 15px;
+            padding: 4px 8px;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
@@ -360,6 +360,68 @@
             color: #ffd700;
         }
         
+        /* زر الإحالة في المنتصف */
+        .referral-selector {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-40%);
+            z-index: 100;
+        }
+        
+        .referral-btn {
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            padding: 4px 6px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .referral-btn:hover {
+            background: rgba(255, 215, 0, 0.3);
+        }
+        
+        .referral-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(30, 30, 30, 0.95);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 5px;
+            min-width: 200px;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+        }
+        
+        .referral-dropdown.show {
+            display: block;
+        }
+        
+        .referral-option {
+            padding: 8px 12px;
+            color: #cccccc;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .referral-option:hover {
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+        }
+        
         /* زر أنا في أعلى اليمين */
         .user-info {
             position: absolute;
@@ -382,7 +444,7 @@
             background: rgba(255, 215, 0, 0.2);
             color: #ffd700;
             border: 1px solid rgba(255, 215, 0, 0.3);
-            padding: 6px 12px;
+            padding: 4px 8px;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
@@ -491,9 +553,9 @@
         /* بطاقة الرصيد */
         .balance-card {
             background: linear-gradient(135deg, #ffd700, #ffed4e);
-            border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 25px;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 20px;
             box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
             text-align: center;
             color: #000;
@@ -602,11 +664,11 @@
         
         /* بطاقة السحب */
         .send-card {
-            background: rgba(30, 30, 30, 0.9);
+            background: rgba(20, 20, 20, 0.6);
             border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            padding: 50px;
+            margin-bottom: 10px;
+            box-shadow: 0 20px 10px rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 215, 0, 0.2);
             max-width: 500px;
             margin-left: auto;
@@ -615,13 +677,13 @@
         }
         
         .send-form {
-            margin-top: 20px;
+            margin-top: 2px;
         }
         
         .form-row {
             display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 5px;
+            margin-bottom: 10px;
         }
         
         .form-row .form-group {
@@ -631,8 +693,8 @@
         
         .send-actions {
             display: flex;
-            gap: 15px;
-            margin-top: 25px;
+            gap: 20px;
+            margin-top: 1px;
         }
         
         /* سجل المعاملات */
@@ -1068,6 +1130,28 @@
             font-weight: bold;
         }
         
+        .vip-timer {
+            background: rgba(255, 215, 0, 0.2);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .vip-timer h4 {
+            color: #ffd700;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .timer-display {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffed4e;
+            direction: ltr;
+        }
+        
         .vip-levels {
             display: flex;
             flex-direction: column;
@@ -1432,6 +1516,25 @@
                 </div>
             </div>
             
+            <!-- زر الإحالة في المنتصف -->
+            <div class="referral-selector">
+                <button class="referral-btn" id="referralBtn">
+                    <i class="fas fa-share-alt"></i>
+                    الإحالة
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="referral-dropdown" id="referralDropdown">
+                    <div class="referral-option">
+                        <a href="https://american-html.vercel.app/" target="_blank" style="color: #ffd700; text-decoration: none;">
+                            <i class="fas fa-link"></i> رابط الإحالة
+                        </a>
+                    </div>
+                    <div class="referral-option" id="copyReferralLink">
+                        <i class="far fa-copy"></i> نسخ الرابط
+                    </div>
+                </div>
+            </div>
+            
             <!-- زر أنا في أعلى اليمين -->
             <div class="user-info">
                 <div class="user-menu">
@@ -1545,7 +1648,7 @@
                             <input type="number" id="sendAmount" class="form-control" placeholder="0.00" step="0.000001" required>
                         </div>
                         <div class="form-group">
-                            <label for="sendNetwork">الشبكة</label>
+                          <label for="sendNetwork">الشبكة</label>
                             <select id="sendNetwork" class="form-control" required>
                                 <option value="ERC20">ERC20</option>
                                 <option value="TRC20">TRC20</option>
@@ -1692,6 +1795,13 @@
                     <div class="vip-badge">مميز</div>
                 </div>
                 
+                <!-- مؤقت 24 ساعة -->
+                <div class="vip-timer">
+                    <h4>المؤقت اليومي</h4>
+                    <div class="timer-display" id="vipTimer">24:00:00</div>
+                    <small>24 ساعة</small>
+                </div>
+                
                 <div class="vip-levels" id="vipLevels">
                     <!-- سيتم إضافة مستويات VIP هنا عبر JavaScript -->
                 </div>
@@ -1746,6 +1856,10 @@ const userDropdown = document.getElementById('userDropdown');
 const logoutBtn = document.getElementById('logoutBtn');
 const languageBtn = document.getElementById('languageBtn');
 const languageDropdown = document.getElementById('languageDropdown');
+const referralBtn = document.getElementById('referralBtn');
+const referralDropdown = document.getElementById('referralDropdown');
+const copyReferralLink = document.getElementById('copyReferralLink');
+const vipTimer = document.getElementById('vipTimer');
 
 // عناصر التنقل
 const balanceBtn = document.getElementById('balanceBtn');
@@ -1820,17 +1934,17 @@ let notifications = JSON.parse(localStorage.getItem('notifications')) || [];
 
 // بيانات VIP
 const vipLevelsData = [
-    { level: 1, dailyTasks: 1, simpleInterest: 6.00, dailyProfit: 6.00, totalProfit: 1095.00, openPrice: 12.00 },
-    { level: 2, dailyTasks: 1, simpleInterest: 15.00, dailyProfit: 15.00, totalProfit: 4745.00, openPrice: 52.00 },
+    { level: 1, dailyTasks: 1, simpleInterest: 8.00, dailyProfit: 8.00, totalProfit: 1095.00, openPrice: 12.00 },
+    { level: 2, dailyTasks: 1, simpleInterest: 20.00, dailyProfit: 20.00, totalProfit: 4745.00, openPrice: 52.00 },
     { level: 3, dailyTasks: 1, simpleInterest: 35.00, dailyProfit: 35.00, totalProfit: 9490.00, openPrice: 100.00 },
     { level: 4, dailyTasks: 1, simpleInterest: 100.00, dailyProfit: 100.00, totalProfit: 29930.00, openPrice: 300.00 },
-    { level: 5, dailyTasks: 1, simpleInterest: 160.00, dailyProfit: 160.00, totalProfit: 52925.00, openPrice: 500.00 },
+    { level: 5, dailyTasks: 1, simpleInterest: 170.00, dailyProfit: 170.00, totalProfit: 52925.00, openPrice: 500.00 },
     { level: 6, dailyTasks: 1, simpleInterest: 500.00, dailyProfit: 500.00, totalProfit: 174835.00, openPrice: 1500.00 },
-    { level: 7, dailyTasks: 1, simpleInterest: 1200.00, dailyProfit: 1200.00, totalProfit: 393470.00, openPrice: 3000.00 },
-    { level: 8, dailyTasks: 1, simpleInterest: 2500.00, dailyProfit: 2500.00, totalProfit: 730000.00, openPrice: 5000.00 },
-    { level: 9, dailyTasks: 1, simpleInterest: 4900.00, dailyProfit: 4900.00, totalProfit: 1659290.00, openPrice: 10000.00 },
-    { level: 10, dailyTasks: 1, simpleInterest: 19000.00, dailyProfit: 19000.00, totalProfit: 6460135.00, openPrice: 30000.00 },
-    { level: 11, dailyTasks: 1, simpleInterest: 85000.00, dailyProfit: 85000.00, totalProfit: 29863570.00, openPrice: 90000.00 }
+    { level: 7, dailyTasks: 1, simpleInterest: 1300.00, dailyProfit: 1300.00, totalProfit: 393470.00, openPrice: 3000.00 },
+    { level: 8, dailyTasks: 1, simpleInterest: 2400.00, dailyProfit: 2400.00, totalProfit: 730000.00, openPrice: 5000.00 },
+    { level: 9, dailyTasks: 1, simpleInterest: 4800.00, dailyProfit: 4800.00, totalProfit: 1659290.00, openPrice: 10000.00 },
+    { level: 10, dailyTasks: 1, simpleInterest: 18500.00, dailyProfit: 18500.00, totalProfit: 6460135.00, openPrice: 30000.00 },
+    { level: 11, dailyTasks: 1, simpleInterest: 83000.00, dailyProfit: 83000.00, totalProfit: 29863570.00, openPrice: 90000.00 }
 ];
 
 // عناوين لكل شبكة
@@ -1853,6 +1967,10 @@ const networkMessages = {
     'ETH': 'فقط رمز USDT على شبكة ETH يُرسل إلى هذا العنوان'
 };
 
+// مؤقت VIP
+let vipTimerInterval;
+const VIP_TIMER_DURATION = 24 * 60 * 60 * 1000; // 24 ساعة بالملي ثانية
+
 // تهيئة الصفحة
 function initializePage() {
     checkLoggedInUser();
@@ -1861,6 +1979,7 @@ function initializePage() {
     updateTransactionsDisplay();
     updateNotificationsDisplay();
     updateVipLevelsDisplay();
+    startVipTimer();
     
     // إضافة مستخدم تجريبي للاختبار إذا لم يكن موجوداً
     if (users.length === 0) {
@@ -1997,6 +2116,47 @@ function updateVipLevelsDisplay() {
     `).join('');
 }
 
+// بدء مؤقت VIP
+function startVipTimer() {
+    let endTime = localStorage.getItem('vipTimerEnd');
+    
+    if (!endTime) {
+        // إذا لم يكن هناك وقت انتهاء محفوظ، اضبطه لـ 24 ساعة من الآن
+        endTime = Date.now() + VIP_TIMER_DURATION;
+        localStorage.setItem('vipTimerEnd', endTime);
+    }
+    
+    updateVipTimer();
+    
+    // تحديث المؤقت كل ثانية
+    vipTimerInterval = setInterval(updateVipTimer, 1000);
+}
+
+// تحديث مؤقت VIP
+function updateVipTimer() {
+    const endTime = parseInt(localStorage.getItem('vipTimerEnd'));
+    const now = Date.now();
+    const remainingTime = endTime - now;
+    
+    if (remainingTime <= 0) {
+        // انتهى الوقت، إعادة تعيين المؤقت
+        vipTimer.textContent = '00:00:00';
+        localStorage.setItem('vipTimerEnd', Date.now() + VIP_TIMER_DURATION);
+        
+        // إضافة إشعار بالتجديد
+        addNotification('تم تجديد المؤقت', 'تم تجديد المؤقت اليومي بنجاح!', 'الآن');
+        return;
+    }
+    
+    // حساب الساعات والدقائق والثواني المتبقية
+    const hours = Math.floor(remainingTime / (1000 * 60 * 60));
+    const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+    
+    // عرض الوقت المتبقي
+    vipTimer.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
 // التحقق من وجود مستخدم مسجل الدخول
 function checkLoggedInUser() {
     const loggedInUser = localStorage.getItem('cryptoWalletCurrentUser');
@@ -2015,6 +2175,12 @@ function setupEventListeners() {
         languageDropdown.classList.toggle('show');
     });
     
+    // إظهار/إخفاء القائمة المنسدلة للإحالة
+    referralBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        referralDropdown.classList.toggle('show');
+    });
+    
     // إظهار/إخفاء القائمة المنسدلة للمستخدم
     userBtn.addEventListener('click', function(e) {
         e.stopPropagation();
@@ -2025,6 +2191,7 @@ function setupEventListeners() {
     document.addEventListener('click', function() {
         languageDropdown.classList.remove('show');
         userDropdown.classList.remove('show');
+        referralDropdown.classList.remove('show');
     });
     
     // منع إغلاق القوائم عند النقر داخلها
@@ -2036,6 +2203,10 @@ function setupEventListeners() {
         e.stopPropagation();
     });
     
+    referralDropdown.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+    
     // تغيير اللغة
     document.querySelectorAll('.language-option').forEach(option => {
         option.addEventListener('click', function() {
@@ -2044,6 +2215,12 @@ function setupEventListeners() {
             languageBtn.innerHTML = `<i class="fas fa-globe"></i> ${this.textContent} <i class="fas fa-chevron-down"></i>`;
             languageDropdown.classList.remove('show');
         });
+    });
+    
+    // نسخ رابط الإحالة
+    copyReferralLink.addEventListener('click', function() {
+        copyToClipboard('https://american-html.vercel.app/');
+        referralDropdown.classList.remove('show');
     });
     
     // التنقل بين الأقسام
@@ -2301,6 +2478,26 @@ function handleSendTransaction() {
     const amount = parseFloat(document.getElementById('sendAmount').value);
     const network = document.getElementById('sendNetwork').value;
     
+    // التحقق من وجود رصيد كافي
+    let hasBalance = false;
+    
+    switch(currency) {
+        case 'USDT':
+            hasBalance = walletData.currencies.usdt.amount >= amount;
+            break;
+        case 'BTC':
+            hasBalance = walletData.currencies.btc.amount >= amount;
+            break;
+        case 'ETH':
+            hasBalance = walletData.currencies.eth.amount >= amount;
+            break;
+    }
+    
+    if (!hasBalance) {
+        showError('لا يوجد رصيد كافي للسحب');
+        return;
+    }
+    
     if (amount <= 0) {
         showError('يرجى إدخال مبلغ صحيح');
         return;
@@ -2485,13 +2682,18 @@ function handleLogout() {
     registrationForm.reset();
     loginForm.reset();
     userDropdown.classList.remove('show');
+    
+    // إيقاف المؤقت
+    if (vipTimerInterval) {
+        clearInterval(vipTimerInterval);
+    }
 }
 
 // وظائف المحفظة
 function copyToClipboard(text) {
     if (navigator.clipboard) {
         navigator.clipboard.writeText(text).then(() => {
-            showToast('تم نسخ العنوان إلى الحافظة');
+            showToast('تم نسخ الرابط إلى الحافظة');
         }).catch(err => {
             fallbackCopyToClipboard(text);
         });
@@ -2507,7 +2709,7 @@ function fallbackCopyToClipboard(text) {
     textArea.select();
     document.execCommand('copy');
     document.body.removeChild(textArea);
-    showToast('تم نسخ العنوان إلى الحافظة');
+    showToast('تم نسخ الرابط إلى الحافظة');
 }
 
 function showToast(message = 'تم النسخ إلى الحافظة') {
@@ -2549,58 +2751,9 @@ function showLoginError(message) {
 
 // وظائف VIP - عند الضغط على "افتح الآن" يفتح قسم تعبئة الرصيد
 function openVipLevel(level, price) {
-    if (walletData.currencies.usdt.amount < price) {
-        showError(`رصيدك غير كافٍ لفتح VIP${level}. تحتاج ${price} USDT`);
-        return;
-    }
-    
-    // إظهار مؤشر التحميل
-    showLoading();
-    
-    // محاكاة عملية فتح VIP
-    setTimeout(() => {
-        // خصم المبلغ
-        walletData.currencies.usdt.amount -= price;
-        walletData.total = walletData.currencies.usdt.amount + walletData.currencies.btc.value + walletData.currencies.eth.value;
-        
-        // إضافة معاملة
-        const transactionId = 'VIP' + Date.now();
-        const transaction = {
-            id: transactionId,
-            type: 'send',
-            description: `فتح VIP${level}`,
-            amount: `-${price} USDT`,
-            value: `$${price}`,
-            date: new Date().toLocaleDateString('ar-EG'),
-            status: 'مكتمل',
-            currency: 'USDT',
-            address: 'نظام VIP',
-            network: 'VIP',
-            timestamp: new Date().toISOString()
-        };
-        
-        transactions.unshift(transaction);
-        
-        // إضافة إشعار
-        addNotification(`تم فتح VIP${level}`, `تم فتح مستوى VIP${level} بنجاح. استمتع بالمزايا الحصرية!`, 'الآن');
-        
-        // حفظ البيانات
-        localStorage.setItem('walletData', JSON.stringify(walletData));
-        localStorage.setItem('transactions', JSON.stringify(transactions));
-        
-        // تحديث العرض
-        updateBalanceDisplay();
-        updateTransactionsDisplay();
-        
-        // إخفاء مؤشر التحميل
-        hideLoading();
-        
-        // إظهار رسالة نجاح
-        showToast(`تم فتح VIP${level} بنجاح!`);
-        
-        // الانتقال إلى قسم تعبئة الرصيد
-        showReceiveSection();
-    }, 2000);
+    // الانتقال إلى قسم تعبئة الرصيد مباشرة
+    showReceiveSection();
+    showToast(`لقد تم توجيهك إلى قسم تعبئة الرصيد لفتح VIP${level}`);
 }
 
 // وظيفة إظهار/إخفاء كلمة المرور
