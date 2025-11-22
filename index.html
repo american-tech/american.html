@@ -304,8 +304,8 @@
         /* زر اللغة في أعلى اليسار */
         .language-selector {
             position: absolute;
-            top: 15px;
-            left: 10px;
+            top: 20px;
+            left: 20px;
             z-index: 100;
         }
         
@@ -313,7 +313,7 @@
             background: rgba(255, 255, 255, 0.1);
             color: #cccccc;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 5px 4px;
+            padding: 8px 15px;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
@@ -360,76 +360,42 @@
             color: #ffd700;
         }
         
-        /* زر الإحالة في المنتصف */
-        .referral-selector {
+        /* زر دعم العملاء في المنتصف */
+        .support-selector {
             position: absolute;
-            top: 15px;
+            top: 20px;
             left: 50%;
-            transform: translateX(-40%);
+            transform: translateX(-50%);
             z-index: 100;
         }
         
-        .referral-btn {
+        .support-btn {
             background: rgba(255, 215, 0, 0.2);
             color: #ffd700;
             border: 1px solid rgba(255, 215, 0, 0.3);
-            padding: 5px 4px;
-            border-radius: 4px;
+            padding: 8px 15px;
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
             font-size: 0.9rem;
             display: flex;
             align-items: center;
             gap: 8px;
+            text-decoration: none;
         }
         
-        .referral-btn:hover {
+        .support-btn:hover {
             background: rgba(255, 215, 0, 0.3);
-        }
-        
-        .referral-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(30, 30, 30, 0.95);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            border-radius: 8px;
-            padding: 10px;
-            margin-top: 5px;
-            min-width: 200px;
-            max-height: 300px;
-            overflow-y: auto;
-            display: none;
-            z-index: 1000;
-        }
-        
-        .referral-dropdown.show {
-            display: block;
-        }
-        
-        .referral-option {
-            padding: 8px 12px;
-            color: #cccccc;
-            cursor: pointer;
-            transition: all 0.3s;
-            border-radius: 4px;
-            text-align: center;
-        }
-        
-        .referral-option:hover {
-            background: rgba(255, 215, 0, 0.2);
-            color: #ffd700;
         }
         
         /* زر أنا في أعلى اليمين */
         .user-info {
             position: absolute;
-            top: 15px;
-            right: 5px;
+            top: 20px;
+            right: 20px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 15px;
             color: #cccccc;
         }
         
@@ -444,7 +410,7 @@
             background: rgba(255, 215, 0, 0.2);
             color: #ffd700;
             border: 1px solid rgba(255, 215, 0, 0.3);
-            padding: 6px 7px;
+            padding: 6px 12px;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
@@ -1164,6 +1130,7 @@
             padding: 20px;
             border: 1px solid rgba(255, 215, 0, 0.2);
             transition: all 0.3s;
+            position: relative;
         }
         
         .vip-level:hover {
@@ -1271,6 +1238,61 @@
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
+        }
+        
+        /* أنماط نظام القفل التلقائي في VIP - أضف هذا في النهاية */
+        .vip-lock {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 215, 0, 0.9);
+            color: #000;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        .vip-level.unlocked .vip-lock {
+            background: rgba(0, 255, 0, 0.9);
+        }
+        
+        .vip-level.locked .vip-lock i {
+            transform: rotate(45deg);
+        }
+        
+        .vip-open-btn.disabled {
+            background: #666 !important;
+            color: #999 !important;
+            cursor: not-allowed !important;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+        
+        .vip-open-btn.success {
+            background: linear-gradient(135deg, #00b09b, #96c93d) !important;
+            color: white !important;
+        }
+        
+        .vip-status {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .vip-status.active {
+            color: #00cc00;
+        }
+        
+        .vip-status.pending {
+            color: #ffd700;
+        }
+        
+        .vip-status.locked {
+            color: #ff6666;
         }
         
         /* مؤشر التحميل */
@@ -1533,6 +1555,126 @@
             border: 1px solid rgba(255, 215, 0, 0.2);
         }
         
+        /* قسم الإحالة الجديد */
+        .referral-card {
+            background: rgba(30, 30, 30, 0.9);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            display: none;
+        }
+        
+        .referral-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .referral-header h3 {
+            font-size: 1.6rem;
+            color: #ffd700;
+        }
+        
+        .referral-code-box {
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .referral-code {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 10px;
+            font-family: monospace;
+        }
+        
+        .referral-link-box {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            padding: 20px;
+            word-break: break-all;
+            text-align: center;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .referral-link {
+            font-size: 1.1rem;
+            color: #ffd700;
+            line-height: 1.6;
+            font-family: monospace;
+        }
+        
+        .referral-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .referral-stat {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .referral-stat-label {
+            font-size: 0.9rem;
+            color: #cccccc;
+            margin-bottom: 10px;
+        }
+        
+        .referral-stat-value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #ffd700;
+        }
+        
+        .referral-commissions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .commission-level {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .commission-level-label {
+            font-size: 1rem;
+            color: #cccccc;
+            margin-bottom: 10px;
+        }
+        
+        .commission-level-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ffed4e;
+        }
+        
+        .commission-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+        
         /* تحسينات للشاشات الصغيرة */
         @media (max-width: 768px) {
             .auth-container {
@@ -1564,7 +1706,7 @@
                 font-size: 1rem;
             }
             
-            .currency-list, .send-card, .receive-card, .transactions-card, .notifications-card, .vip-card {
+            .currency-list, .send-card, .receive-card, .transactions-card, .notifications-card, .vip-card, .referral-card {
                 margin: 10px;
                 padding: 20px;
             }
@@ -1580,6 +1722,10 @@
             
             .users-table th, .users-table td {
                 padding: 8px 10px;
+            }
+            
+            .referral-stats, .referral-commissions {
+                grid-template-columns: 1fr;
             }
         }
         
@@ -1672,7 +1818,7 @@
                         
                         <div class="form-group">
                             <label for="invitationCode">شفرة الدعوة</label>
-                            <input type="text" id="invitationCode" class="form-control" placeholder="أدخل شفرة الدعوة" value="INVITE2026VIP" readonly required>
+                            <input type="text" id="invitationCode" class="form-control" placeholder="أدخل شفرة الدعوة" required>
                         </div>
                         
                         <div class="buttons-group">
@@ -1766,23 +1912,12 @@
                 </div>
             </div>
             
-            <!-- زر الإحالة في المنتصف -->
-            <div class="referral-selector">
-                <button class="referral-btn" id="referralBtn">
-                    <i class="fas fa-share-alt"></i>
-                    الإحالة
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="referral-dropdown" id="referralDropdown">
-                    <div class="referral-option">
-                        <a href="https://american-html.vercel.app/" target="_blank" style="color: #ffd700; text-decoration: none;">
-                            <i class="fas fa-link"></i> رابط الإحالة
-                        </a>
-                    </div>
-                    <div class="referral-option" id="copyReferralLink">
-                        <i class="far fa-copy"></i> نسخ الرابط
-                    </div>
-                </div>
+            <!-- زر دعم العملاء في المنتصف -->
+            <div class="support-selector">
+                <a href="https://t.me/American_38X" target="_blank" class="support-btn">
+                    <i class="fas fa-headset"></i>
+                    دعم العملاء
+                </a>
             </div>
             
             <!-- زر أنا في أعلى اليمين -->
@@ -2057,6 +2192,70 @@
                 </div>
             </div>
             
+            <!-- قسم الإحالة الجديد -->
+            <div class="referral-card" id="referralCard">
+                <div class="referral-header">
+                    <h3>نظام الإحالة</h3>
+                    <div class="fee-badge">ربح</div>
+                </div>
+                
+                <div class="referral-code-box">
+                    <div class="referral-code" id="referralCodeDisplay">991271</div>
+                    <button class="wallet-btn wallet-btn-primary" id="copyReferralCode">
+                        <i class="far fa-copy"></i>
+                        نسخ شفرة الدعوة
+                    </button>
+                </div>
+                
+                <div class="referral-link-box">
+                    <div class="referral-link" id="referralLinkDisplay">
+                        https://virtualmall.my/#/register?ref=991271
+                    </div>
+                    <button class="wallet-btn wallet-btn-secondary" id="copyReferralLinkFull">
+                        <i class="far fa-copy"></i>
+                        نسخ رابط الإحالة
+                    </button>
+                </div>
+                
+                <div class="referral-stats">
+                    <div class="referral-stat">
+                        <div class="referral-stat-label">فريق الانسحاب</div>
+                        <div class="referral-stat-value">$0.00</div>
+                    </div>
+                    <div class="referral-stat">
+                        <div class="referral-stat-label">فريق إعادة الشحن</div>
+                        <div class="referral-stat-value">$0.00</div>
+                    </div>
+                    <div class="referral-stat">
+                        <div class="referral-stat-label">حجم الفريق</div>
+                        <div class="referral-stat-value">0</div>
+                    </div>
+                    <div class="referral-stat">
+                        <div class="referral-stat-label">فريق جديد</div>
+                        <div class="referral-stat-value">0</div>
+                    </div>
+                </div>
+                
+                <div class="referral-commissions">
+                    <div class="commission-level">
+                        <div class="commission-level-label">المستوى 1</div>
+                        <div class="commission-level-value">6%</div>
+                        <div class="commission-stats">
+                            <span>مسجل / صالح: 0/0</span>
+                            <span>إجمالي الدخل: 0</span>
+                        </div>
+                    </div>
+                    <div class="commission-level">
+                        <div class="commission-level-label">المستوى 2</div>
+                        <div class="commission-level-value">2%</div>
+                        <div class="commission-stats">
+                            <span>مسجل / صالح: 0/0</span>
+                            <span>إجمالي الدخل: 0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <!-- شريط التنقل في الأسفل -->
             <div class="wallet-nav">
                 <button class="nav-btn active" id="balanceBtn">
@@ -2075,13 +2274,13 @@
                     <i class="fas fa-crown"></i>
                     VIP
                 </button>
+                <button class="nav-btn" id="referralNavBtn">
+                    <i class="fas fa-users"></i>
+                    الإحالة
+                </button>
                 <button class="nav-btn" id="transactionsBtn">
                     <i class="fas fa-history"></i>
                     المعاملات
-                </button>
-                <button class="nav-btn" id="notificationsBtn">
-                    <i class="fas fa-bell"></i>
-                    الإشعارات
                 </button>
             </div>
         </div>
@@ -2180,104 +2379,125 @@
     </div>
     
     <div class="toast" id="toast">تم نسخ العنوان إلى الحافظة</div>
-    
+
     <script>
-// عناصر DOM
-const authContainer = document.getElementById('authContainer');
-const walletContainer = document.getElementById('walletContainer');
-const adminContainer = document.getElementById('adminContainer');
-const registrationForm = document.getElementById('registrationForm');
-const loginForm = document.getElementById('loginForm');
-const showLoginBtn = document.getElementById('showLoginBtn');
-const showRegisterBtn = document.getElementById('showRegisterBtn');
-const successMessage = document.getElementById('successMessage');
-const errorMessage = document.getElementById('errorMessage');
-const loginErrorMessage = document.getElementById('loginErrorMessage');
-const userEmailDisplay = document.getElementById('userEmailDisplay');
-const userBtn = document.getElementById('userBtn');
-const userDropdown = document.getElementById('userDropdown');
-const logoutBtn = document.getElementById('logoutBtn');
-const languageBtn = document.getElementById('languageBtn');
-const languageDropdown = document.getElementById('languageDropdown');
-const referralBtn = document.getElementById('referralBtn');
-const referralDropdown = document.getElementById('referralDropdown');
-const copyReferralLink = document.getElementById('copyReferralLink');
-const vipTimer = document.getElementById('vipTimer');
-const adminLoginLink = document.getElementById('adminLoginLink');
+// بيانات VIP مع نظام القفل التلقائي
+const vipLevelsData = [
+    { 
+        level: 1, 
+        dailyTasks: 1, 
+        simpleInterest: 8.00, 
+        dailyProfit: 8.00, 
+        totalProfit: 1095.00, 
+        openPrice: 12.00,
+        unlocked: false,
+        active: false
+    },
+    { 
+        level: 2, 
+        dailyTasks: 1, 
+        simpleInterest: 20.00, 
+        dailyProfit: 20.00, 
+        totalProfit: 4745.00, 
+        openPrice: 52.00,
+        unlocked: false,
+        active: false
+    },
+    { 
+        level: 3, 
+        dailyTasks: 1, 
+        simpleInterest: 35.00, 
+        dailyProfit: 35.00, 
+        totalProfit: 9490.00, 
+        openPrice: 100.00,
+        unlocked: false,
+        active: false
+    },
+    { 
+        level: 4, 
+        dailyTasks: 1, 
+        simpleInterest: 100.00, 
+        dailyProfit: 100.00, 
+        totalProfit: 29930.00, 
+        openPrice: 300.00,
+        unlocked: false,
+        active: false
+    },
+    { 
+        level: 5, 
+        dailyTasks: 1, 
+        simpleInterest: 170.00, 
+        dailyProfit: 170.00, 
+        totalProfit: 52925.00, 
+        openPrice: 500.00,
+        unlocked: false,
+        active: false
+    },
+    { 
+        level: 6, 
+        dailyTasks: 1, 
+        simpleInterest: 500.00, 
+        dailyProfit: 500.00, 
+        totalProfit: 174835.00, 
+        openPrice: 1500.00,
+        unlocked: false,
+        active: false
+    },
+    { 
+        level: 7, 
+        dailyTasks: 1, 
+        simpleInterest: 1300.00, 
+        dailyProfit: 1300.00, 
+        totalProfit: 393470.00, 
+        openPrice: 3000.00,
+        unlocked: false,
+        active: false
+    },
+    { 
+        level: 8, 
+        dailyTasks: 1, 
+        simpleInterest: 2400.00, 
+        dailyProfit: 2400.00, 
+        totalProfit: 730000.00, 
+        openPrice: 5000.00,
+        unlocked: false,
+        active: false
+    },
+    { 
+        level: 9, 
+        dailyTasks: 1, 
+        simpleInterest: 4800.00, 
+        dailyProfit: 4800.00, 
+        totalProfit: 1659290.00, 
+        openPrice: 10000.00,
+        unlocked: false,
+        active: false
+    },
+    { 
+        level: 10, 
+        dailyTasks: 1, 
+        simpleInterest: 18500.00, 
+        dailyProfit: 18500.00, 
+        totalProfit: 6460135.00, 
+        openPrice: 30000.00,
+        unlocked: false,
+        active: false
+    },
+    { 
+        level: 11, 
+        dailyTasks: 1, 
+        simpleInterest: 83000.00, 
+        dailyProfit: 83000.00, 
+        totalProfit: 29863570.00, 
+        openPrice: 90000.00,
+        unlocked: false,
+        active: false
+    }
+];
 
-// عناصر التنقل
-const balanceBtn = document.getElementById('balanceBtn');
-const sendBtn = document.getElementById('sendBtn');
-const receiveBtn = document.getElementById('receiveBtn');
-const vipBtn = document.getElementById('vipBtn');
-const transactionsBtn = document.getElementById('transactionsBtn');
-const notificationsBtn = document.getElementById('notificationsBtn');
-const walletSubtitle = document.getElementById('walletSubtitle');
-
-// عناصر الأقسام
-const balanceCard = document.getElementById('balanceCard');
-const currencyList = document.getElementById('currencyList');
-const sendCard = document.getElementById('sendCard');
-const transactionsCard = document.getElementById('transactionsCard');
-const notificationsCard = document.getElementById('notificationsCard');
-const receiveCard = document.getElementById('receiveCard');
-const vipCard = document.getElementById('vipCard');
-const vipLevels = document.getElementById('vipLevels');
-
-// عناصر الرصيد
-const totalBalance = document.getElementById('totalBalance');
-const balanceEquivalent = document.getElementById('balanceEquivalent');
-const usdtAmount = document.getElementById('usdtAmount');
-const usdtValue = document.getElementById('usdtValue');
-const btcAmount = document.getElementById('btcAmount');
-const btcValue = document.getElementById('btcValue');
-const ethAmount = document.getElementById('ethAmount');
-const ethValue = document.getElementById('ethValue');
-
-// عناصر السحب
-const sendForm = document.getElementById('sendForm');
-const cancelSend = document.getElementById('cancelSend');
-
-// عناصر تعبئة الرصيد
-const addressBox = document.getElementById('addressBox');
-const copyBtn = document.getElementById('copyBtn');
-const shareBtn = document.getElementById('shareBtn');
-const toast = document.getElementById('toast');
-const networkOptions = document.querySelectorAll('.network-option');
-const networkInfo = document.getElementById('networkInfo');
-
-// عناصر إظهار كلمة المرور
-const togglePassword = document.getElementById('togglePassword');
-const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
-const toggleLoginPassword = document.getElementById('toggleLoginPassword');
-
-// قوائم البيانات
-const transactionsList = document.getElementById('transactionsList');
-const notificationsList = document.getElementById('notificationsList');
-
-// عناصر لوحة المسؤول
-const adminUsersBtn = document.getElementById('adminUsersBtn');
-const adminStatsBtn = document.getElementById('adminStatsBtn');
-const adminLogoutBtn = document.getElementById('adminLogoutBtn');
-const adminUsersSection = document.getElementById('adminUsersSection');
-const adminStatsSection = document.getElementById('adminStatsSection');
-const usersTableBody = document.getElementById('usersTableBody');
-const totalUsers = document.getElementById('totalUsers');
-const activeUsers = document.getElementById('activeUsers');
-const bannedUsers = document.getElementById('bannedUsers');
-const totalBalanceAdmin = document.getElementById('totalBalanceAdmin');
-const totalTransactions = document.getElementById('totalTransactions');
-const totalDeposits = document.getElementById('totalDeposits');
-const totalWithdrawals = document.getElementById('totalWithdrawals');
-const averageBalance = document.getElementById('averageBalance');
-const vipRequestsList = document.getElementById('vipRequestsList');
-const withdrawalRequestsList = document.getElementById('withdrawalRequestsList');
-
-// بيانات المستخدمين
+// بيانات المستخدمين والتطبيق
 let users = JSON.parse(localStorage.getItem('cryptoWalletUsers')) || [];
 let currentUser = null;
-
-// بيانات الرصيد - بدء من الصفر
 let walletData = JSON.parse(localStorage.getItem('walletData')) || {
     total: 0,
     equivalent: "0.000000 BTC",
@@ -2287,39 +2507,15 @@ let walletData = JSON.parse(localStorage.getItem('walletData')) || {
         eth: { amount: 0, value: 0 }
     }
 };
-
-// بيانات المعاملات - بدء من الصفر
 let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
-
-// بيانات الإشعارات - بدء من الصفر
 let notifications = JSON.parse(localStorage.getItem('notifications')) || [];
+let vipRequests = JSON.parse(localStorage.getItem('vipRequests')) || [];
+let withdrawalRequests = JSON.parse(localStorage.getItem('withdrawalRequests')) || [];
 
-// بيانات المسؤول
 const adminCredentials = {
     email: "admin@crypto.com",
     password: "admin123"
 };
-
-// بيانات VIP
-const vipLevelsData = [
-    { level: 1, dailyTasks: 1, simpleInterest: 8.00, dailyProfit: 8.00, totalProfit: 1095.00, openPrice: 12.00 },
-    { level: 2, dailyTasks: 1, simpleInterest: 20.00, dailyProfit: 20.00, totalProfit: 4745.00, openPrice: 52.00 },
-    { level: 3, dailyTasks: 1, simpleInterest: 35.00, dailyProfit: 35.00, totalProfit: 9490.00, openPrice: 100.00 },
-    { level: 4, dailyTasks: 1, simpleInterest: 100.00, dailyProfit: 100.00, totalProfit: 29930.00, openPrice: 300.00 },
-    { level: 5, dailyTasks: 1, simpleInterest: 170.00, dailyProfit: 170.00, totalProfit: 52925.00, openPrice: 500.00 },
-    { level: 6, dailyTasks: 1, simpleInterest: 500.00, dailyProfit: 500.00, totalProfit: 174835.00, openPrice: 1500.00 },
-    { level: 7, dailyTasks: 1, simpleInterest: 1300.00, dailyProfit: 1300.00, totalProfit: 393470.00, openPrice: 3000.00 },
-    { level: 8, dailyTasks: 1, simpleInterest: 2400.00, dailyProfit: 2400.00, totalProfit: 730000.00, openPrice: 5000.00 },
-    { level: 9, dailyTasks: 1, simpleInterest: 4800.00, dailyProfit: 4800.00, totalProfit: 1659290.00, openPrice: 10000.00 },
-    { level: 10, dailyTasks: 1, simpleInterest: 18500.00, dailyProfit: 18500.00, totalProfit: 6460135.00, openPrice: 30000.00 },
-    { level: 11, dailyTasks: 1, simpleInterest: 83000.00, dailyProfit: 83000.00, totalProfit: 29863570.00, openPrice: 90000.00 }
-];
-
-// طلبات VIP
-let vipRequests = JSON.parse(localStorage.getItem('vipRequests')) || [];
-
-// طلبات السحب
-let withdrawalRequests = JSON.parse(localStorage.getItem('withdrawalRequests')) || [];
 
 // عناوين لكل شبكة
 const addresses = {
@@ -2345,60 +2541,319 @@ const networkMessages = {
 let vipTimerInterval;
 const VIP_TIMER_DURATION = 24 * 60 * 60 * 1000; // 24 ساعة بالملي ثانية
 
-// تهيئة الصفحة
-function initializePage() {
-    checkLoggedInUser();
-    setupEventListeners();
-    updateBalanceDisplay();
-    updateTransactionsDisplay();
-    updateNotificationsDisplay();
-    updateVipLevelsDisplay();
-    startVipTimer();
-    
-    // إضافة مستخدم تجريبي للاختبار إذا لم يكن موجوداً
-    if (users.length === 0) {
-        users.push({
-            email: 'test@example.com',
-            password: '123456',
-            registrationDate: new Date().toISOString(),
-            balance: {
-                usdt: 0,
-                btc: 0,
-                eth: 0
-            },
-            isBanned: false
+// عناصر DOM
+const authContainer = document.getElementById('authContainer');
+const walletContainer = document.getElementById('walletContainer');
+const adminContainer = document.getElementById('adminContainer');
+const registrationForm = document.getElementById('registrationForm');
+const loginForm = document.getElementById('loginForm');
+const showLoginBtn = document.getElementById('showLoginBtn');
+const showRegisterBtn = document.getElementById('showRegisterBtn');
+const successMessage = document.getElementById('successMessage');
+const errorMessage = document.getElementById('errorMessage');
+const loginErrorMessage = document.getElementById('loginErrorMessage');
+const userEmailDisplay = document.getElementById('userEmailDisplay');
+const userBtn = document.getElementById('userBtn');
+const userDropdown = document.getElementById('userDropdown');
+const logoutBtn = document.getElementById('logoutBtn');
+const languageBtn = document.getElementById('languageBtn');
+const languageDropdown = document.getElementById('languageDropdown');
+const vipTimer = document.getElementById('vipTimer');
+const adminLoginLink = document.getElementById('adminLoginLink');
+const balanceBtn = document.getElementById('balanceBtn');
+const sendBtn = document.getElementById('sendBtn');
+const receiveBtn = document.getElementById('receiveBtn');
+const vipBtn = document.getElementById('vipBtn');
+const referralNavBtn = document.getElementById('referralNavBtn');
+const transactionsBtn = document.getElementById('transactionsBtn');
+const walletSubtitle = document.getElementById('walletSubtitle');
+const balanceCard = document.getElementById('balanceCard');
+const currencyList = document.getElementById('currencyList');
+const sendCard = document.getElementById('sendCard');
+const transactionsCard = document.getElementById('transactionsCard');
+const receiveCard = document.getElementById('receiveCard');
+const vipCard = document.getElementById('vipCard');
+const referralCard = document.getElementById('referralCard');
+const vipLevels = document.getElementById('vipLevels');
+const totalBalance = document.getElementById('totalBalance');
+const balanceEquivalent = document.getElementById('balanceEquivalent');
+const usdtAmount = document.getElementById('usdtAmount');
+const usdtValue = document.getElementById('usdtValue');
+const btcAmount = document.getElementById('btcAmount');
+const btcValue = document.getElementById('btcValue');
+const ethAmount = document.getElementById('ethAmount');
+const ethValue = document.getElementById('ethValue');
+const sendForm = document.getElementById('sendForm');
+const cancelSend = document.getElementById('cancelSend');
+const addressBox = document.getElementById('addressBox');
+const copyBtn = document.getElementById('copyBtn');
+const shareBtn = document.getElementById('shareBtn');
+const toast = document.getElementById('toast');
+const networkOptions = document.querySelectorAll('.network-option');
+const networkInfo = document.getElementById('networkInfo');
+const togglePassword = document.getElementById('togglePassword');
+const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+const toggleLoginPassword = document.getElementById('toggleLoginPassword');
+const transactionsList = document.getElementById('transactionsList');
+const adminUsersBtn = document.getElementById('adminUsersBtn');
+const adminStatsBtn = document.getElementById('adminStatsBtn');
+const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+const adminUsersSection = document.getElementById('adminUsersSection');
+const adminStatsSection = document.getElementById('adminStatsSection');
+const usersTableBody = document.getElementById('usersTableBody');
+const totalUsers = document.getElementById('totalUsers');
+const activeUsers = document.getElementById('activeUsers');
+const bannedUsers = document.getElementById('bannedUsers');
+const totalBalanceAdmin = document.getElementById('totalBalanceAdmin');
+const totalTransactions = document.getElementById('totalTransactions');
+const totalDeposits = document.getElementById('totalDeposits');
+const totalWithdrawals = document.getElementById('totalWithdrawals');
+const averageBalance = document.getElementById('averageBalance');
+const vipRequestsList = document.getElementById('vipRequestsList');
+const withdrawalRequestsList = document.getElementById('withdrawalRequestsList');
+const referralCodeDisplay = document.getElementById('referralCodeDisplay');
+const referralLinkDisplay = document.getElementById('referralLinkDisplay');
+const copyReferralCode = document.getElementById('copyReferralCode');
+const copyReferralLinkFull = document.getElementById('copyReferralLinkFull');
+
+// نظام القفل التلقائي في VIP
+function loadVipData() {
+    const savedVipData = localStorage.getItem('vipLevelsData');
+    if (savedVipData) {
+        const parsedData = JSON.parse(savedVipData);
+        vipLevelsData.forEach((level, index) => {
+            if (parsedData[index]) {
+                level.unlocked = parsedData[index].unlocked;
+                level.active = parsedData[index].active;
+            }
         });
-        localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
     }
-    
-    // تحديث الشبكة عند تغييرها
-    networkOptions.forEach(option => {
-        option.addEventListener('click', function() {
-            const network = this.getAttribute('data-network');
-            addressBox.textContent = addresses[network];
-            networkInfo.textContent = networkMessages[network];
-            networkInfo.style.display = 'block';
-        });
-    });
 }
 
-// تحديث عرض الرصيد
+function saveVipData() {
+    localStorage.setItem('vipLevelsData', JSON.stringify(vipLevelsData));
+}
+
+function updateVipLevelsDisplay() {
+    const currentUserData = users.find(user => user.email === currentUser);
+    const userBalance = currentUserData ? currentUserData.balance.usdt : 0;
+    
+    vipLevels.innerHTML = vipLevelsData.map(level => {
+        const isUnlocked = level.unlocked;
+        const isActive = level.active;
+        const hasEnoughBalance = userBalance >= level.openPrice;
+        const canUnlock = !isUnlocked && hasEnoughBalance;
+        
+        let statusText = '';
+        let statusClass = '';
+        
+        if (isActive) {
+            statusText = 'نشط';
+            statusClass = 'active';
+        } else if (isUnlocked) {
+            statusText = 'مفتوح';
+            statusClass = 'pending';
+        } else {
+            statusText = 'مقفل';
+            statusClass = 'locked';
+        }
+        
+        return `
+        <div class="vip-level ${isUnlocked ? 'unlocked' : 'locked'}">
+            <div class="vip-lock">
+                <i class="fas ${isUnlocked ? 'fa-unlock' : 'fa-lock'}"></i>
+            </div>
+            
+            <div class="vip-level-header">
+                <div class="vip-level-title">VIP${level.level}</div>
+                <div class="vip-level-img">VIP</div>
+            </div>
+            
+            <div class="vip-details">
+                <div class="vip-detail">
+                    <div class="vip-detail-label">مهمات يوميه</div>
+                    <div class="vip-detail-value">${level.dailyTasks}</div>
+                </div>
+                <div class="vip-detail">
+                    <div class="vip-detail-label">مصلحة بسيطة</div>
+                    <div class="vip-detail-value">${level.simpleInterest.toFixed(2)}</div>
+                </div>
+            </div>
+            
+            <div class="vip-profit">
+                <div class="vip-profit-item">
+                    <div class="vip-profit-label">الربح اليومي</div>
+                    <div class="vip-profit-value">${level.dailyProfit.toFixed(2)} USDT</div>
+                </div>
+                <div class="vip-profit-item">
+                    <div class="vip-profit-label">إجمالي الربح</div>
+                    <div class="vip-profit-value">${level.totalProfit.toLocaleString()} USDT</div>
+                </div>
+            </div>
+            
+            <div class="vip-status ${statusClass}">
+                ${statusText}
+            </div>
+            
+            <button class="vip-open-btn ${!canUnlock && !isUnlocked ? 'disabled' : ''} ${isUnlocked ? 'success' : ''}" 
+                    onclick="handleVipLevel(${level.level})"
+                    ${!canUnlock && !isUnlocked ? 'disabled' : ''}>
+                ${isUnlocked ? 
+                    '<i class="fas fa-check"></i> مفتوح' : 
+                    `${level.openPrice.toLocaleString()} USDT افتح الآن`
+                }
+            </button>
+            
+            ${!hasEnoughBalance && !isUnlocked ? 
+                `<div style="text-align: center; margin-top: 8px; font-size: 0.8rem; color: #ff6666;">
+                    الرصيد غير كافي
+                </div>` : 
+                ''
+            }
+        </div>
+        `;
+    }).join('');
+}
+
+function handleVipLevel(levelNumber) {
+    const levelIndex = vipLevelsData.findIndex(level => level.level === levelNumber);
+    if (levelIndex === -1) return;
+    
+    const level = vipLevelsData[levelIndex];
+    const currentUserData = users.find(user => user.email === currentUser);
+    
+    if (!currentUserData) {
+        showToast('يجب تسجيل الدخول أولاً');
+        return;
+    }
+    
+    if (level.unlocked) {
+        showToast(`مستوى VIP${level.level} مفتوح بالفعل`);
+        return;
+    }
+    
+    if (currentUserData.balance.usdt < level.openPrice) {
+        showToast('الرصيد غير كافي لفتح هذا المستوى');
+        return;
+    }
+    
+    openVipLevel(levelIndex);
+}
+
+function openVipLevel(levelIndex) {
+    const level = vipLevelsData[levelIndex];
+    const currentUserData = users.find(user => user.email === currentUser);
+    
+    if (!currentUserData) return;
+    
+    // خصم المبلغ من رصيد المستخدم
+    currentUserData.balance.usdt -= level.openPrice;
+    level.unlocked = true;
+    level.active = true;
+    
+    localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
+    saveVipData();
+    
+    // إرسال تفاصيل الفتح إلى المسؤول
+    const vipRequest = {
+        id: 'VIP-' + Date.now(),
+        userEmail: currentUser,
+        level: level.level,
+        amount: level.openPrice,
+        status: 'مكتمل',
+        date: new Date().toLocaleDateString('ar-EG'),
+        timestamp: new Date().toISOString()
+    };
+    
+    vipRequests.unshift(vipRequest);
+    localStorage.setItem('vipRequests', JSON.stringify(vipRequests));
+    
+    const transaction = {
+        id: 'VIP-' + Date.now(),
+        type: 'send',
+        description: `فتح VIP${level.level}`,
+        amount: `-${level.openPrice} USDT`,
+        value: `$${level.openPrice.toLocaleString()}`,
+        date: new Date().toLocaleDateString('ar-EG'),
+        status: 'مكتمل',
+        timestamp: new Date().toISOString()
+    };
+    
+    transactions.unshift(transaction);
+    localStorage.setItem('transactions', JSON.stringify(transactions));
+    
+    updateBalanceDisplay();
+    updateVipLevelsDisplay();
+    updateTransactionsDisplay();
+    
+    addNotification(`تم فتح VIP${level.level}`, `تم فتح مستوى VIP${level.level} بنجاح وخصم ${level.openPrice} USDT من رصيدك`, 'الآن');
+    showToast(`تم فتح مستوى VIP${level.level} بنجاح!`);
+}
+
+function calculateDailyVipProfits() {
+    const currentUserData = users.find(user => user.email === currentUser);
+    if (!currentUserData) return;
+    
+    let totalDailyProfit = 0;
+    let activeLevels = 0;
+    
+    vipLevelsData.forEach(level => {
+        if (level.active) {
+            totalDailyProfit += level.dailyProfit;
+            activeLevels++;
+        }
+    });
+    
+    if (totalDailyProfit > 0) {
+        currentUserData.balance.usdt += totalDailyProfit;
+        
+        const transaction = {
+            id: 'VIP-PROFIT-' + Date.now(),
+            type: 'receive',
+            description: `أرباح VIP يومية`,
+            amount: `+${totalDailyProfit.toFixed(2)} USDT`,
+            value: `$${totalDailyProfit.toLocaleString()}`,
+            date: new Date().toLocaleDateString('ar-EG'),
+            status: 'مكتمل',
+            timestamp: new Date().toISOString()
+        };
+        
+        transactions.unshift(transaction);
+        localStorage.setItem('transactions', JSON.stringify(transactions));
+        localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
+        
+        updateBalanceDisplay();
+        updateTransactionsDisplay();
+        
+        if (activeLevels > 0) {
+            addNotification('أرباح VIP', `تم إضافة ${totalDailyProfit.toFixed(2)} USDT إلى رصيدك كأرباح يومية من ${activeLevels} مستويات VIP نشطة`, 'الآن');
+        }
+    }
+}
+
+function checkDailyVipProfits() {
+    const lastProfitDate = localStorage.getItem('lastVipProfitDate');
+    const today = new Date().toDateString();
+    
+    if (lastProfitDate !== today) {
+        calculateDailyVipProfits();
+        localStorage.setItem('lastVipProfitDate', today);
+    }
+}
+
+// دوال المحفظة الأساسية
 function updateBalanceDisplay() {
-    // الحصول على بيانات المستخدم الحالي
     const currentUserData = users.find(user => user.email === currentUser);
     
     if (currentUserData && currentUserData.balance) {
-        // تحديث بيانات المحفظة من بيانات المستخدم
         walletData.currencies.usdt.amount = currentUserData.balance.usdt || 0;
         walletData.currencies.btc.amount = currentUserData.balance.btc || 0;
-        walletData.currencies.eth.amount = currentUserData.eth || 0;
+        walletData.currencies.eth.amount = currentUserData.balance.eth || 0;
         
-        // حساب القيم بالدولار
         walletData.currencies.usdt.value = walletData.currencies.usdt.amount * 1;
-        walletData.currencies.btc.value = walletData.currencies.btc.amount * 50000; // سعر BTC تقريبي
-        walletData.currencies.eth.value = walletData.currencies.eth.amount * 3000; // سعر ETH تقريبي
+        walletData.currencies.btc.value = walletData.currencies.btc.amount * 50000;
+        walletData.currencies.eth.value = walletData.currencies.eth.amount * 3000;
         
-        // حساب الإجمالي
         walletData.total = walletData.currencies.usdt.value + walletData.currencies.btc.value + walletData.currencies.eth.value;
         walletData.equivalent = `${walletData.currencies.btc.amount.toFixed(6)} BTC`;
     }
@@ -2415,11 +2870,9 @@ function updateBalanceDisplay() {
     ethAmount.textContent = `${walletData.currencies.eth.amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} ETH`;
     ethValue.textContent = `$${walletData.currencies.eth.value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
     
-    // حفظ البيانات المحدثة
     localStorage.setItem('walletData', JSON.stringify(walletData));
 }
 
-// تحديث عرض المعاملات
 function updateTransactionsDisplay() {
     if (transactions.length === 0) {
         transactionsList.innerHTML = `
@@ -2451,112 +2904,51 @@ function updateTransactionsDisplay() {
     `).join('');
 }
 
-// تحديث عرض الإشعارات
-function updateNotificationsDisplay() {
-    if (notifications.length === 0) {
-        notificationsList.innerHTML = `
-            <div class="no-notifications">
-                <i class="fas fa-bell" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
-                <p>لا توجد إشعارات</p>
-                <small>سيتم إعلامك هنا بأي تحديثات جديدة</small>
-            </div>
-        `;
-        return;
-    }
+function addNotification(title, message, time) {
+    const notification = {
+        id: Date.now(),
+        title: title,
+        message: message,
+        time: time,
+        read: false
+    };
     
-    notificationsList.innerHTML = notifications.map(notification => `
-        <div class="notification-item">
-            <div class="notification-info">
-                <div class="notification-icon">
-                    <i class="fas fa-info-circle"></i>
-                </div>
-                <div class="notification-details">
-                    <h3>${notification.title}</h3>
-                    <span>${notification.message}</span>
-                </div>
-            </div>
-            <div class="notification-time">${notification.time}</div>
-        </div>
-    `).join('');
+    notifications.unshift(notification);
+    localStorage.setItem('notifications', JSON.stringify(notifications));
 }
 
-// تحديث عرض مستويات VIP
-function updateVipLevelsDisplay() {
-    vipLevels.innerHTML = vipLevelsData.map(level => `
-        <div class="vip-level">
-            <div class="vip-level-header">
-                <div class="vip-level-title">VIP${level.level}</div>
-                <div class="vip-level-img">VIP</div>
-            </div>
-            <div class="vip-details">
-                <div class="vip-detail">
-                    <div class="vip-detail-label">مهمات يوميه</div>
-                    <div class="vip-detail-value">${level.dailyTasks}</div>
-                </div>
-                <div class="vip-detail">
-                    <div class="vip-detail-label">مصلحة بسيطة</div>
-                    <div class="vip-detail-value">${level.simpleInterest.toFixed(2)}</div>
-                </div>
-            </div>
-            <div class="vip-profit">
-                <div class="vip-profit-item">
-                    <div class="vip-profit-label">الربح اليومي</div>
-                    <div class="vip-profit-value">${level.dailyProfit.toFixed(2)} USDT</div>
-                </div>
-                <div class="vip-profit-item">
-                    <div class="vip-profit-label">إجمالي الربح</div>
-                    <div class="vip-profit-value">${level.totalProfit.toLocaleString()} USDT</div>
-                </div>
-            </div>
-            <button class="vip-open-btn" onclick="requestVipLevel(${level.level}, ${level.openPrice})">
-                ${level.openPrice.toLocaleString()} USDT افتح الآن
-            </button>
-        </div>
-    `).join('');
-}
-
-// بدء مؤقت VIP
 function startVipTimer() {
     let endTime = localStorage.getItem('vipTimerEnd');
     
     if (!endTime) {
-        // إذا لم يكن هناك وقت انتهاء محفوظ، اضبطه لـ 24 ساعة من الآن
         endTime = Date.now() + VIP_TIMER_DURATION;
         localStorage.setItem('vipTimerEnd', endTime);
     }
     
     updateVipTimer();
     
-    // تحديث المؤقت كل ثانية
     vipTimerInterval = setInterval(updateVipTimer, 1000);
 }
 
-// تحديث مؤقت VIP
 function updateVipTimer() {
     const endTime = parseInt(localStorage.getItem('vipTimerEnd'));
     const now = Date.now();
     const remainingTime = endTime - now;
     
     if (remainingTime <= 0) {
-        // انتهى الوقت، إعادة تعيين المؤقت
         vipTimer.textContent = '00:00:00';
         localStorage.setItem('vipTimerEnd', Date.now() + VIP_TIMER_DURATION);
-        
-        // إضافة إشعار بالتجديد
         addNotification('تم تجديد المؤقت', 'تم تجديد المؤقت اليومي بنجاح!', 'الآن');
         return;
     }
     
-    // حساب الساعات والدقائق والثواني المتبقية
     const hours = Math.floor(remainingTime / (1000 * 60 * 60));
     const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
     
-    // عرض الوقت المتبقي
     vipTimer.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
-// التحقق من وجود مستخدم مسجل الدخول
 function checkLoggedInUser() {
     const loggedInUser = localStorage.getItem('cryptoWalletCurrentUser');
     if (loggedInUser) {
@@ -2566,348 +2958,141 @@ function checkLoggedInUser() {
     }
 }
 
-// إعداد جميع event listeners
-function setupEventListeners() {
-    // إظهار/إخفاء القائمة المنسدلة للغة
-    languageBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        languageDropdown.classList.toggle('show');
-    });
+// دوال التسجيل والدخول
+function handleRegistration() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const invitationCode = document.getElementById('invitationCode').value;
     
-    // إظهار/إخفاء القائمة المنسدلة للإحالة
-    referralBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        referralDropdown.classList.toggle('show');
-    });
+    showLoading();
     
-    // إظهار/إخفاء القائمة المنسدلة للمستخدم
-    userBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        userDropdown.classList.toggle('show');
-    });
+    if (password !== confirmPassword) {
+        hideLoading();
+        showError('كلمات المرور غير متطابقة. يرجى المحاولة مرة أخرى.');
+        return;
+    }
     
-    // إغلاق القوائم المنسدلة عند النقر خارجها
-    document.addEventListener('click', function() {
-        languageDropdown.classList.remove('show');
-        userDropdown.classList.remove('show');
-        referralDropdown.classList.remove('show');
-    });
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+        hideLoading();
+        showError('يرجى إدخال بريد إلكتروني صحيح.');
+        return;
+    }
     
-    // منع إغلاق القوائم عند النقر داخلها
-    languageDropdown.addEventListener('click', function(e) {
-        e.stopPropagation();
-    });
+    if (password.length < 6) {
+        hideLoading();
+        showError('كلمة المرور يجب أن تكون 6 أحرف على الأقل.');
+        return;
+    }
     
-    userDropdown.addEventListener('click', function(e) {
-        e.stopPropagation();
-    });
+    if (users.find(user => user.email === email)) {
+        hideLoading();
+        showError('هذا البريد الإلكتروني مسجل بالفعل. يرجى استخدام بريد إلكتروني آخر.');
+        return;
+    }
     
-    referralDropdown.addEventListener('click', function(e) {
-        e.stopPropagation();
-    });
+    setTimeout(() => {
+        const newUser = {
+            email: email,
+            password: password,
+            registrationDate: new Date().toISOString(),
+            balance: {
+                usdt: 0,
+                btc: 0,
+                eth: 0
+            },
+            isBanned: false,
+            referralCode: generateReferralCode(),
+            referredBy: invitationCode
+        };
+        
+        users.push(newUser);
+        localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
+        localStorage.setItem('cryptoWalletCurrentUser', email);
+        
+        currentUser = email;
+        hideLoading();
+        successMessage.style.display = 'block';
+        
+        addNotification('مرحباً بك!', 'تم إنشاء حسابك بنجاح. ابدأ باستكشاف ميزات المحفظة.', 'الآن');
+        
+        setTimeout(function() {
+            showWalletInterface();
+            userEmailDisplay.textContent = email;
+        }, 2000);
+    }, 1500);
+}
+
+function generateReferralCode() {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+function handleLogin() {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
     
-    // تغيير اللغة
-    document.querySelectorAll('.language-option').forEach(option => {
-        option.addEventListener('click', function() {
-            const lang = this.getAttribute('data-lang');
-            changeLanguage(lang);
-            languageBtn.innerHTML = `<i class="fas fa-globe"></i> ${this.textContent} <i class="fas fa-chevron-down"></i>`;
-            languageDropdown.classList.remove('show');
-        });
-    });
+    if (email === adminCredentials.email && password === adminCredentials.password) {
+        showAdminInterface();
+        return;
+    }
     
-    // نسخ رابط الإحالة
-    copyReferralLink.addEventListener('click', function() {
-        copyToClipboard('https://american-html.vercel.app/');
-        referralDropdown.classList.remove('show');
-    });
+    const user = users.find(user => user.email === email && user.password === password);
     
-    // التنقل بين الأقسام
-    balanceBtn.addEventListener('click', function() {
-        showBalanceSection();
-    });
-    
-    sendBtn.addEventListener('click', function() {
-        showSendSection();
-    });
-    
-    receiveBtn.addEventListener('click', function() {
-        showReceiveSection();
-    });
-    
-    vipBtn.addEventListener('click', function() {
-        showVipSection();
-    });
-    
-    transactionsBtn.addEventListener('click', function() {
-        showTransactionsSection();
-    });
-    
-    notificationsBtn.addEventListener('click', function() {
-        showNotificationsSection();
-    });
-    
-    // إلغاء السحب
-    cancelSend.addEventListener('click', function() {
-        showBalanceSection();
-    });
-    
-    // معالجة نموذج السحب
-    sendForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        handleSendTransaction();
-    });
-    
-    // عرض نموذج تسجيل الدخول
-    showLoginBtn.addEventListener('click', function() {
-        showLoginForm();
-    });
-    
-    // عرض نموذج التسجيل
-    showRegisterBtn.addEventListener('click', function() {
-        showRegisterForm();
-    });
-    
-    // معالجة نموذج التسجيل
-    registrationForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        handleRegistration();
-    });
-    
-    // معالجة نموذج تسجيل الدخول
-    loginForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        handleLogin();
-    });
-    
-    // تسجيل الخروج
-    logoutBtn.addEventListener('click', function() {
-        handleLogout();
-    });
-    
-    // نسخ العنوان
-    copyBtn.addEventListener('click', function() {
-        copyToClipboard(addressBox.textContent);
-        addressBox.classList.add('copied');
-        setTimeout(() => {
-            addressBox.classList.remove('copied');
-        }, 1000);
-    });
-    
-    addressBox.addEventListener('click', function() {
-        copyToClipboard(addressBox.textContent);
-        addressBox.classList.add('copied');
-        setTimeout(() => {
-            addressBox.classList.remove('copied');
-        }, 1000);
-    });
-    
-    // مشاركة العنوان
-    shareBtn.addEventListener('click', function() {
-        if (navigator.share) {
-            navigator.share({
-                title: 'عنوان محفظتي - محفظة العملات المشفرة الأمريكية',
-                text: 'استخدم هذا العنوان لإرسال العملات:',
-                url: addressBox.textContent
-            });
-        } else {
-            copyToClipboard(addressBox.textContent);
-            showToast('تم نسخ العنوان إلى الحافظة');
+    if (user) {
+        if (user.isBanned) {
+            showLoginError('هذا الحساب محظور. يرجى التواصل مع الدعم.');
+            return;
         }
-    });
-    
-    // تغيير الشبكة المحددة
-    networkOptions.forEach(option => {
-        option.addEventListener('click', function() {
-            networkOptions.forEach(opt => opt.classList.remove('active'));
-            this.classList.add('active');
-            
-            const network = this.getAttribute('data-network');
-            addressBox.textContent = addresses[network];
-            
-            networkInfo.textContent = networkMessages[network];
-            networkInfo.style.display = 'block';
-        });
-    });
-    
-    // إظهار/إخفاء كلمة المرور
-    togglePassword.addEventListener('click', function() {
-        const passwordInput = document.getElementById('password');
-        togglePasswordVisibility(passwordInput, this);
-    });
-    
-    toggleConfirmPassword.addEventListener('click', function() {
-        const confirmPasswordInput = document.getElementById('confirmPassword');
-        togglePasswordVisibility(confirmPasswordInput, this);
-    });
-    
-    toggleLoginPassword.addEventListener('click', function() {
-        const loginPasswordInput = document.getElementById('loginPassword');
-        togglePasswordVisibility(loginPasswordInput, this);
-    });
-    
-    // دخول المسؤول
-    adminLoginLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        showAdminLoginForm();
-    });
-    
-    // التنقل في لوحة المسؤول
-    adminUsersBtn.addEventListener('click', function() {
-        showAdminUsersSection();
-    });
-    
-    adminStatsBtn.addEventListener('click', function() {
-        showAdminStatsSection();
-    });
-    
-    adminLogoutBtn.addEventListener('click', function() {
-        handleAdminLogout();
-    });
+        
+        currentUser = email;
+        localStorage.setItem('cryptoWalletCurrentUser', email);
+        showWalletInterface();
+        userEmailDisplay.textContent = email;
+    } else {
+        showLoginError('البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى.');
+    }
 }
 
-// تغيير اللغة
-function changeLanguage(lang) {
-    showToast(`تم تغيير اللغة إلى ${lang}`);
+function handleLogout() {
+    currentUser = null;
+    localStorage.removeItem('cryptoWalletCurrentUser');
+    walletContainer.style.display = 'none';
+    authContainer.style.display = 'flex';
+    showRegisterForm();
+    registrationForm.reset();
+    loginForm.reset();
+    userDropdown.classList.remove('show');
+    
+    if (vipTimerInterval) {
+        clearInterval(vipTimerInterval);
+    }
 }
 
-// عرض قسم الرصيد
-function showBalanceSection() {
-    resetNavButtons();
-    balanceBtn.classList.add('active');
-    walletSubtitle.textContent = 'الرصيد';
-    
-    // إظهار العناصر الخاصة بالرصيد
-    balanceCard.style.display = 'block';
-    currencyList.style.display = 'block';
-    
-    // إخفاء جميع الأقسام الأخرى
-    sendCard.style.display = 'none';
-    transactionsCard.style.display = 'none';
-    receiveCard.style.display = 'none';
-    vipCard.style.display = 'none';
-    notificationsCard.style.display = 'none';
-}
-
-// عرض قسم السحب
-function showSendSection() {
-    resetNavButtons();
-    sendBtn.classList.add('active');
-    walletSubtitle.textContent = 'سحب الأموال';
-    
-    // إظهار قسم السحب
-    sendCard.style.display = 'block';
-    
-    // إخفاء جميع الأقسام الأخرى
-    balanceCard.style.display = 'none';
-    currencyList.style.display = 'none';
-    transactionsCard.style.display = 'none';
-    receiveCard.style.display = 'none';
-    vipCard.style.display = 'none';
-    notificationsCard.style.display = 'none';
-}
-
-// عرض قسم تعبئة الرصيد
-function showReceiveSection() {
-    resetNavButtons();
-    receiveBtn.classList.add('active');
-    walletSubtitle.textContent = 'تعبئة الرصيد';
-    
-    // إظهار قسم تعبئة الرصيد
-    receiveCard.style.display = 'block';
-    
-    // إخفاء جميع الأقسام الأخرى
-    balanceCard.style.display = 'none';
-    currencyList.style.display = 'none';
-    sendCard.style.display = 'none';
-    transactionsCard.style.display = 'none';
-    vipCard.style.display = 'none';
-    notificationsCard.style.display = 'none';
-}
-
-// عرض قسم VIP
-function showVipSection() {
-    resetNavButtons();
-    vipBtn.classList.add('active');
-    walletSubtitle.textContent = 'كبار الشخصيات VIP';
-    
-    // إظهار قسم VIP
-    vipCard.style.display = 'block';
-    
-    // إخفاء جميع الأقسام الأخرى
-    balanceCard.style.display = 'none';
-    currencyList.style.display = 'none';
-    sendCard.style.display = 'none';
-    transactionsCard.style.display = 'none';
-    receiveCard.style.display = 'none';
-    notificationsCard.style.display = 'none';
-}
-
-// عرض قسم المعاملات
-function showTransactionsSection() {
-    resetNavButtons();
-    transactionsBtn.classList.add('active');
-    walletSubtitle.textContent = 'سجل المعاملات';
-    
-    // إظهار قسم المعاملات
-    transactionsCard.style.display = 'block';
-    
-    // إخفاء جميع الأقسام الأخرى
-    balanceCard.style.display = 'none';
-    currencyList.style.display = 'none';
-    sendCard.style.display = 'none';
-    receiveCard.style.display = 'none';
-    vipCard.style.display = 'none';
-    notificationsCard.style.display = 'none';
-}
-
-// عرض قسم الإشعارات
-function showNotificationsSection() {
-    resetNavButtons();
-    notificationsBtn.classList.add('active');
-    walletSubtitle.textContent = 'الإشعارات';
-    
-    // إظهار قسم الإشعارات
-    notificationsCard.style.display = 'block';
-    
-    // إخفاء جميع الأقسام الأخرى
-    balanceCard.style.display = 'none';
-    currencyList.style.display = 'none';
-    sendCard.style.display = 'none';
-    receiveCard.style.display = 'none';
-    vipCard.style.display = 'none';
-    transactionsCard.style.display = 'none';
-}
-
-// إعادة تعيين أزرار التنقل
-function resetNavButtons() {
-    balanceBtn.classList.remove('active');
-    sendBtn.classList.remove('active');
-    receiveBtn.classList.remove('active');
-    vipBtn.classList.remove('active');
-    transactionsBtn.classList.remove('active');
-    notificationsBtn.classList.remove('active');
-}
-
-// معالجة إرسال المعاملة
+// دوال المعاملات
 function handleSendTransaction() {
     const currency = document.getElementById('sendCurrency').value;
     const address = document.getElementById('sendAddress').value;
     const amount = parseFloat(document.getElementById('sendAmount').value);
     const network = document.getElementById('sendNetwork').value;
     
-    // التحقق من وجود رصيد كافي
+    const currentUserData = users.find(user => user.email === currentUser);
+    if (!currentUserData) {
+        showError('يجب تسجيل الدخول أولاً');
+        return;
+    }
+    
     let hasBalance = false;
     
     switch(currency) {
         case 'USDT':
-            hasBalance = walletData.currencies.usdt.amount >= amount;
+            hasBalance = currentUserData.balance.usdt >= amount;
             break;
         case 'BTC':
-            hasBalance = walletData.currencies.btc.amount >= amount;
+            hasBalance = currentUserData.balance.btc >= amount;
             break;
         case 'ETH':
-            hasBalance = walletData.currencies.eth.amount >= amount;
+            hasBalance = currentUserData.balance.eth >= amount;
             break;
     }
     
@@ -2926,17 +3111,29 @@ function handleSendTransaction() {
         return;
     }
     
-    // التحقق من صحة العنوان (محاكاة)
     if (address.length < 10) {
         showError('عنوان المحفظة غير صحيح');
         return;
     }
     
-    // إظهار مؤشر التحميل
     showLoading();
     
-    // محاكاة عملية السحب
     setTimeout(() => {
+        // خصم المبلغ من رصيد المستخدم فوراً
+        switch(currency) {
+            case 'USDT':
+                currentUserData.balance.usdt -= amount;
+                break;
+            case 'BTC':
+                currentUserData.balance.btc -= amount;
+                break;
+            case 'ETH':
+                currentUserData.balance.eth -= amount;
+                break;
+        }
+        
+        localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
+        
         const transactionId = 'TX' + Date.now();
         const transaction = {
             id: transactionId,
@@ -2952,10 +3149,8 @@ function handleSendTransaction() {
             timestamp: new Date().toISOString()
         };
         
-        // إضافة المعاملة للسجل
         transactions.unshift(transaction);
         
-        // إضافة طلب سحب للمسؤول
         const withdrawalRequest = {
             id: 'WDR-' + Date.now(),
             userEmail: currentUser,
@@ -2971,180 +3166,19 @@ function handleSendTransaction() {
         withdrawalRequests.unshift(withdrawalRequest);
         localStorage.setItem('withdrawalRequests', JSON.stringify(withdrawalRequests));
         
-        // إضافة إشعار
         addNotification(`تم بدء سحب ${currency}`, `جاري معالجة سحب ${amount} ${currency}`, 'الآن');
-        
-        // حفظ البيانات
         localStorage.setItem('transactions', JSON.stringify(transactions));
         
-        // تحديث العرض
+        updateBalanceDisplay();
         updateTransactionsDisplay();
-        
-        // إخفاء مؤشر التحميل
         hideLoading();
-        
-        // إظهار رسالة نجاح
         showToast('تم بدء معالجة المعاملة! سيتم مراجعتها من قبل المسؤول');
-        
-        // العودة لشاشة الرصيد
         showBalanceSection();
-        
-        // إعادة تعيين النموذج
         sendForm.reset();
     }, 2000);
 }
 
-// عرض نموذج تسجيل الدخول
-function showLoginForm() {
-    registrationForm.style.display = 'none';
-    loginForm.style.display = 'block';
-    errorMessage.style.display = 'none';
-    successMessage.style.display = 'none';
-}
-
-// عرض نموذج التسجيل
-function showRegisterForm() {
-    loginForm.style.display = 'none';
-    registrationForm.style.display = 'block';
-    loginErrorMessage.style.display = 'none';
-    successMessage.style.display = 'none';
-}
-
-// عرض واجهة المحفظة
-function showWalletInterface() {
-    authContainer.style.display = 'none';
-    walletContainer.style.display = 'block';
-    adminContainer.style.display = 'none';
-    updateBalanceDisplay(); // تحديث الرصيد
-    showBalanceSection(); // عرض الرصيد افتراضياً
-}
-
-// معالجة التسجيل
-function handleRegistration() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-    const invitationCode = document.getElementById('invitationCode').value;
-    
-    // إظهار مؤشر التحميل
-    showLoading();
-    
-    // التحقق من تطابق كلمات المرور
-    if (password !== confirmPassword) {
-        hideLoading();
-        showError('كلمات المرور غير متطابقة. يرجى المحاولة مرة أخرى.');
-        return;
-    }
-    
-    // التحقق من صيغة البريد الإلكتروني
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(email)) {
-        hideLoading();
-        showError('يرجى إدخال بريد إلكتروني صحيح.');
-        return;
-    }
-    
-    // التحقق من قوة كلمة المرور (اختياري)
-    if (password.length < 6) {
-        hideLoading();
-        showError('كلمة المرور يجب أن تكون 6 أحرف على الأقل.');
-        return;
-    }
-    
-    // التحقق من عدم وجود حساب بنفس البريد الإلكتروني
-    if (users.find(user => user.email === email)) {
-        hideLoading();
-        showError('هذا البريد الإلكتروني مسجل بالفعل. يرجى استخدام بريد إلكتروني آخر.');
-        return;
-    }
-    
-    // محاكاة تأخير الشبكة
-    setTimeout(() => {
-        // حفظ المستخدم
-        const newUser = {
-            email: email,
-            password: password,
-            registrationDate: new Date().toISOString(),
-            balance: {
-                usdt: 0,
-                btc: 0,
-                eth: 0
-            },
-            isBanned: false
-        };
-        
-        users.push(newUser);
-        
-        // حفظ في localStorage
-        localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
-        localStorage.setItem('cryptoWalletCurrentUser', email);
-        
-        currentUser = email;
-        
-        // إخفاء مؤشر التحميل
-        hideLoading();
-        
-        // عرض رسالة النجاح
-        successMessage.style.display = 'block';
-        
-        // إضافة إشعار ترحيبي
-        addNotification('مرحباً بك!', 'تم إنشاء حسابك بنجاح. ابدأ باستكشاف ميزات المحفظة.', 'الآن');
-        
-        // الانتقال إلى واجهة المحفظة بعد 2 ثانية
-        setTimeout(function() {
-            showWalletInterface();
-            userEmailDisplay.textContent = email;
-        }, 2000);
-    }, 1500);
-}
-
-// معالجة تسجيل الدخول
-function handleLogin() {
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
-    
-    // التحقق من بيانات المسؤول
-    if (email === adminCredentials.email && password === adminCredentials.password) {
-        showAdminInterface();
-        return;
-    }
-    
-    // التحقق من بيانات المستخدم
-    const user = users.find(user => user.email === email && user.password === password);
-    
-    if (user) {
-        if (user.isBanned) {
-            showLoginError('هذا الحساب محظور. يرجى التواصل مع الدعم.');
-            return;
-        }
-        
-        currentUser = email;
-        localStorage.setItem('cryptoWalletCurrentUser', email);
-        showWalletInterface();
-        userEmailDisplay.textContent = email;
-    } else {
-        showLoginError('البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى.');
-    }
-}
-
-// معالجة تسجيل الخروج
-function handleLogout() {
-    currentUser = null;
-    localStorage.removeItem('cryptoWalletCurrentUser');
-    walletContainer.style.display = 'none';
-    authContainer.style.display = 'flex';
-    showRegisterForm();
-    registrationForm.reset();
-    loginForm.reset();
-    userDropdown.classList.remove('show');
-    
-    // إيقاف المؤقت
-    if (vipTimerInterval) {
-        clearInterval(vipTimerInterval);
-    }
-}
-
-// وظائف المحفظة
+// دوال المساعدين
 function copyToClipboard(text) {
     if (navigator.clipboard) {
         navigator.clipboard.writeText(text).then(() => {
@@ -3175,7 +3209,6 @@ function showToast(message = 'تم النسخ إلى الحافظة') {
     }, 2000);
 }
 
-// وظائف التحسينات الجديدة
 function showLoading() {
     document.getElementById('loadingOverlay').style.display = 'flex';
 }
@@ -3187,8 +3220,6 @@ function hideLoading() {
 function showError(message) {
     errorMessage.textContent = message;
     errorMessage.style.display = 'block';
-    
-    // إخفاء الرسالة بعد 5 ثوان
     setTimeout(() => {
         errorMessage.style.display = 'none';
     }, 5000);
@@ -3197,58 +3228,11 @@ function showError(message) {
 function showLoginError(message) {
     loginErrorMessage.textContent = message;
     loginErrorMessage.style.display = 'block';
-    
-    // إخفاء الرسالة بعد 5 ثوان
     setTimeout(() => {
         loginErrorMessage.style.display = 'none';
     }, 5000);
 }
 
-// وظائف VIP - طلب فتح مستوى VIP
-function requestVipLevel(level, price) {
-    const currentUserData = users.find(user => user.email === currentUser);
-    
-    if (!currentUserData) {
-        showToast('يجب تسجيل الدخول أولاً');
-        return;
-    }
-    
-    if (currentUserData.balance.usdt < price) {
-        showToast('لا يوجد رصيد كافي لفتح هذا المستوى');
-        return;
-    }
-    
-    if (confirm(`هل تريد طلب فتح VIP${level} بسعر ${price} USDT؟`)) {
-        // إضافة طلب VIP
-        const vipRequest = {
-            id: 'VIP-' + Date.now(),
-            userEmail: currentUser,
-            level: level,
-            price: price,
-            status: 'معلق',
-            date: new Date().toLocaleDateString('ar-EG'),
-            timestamp: new Date().toISOString()
-        };
-        
-        vipRequests.unshift(vipRequest);
-        localStorage.setItem('vipRequests', JSON.stringify(vipRequests));
-        
-        showToast('تم إرسال طلب فتح VIP للمسؤول للمراجعة');
-    }
-}
-
-// وظيفة إظهار/إخفاء كلمة المرور
-function togglePasswordVisibility(passwordInput, toggleButton) {
-    if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        toggleButton.innerHTML = '<i class="fas fa-eye-slash"></i>';
-    } else {
-        passwordInput.type = 'password';
-        toggleButton.innerHTML = '<i class="fas fa-eye"></i>';
-    }
-}
-
-// إضافة إشعار
 function addNotification(title, message, time) {
     const notification = {
         id: Date.now(),
@@ -3260,10 +3244,138 @@ function addNotification(title, message, time) {
     
     notifications.unshift(notification);
     localStorage.setItem('notifications', JSON.stringify(notifications));
-    updateNotificationsDisplay();
 }
 
-// وظائف لوحة المسؤول
+function togglePasswordVisibility(passwordInput, toggleButton) {
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleButton.innerHTML = '<i class="fas fa-eye-slash"></i>';
+    } else {
+        passwordInput.type = 'password';
+        toggleButton.innerHTML = '<i class="fas fa-eye"></i>';
+    }
+}
+
+// دوال التنقل
+function showBalanceSection() {
+    resetNavButtons();
+    balanceBtn.classList.add('active');
+    walletSubtitle.textContent = 'الرصيد';
+    balanceCard.style.display = 'block';
+    currencyList.style.display = 'block';
+    sendCard.style.display = 'none';
+    transactionsCard.style.display = 'none';
+    receiveCard.style.display = 'none';
+    vipCard.style.display = 'none';
+    referralCard.style.display = 'none';
+}
+
+function showSendSection() {
+    resetNavButtons();
+    sendBtn.classList.add('active');
+    walletSubtitle.textContent = 'سحب الأموال';
+    sendCard.style.display = 'block';
+    balanceCard.style.display = 'none';
+    currencyList.style.display = 'none';
+    transactionsCard.style.display = 'none';
+    receiveCard.style.display = 'none';
+    vipCard.style.display = 'none';
+    referralCard.style.display = 'none';
+}
+
+function showReceiveSection() {
+    resetNavButtons();
+    receiveBtn.classList.add('active');
+    walletSubtitle.textContent = 'تعبئة الرصيد';
+    receiveCard.style.display = 'block';
+    balanceCard.style.display = 'none';
+    currencyList.style.display = 'none';
+    sendCard.style.display = 'none';
+    transactionsCard.style.display = 'none';
+    vipCard.style.display = 'none';
+    referralCard.style.display = 'none';
+}
+
+function showVipSection() {
+    resetNavButtons();
+    vipBtn.classList.add('active');
+    walletSubtitle.textContent = 'كبار الشخصيات VIP';
+    updateVipLevelsDisplay();
+    vipCard.style.display = 'block';
+    balanceCard.style.display = 'none';
+    currencyList.style.display = 'none';
+    sendCard.style.display = 'none';
+    transactionsCard.style.display = 'none';
+    receiveCard.style.display = 'none';
+    referralCard.style.display = 'none';
+}
+
+function showReferralSection() {
+    resetNavButtons();
+    referralNavBtn.classList.add('active');
+    walletSubtitle.textContent = 'نظام الإحالة';
+    
+    // تحديث بيانات الإحالة للمستخدم الحالي
+    const currentUserData = users.find(user => user.email === currentUser);
+    if (currentUserData) {
+        referralCodeDisplay.textContent = currentUserData.referralCode;
+        referralLinkDisplay.textContent = `https://virtualmall.my/#/register?ref=${currentUserData.referralCode}`;
+    }
+    
+    referralCard.style.display = 'block';
+    balanceCard.style.display = 'none';
+    currencyList.style.display = 'none';
+    sendCard.style.display = 'none';
+    transactionsCard.style.display = 'none';
+    receiveCard.style.display = 'none';
+    vipCard.style.display = 'none';
+}
+
+function showTransactionsSection() {
+    resetNavButtons();
+    transactionsBtn.classList.add('active');
+    walletSubtitle.textContent = 'سجل المعاملات';
+    transactionsCard.style.display = 'block';
+    balanceCard.style.display = 'none';
+    currencyList.style.display = 'none';
+    sendCard.style.display = 'none';
+    receiveCard.style.display = 'none';
+    vipCard.style.display = 'none';
+    referralCard.style.display = 'none';
+}
+
+function resetNavButtons() {
+    balanceBtn.classList.remove('active');
+    sendBtn.classList.remove('active');
+    receiveBtn.classList.remove('active');
+    vipBtn.classList.remove('active');
+    referralNavBtn.classList.remove('active');
+    transactionsBtn.classList.remove('active');
+}
+
+function showLoginForm() {
+    registrationForm.style.display = 'none';
+    loginForm.style.display = 'block';
+    errorMessage.style.display = 'none';
+    successMessage.style.display = 'none';
+}
+
+function showRegisterForm() {
+    loginForm.style.display = 'none';
+    registrationForm.style.display = 'block';
+    loginErrorMessage.style.display = 'none';
+    successMessage.style.display = 'none';
+}
+
+function showWalletInterface() {
+    authContainer.style.display = 'none';
+    walletContainer.style.display = 'block';
+    adminContainer.style.display = 'none';
+    updateBalanceDisplay();
+    showBalanceSection();
+}
+
+// دوال لوحة المسؤول
 function showAdminLoginForm() {
     const email = prompt('أدخل بريد المسؤول:');
     if (email !== adminCredentials.email) {
@@ -3361,22 +3473,18 @@ function updateAdminUsersTable() {
 }
 
 function updateAdminStats() {
-    // تحديث إحصائيات المستخدمين
     totalUsers.textContent = users.length;
     activeUsers.textContent = users.filter(user => !user.isBanned).length;
     bannedUsers.textContent = users.filter(user => user.isBanned).length;
     
-    // حساب إجمالي الرصيد
     let totalBalanceValue = 0;
     users.forEach(user => {
-        totalBalanceValue += (user.balance?.usdt || 0) * 1; // USDT
-        totalBalanceValue += (user.balance?.btc || 0) * 50000; // BTC تقريباً
-        totalBalanceValue += (user.balance?.eth || 0) * 3000; // ETH تقريباً
+        totalBalanceValue += (user.balance?.usdt || 0) * 1;
+        totalBalanceValue += (user.balance?.btc || 0) * 50000;
+        totalBalanceValue += (user.balance?.eth || 0) * 3000;
     });
     
     totalBalanceAdmin.textContent = `$${totalBalanceValue.toLocaleString()}`;
-    
-    // تحديث إحصائيات النظام
     totalTransactions.textContent = transactions.length;
     
     let deposits = 0;
@@ -3394,40 +3502,11 @@ function updateAdminStats() {
     totalDeposits.textContent = `$${deposits.toLocaleString()}`;
     totalWithdrawals.textContent = `$${withdrawals.toLocaleString()}`;
     
-    // حساب متوسط الرصيد
     const average = totalBalanceValue / (users.length || 1);
     averageBalance.textContent = `$${average.toLocaleString(undefined, {maximumFractionDigits: 2})}`;
-    
-    // عرض طلبات VIP
-    vipRequestsList.innerHTML = vipRequests.length > 0 ? 
-        vipRequests.map(request => `
-            <div style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                <div style="font-weight: bold;">${request.userEmail} - VIP${request.level}</div>
-                <div style="font-size: 0.8rem; color: #cccccc;">المبلغ: ${request.price} USDT - ${request.date}</div>
-                <div style="margin-top: 5px;">
-                    <button class="action-btn add-balance-btn" onclick="approveVipRequest('${request.id}')">موافقة</button>
-                    <button class="action-btn ban-user-btn" onclick="rejectVipRequest('${request.id}')">رفض</button>
-                </div>
-            </div>
-        `).join('') :
-        '<div style="text-align: center; padding: 20px; color: #cccccc;">لا توجد طلبات VIP</div>';
-    
-    // عرض طلبات السحب
-    withdrawalRequestsList.innerHTML = withdrawalRequests.length > 0 ? 
-        withdrawalRequests.map(request => `
-            <div style="padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                <div style="font-weight: bold;">${request.userEmail} - ${request.amount} ${request.currency}</div>
-                <div style="font-size: 0.8rem; color: #cccccc;">العنوان: ${request.address} - ${request.date}</div>
-                <div style="margin-top: 5px;">
-                    <button class="action-btn add-balance-btn" onclick="approveWithdrawal('${request.id}')">موافقة</button>
-                    <button class="action-btn ban-user-btn" onclick="rejectWithdrawal('${request.id}')">رفض</button>
-                </div>
-            </div>
-        `).join('') :
-        '<div style="text-align: center; padding: 20px; color: #cccccc;">لا توجد طلبات سحب</div>';
 }
 
-// وظائف إدارة المستخدمين
+// دوال إدارة المستخدمين للمسؤول
 function addBalance(userIndex, currency) {
     const amountInput = document.getElementById(`${currency}-${userIndex}`);
     const amount = parseFloat(amountInput.value);
@@ -3444,7 +3523,6 @@ function addBalance(userIndex, currency) {
     users[userIndex].balance[currency] += amount;
     localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
     
-    // إضافة معاملة
     const transaction = {
         id: 'ADMIN-' + Date.now(),
         type: 'receive',
@@ -3481,7 +3559,6 @@ function withdrawBalance(userIndex, currency) {
     users[userIndex].balance[currency] -= amount;
     localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
     
-    // إضافة معاملة
     const transaction = {
         id: 'ADMIN-' + Date.now(),
         type: 'send',
@@ -3512,19 +3589,18 @@ function withdrawAllBalance(userIndex) {
         }
         
         if (user.balance.btc > 0) {
-            totalWithdrawn += user.balance.btc * 50000; // تحويل BTC إلى دولار تقريبي
+            totalWithdrawn += user.balance.btc * 50000;
             user.balance.btc = 0;
         }
         
         if (user.balance.eth > 0) {
-            totalWithdrawn += user.balance.eth * 3000; // تحويل ETH إلى دولار تقريبي
+            totalWithdrawn += user.balance.eth * 3000;
             user.balance.eth = 0;
         }
     }
     
     localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
     
-    // إضافة معاملة
     if (totalWithdrawn > 0) {
         const transaction = {
             id: 'ADMIN-' + Date.now(),
@@ -3561,130 +3637,186 @@ function unbanUser(userIndex) {
     showToast(`تم رفع الحظر عن المستخدم ${users[userIndex].email}`);
 }
 
-// وظائف إدارة طلبات VIP
-function approveVipRequest(requestId) {
-    const requestIndex = vipRequests.findIndex(req => req.id === requestId);
-    if (requestIndex === -1) return;
+// إعداد event listeners
+function setupEventListeners() {
+    // أحداث القوائم المنسدلة
+    languageBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        languageDropdown.classList.toggle('show');
+    });
     
-    const request = vipRequests[requestIndex];
-    const userIndex = users.findIndex(user => user.email === request.userEmail);
+    userBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        userDropdown.classList.toggle('show');
+    });
     
-    if (userIndex === -1) return;
+    document.addEventListener('click', function() {
+        languageDropdown.classList.remove('show');
+        userDropdown.classList.remove('show');
+    });
     
-    // خصم المبلغ من رصيد المستخدم
-    if (users[userIndex].balance.usdt >= request.price) {
-        users[userIndex].balance.usdt -= request.price;
-        
-        // تحديث حالة الطلب
-        vipRequests[requestIndex].status = 'مقبول';
-        localStorage.setItem('vipRequests', JSON.stringify(vipRequests));
-        localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
-        
-        // إضافة معاملة
-        const transaction = {
-            id: 'VIP-' + Date.now(),
-            type: 'send',
-            description: `فتح VIP${request.level}`,
-            amount: `-${request.price} USDT`,
-            value: `$${request.price.toLocaleString()}`,
-            date: new Date().toLocaleDateString('ar-EG'),
-            status: 'مكتمل',
-            timestamp: new Date().toISOString()
-        };
-        
-        transactions.unshift(transaction);
-        localStorage.setItem('transactions', JSON.stringify(transactions));
-        
-        updateAdminStats();
-        showToast(`تم قبول طلب VIP${request.level} للمستخدم ${request.userEmail}`);
-    } else {
-        showToast('لا يوجد رصيد كافي لدى المستخدم');
-    }
-}
-
-function rejectVipRequest(requestId) {
-    const requestIndex = vipRequests.findIndex(req => req.id === requestId);
-    if (requestIndex === -1) return;
+    languageDropdown.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
     
-    vipRequests[requestIndex].status = 'مرفوض';
-    localStorage.setItem('vipRequests', JSON.stringify(vipRequests));
+    userDropdown.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
     
-    updateAdminStats();
-    showToast('تم رفض طلب VIP');
-}
-
-// وظائف إدارة طلبات السحب
-function approveWithdrawal(requestId) {
-    const requestIndex = withdrawalRequests.findIndex(req => req.id === requestId);
-    if (requestIndex === -1) return;
+    // أحداث اللغة
+    document.querySelectorAll('.language-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const lang = this.getAttribute('data-lang');
+            changeLanguage(lang);
+            languageBtn.innerHTML = `<i class="fas fa-globe"></i> ${this.textContent} <i class="fas fa-chevron-down"></i>`;
+            languageDropdown.classList.remove('show');
+        });
+    });
     
-    const request = withdrawalRequests[requestIndex];
-    const userIndex = users.findIndex(user => user.email === request.userEmail);
+    // أحداث الإحالة
+    copyReferralCode.addEventListener('click', function() {
+        copyToClipboard(referralCodeDisplay.textContent);
+    });
     
-    if (userIndex === -1) return;
+    copyReferralLinkFull.addEventListener('click', function() {
+        copyToClipboard(referralLinkDisplay.textContent);
+    });
     
-    // خصم المبلغ من رصيد المستخدم
-    let hasBalance = false;
-    switch(request.currency) {
-        case 'USDT':
-            hasBalance = users[userIndex].balance.usdt >= request.amount;
-            if (hasBalance) users[userIndex].balance.usdt -= request.amount;
-            break;
-        case 'BTC':
-            hasBalance = users[userIndex].balance.btc >= request.amount;
-            if (hasBalance) users[userIndex].balance.btc -= request.amount;
-            break;
-        case 'ETH':
-            hasBalance = users[userIndex].balance.eth >= request.amount;
-            if (hasBalance) users[userIndex].balance.eth -= request.amount;
-            break;
-    }
+    // أحداث التنقل
+    balanceBtn.addEventListener('click', showBalanceSection);
+    sendBtn.addEventListener('click', showSendSection);
+    receiveBtn.addEventListener('click', showReceiveSection);
+    vipBtn.addEventListener('click', showVipSection);
+    referralNavBtn.addEventListener('click', showReferralSection);
+    transactionsBtn.addEventListener('click', showTransactionsSection);
     
-    if (hasBalance) {
-        // تحديث حالة الطلب
-        withdrawalRequests[requestIndex].status = 'مكتمل';
-        localStorage.setItem('withdrawalRequests', JSON.stringify(withdrawalRequests));
-        localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
-        
-        // تحديث المعاملة الأصلية
-        const transactionIndex = transactions.findIndex(t => 
-            t.id === request.id.replace('WDR-', 'TX')
-        );
-        
-        if (transactionIndex !== -1) {
-            transactions[transactionIndex].status = 'مكتمل';
-            localStorage.setItem('transactions', JSON.stringify(transactions));
+    // أحداث النماذج
+    cancelSend.addEventListener('click', showBalanceSection);
+    sendForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        handleSendTransaction();
+    });
+    
+    showLoginBtn.addEventListener('click', showLoginForm);
+    showRegisterBtn.addEventListener('click', showRegisterForm);
+    registrationForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        handleRegistration();
+    });
+    
+    loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        handleLogin();
+    });
+    
+    logoutBtn.addEventListener('click', handleLogout);
+    
+    // أحداث تعبئة الرصيد
+    copyBtn.addEventListener('click', function() {
+        copyToClipboard(addressBox.textContent);
+        addressBox.classList.add('copied');
+        setTimeout(() => {
+            addressBox.classList.remove('copied');
+        }, 1000);
+    });
+    
+    addressBox.addEventListener('click', function() {
+        copyToClipboard(addressBox.textContent);
+        addressBox.classList.add('copied');
+        setTimeout(() => {
+            addressBox.classList.remove('copied');
+        }, 1000);
+    });
+    
+    shareBtn.addEventListener('click', function() {
+        if (navigator.share) {
+            navigator.share({
+                title: 'عنوان محفظتي - محفظة العملات المشفرة الأمريكية',
+                text: 'استخدم هذا العنوان لإرسال العملات:',
+                url: addressBox.textContent
+            });
+        } else {
+            copyToClipboard(addressBox.textContent);
+            showToast('تم نسخ العنوان إلى الحافظة');
         }
-        
-        updateAdminStats();
-        showToast(`تم قبول طلب السحب للمستخدم ${request.userEmail}`);
-    } else {
-        showToast('لا يوجد رصيد كافي لدى المستخدم');
+    });
+    
+    // أحداث الشبكات
+    networkOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            networkOptions.forEach(opt => opt.classList.remove('active'));
+            this.classList.add('active');
+            
+            const network = this.getAttribute('data-network');
+            addressBox.textContent = addresses[network];
+            networkInfo.textContent = networkMessages[network];
+            networkInfo.style.display = 'block';
+        });
+    });
+    
+    // أحداث إظهار كلمة المرور
+    togglePassword.addEventListener('click', function() {
+        const passwordInput = document.getElementById('password');
+        togglePasswordVisibility(passwordInput, this);
+    });
+    
+    toggleConfirmPassword.addEventListener('click', function() {
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        togglePasswordVisibility(confirmPasswordInput, this);
+    });
+    
+    toggleLoginPassword.addEventListener('click', function() {
+        const loginPasswordInput = document.getElementById('loginPassword');
+        togglePasswordVisibility(loginPasswordInput, this);
+    });
+    
+    // أحداث المسؤول
+    adminLoginLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        showAdminLoginForm();
+    });
+    
+    adminUsersBtn.addEventListener('click', showAdminUsersSection);
+    adminStatsBtn.addEventListener('click', showAdminStatsSection);
+    adminLogoutBtn.addEventListener('click', handleAdminLogout);
+}
+
+function changeLanguage(lang) {
+    showToast(`تم تغيير اللغة إلى ${lang}`);
+}
+
+// التهيئة
+function initializePage() {
+    checkLoggedInUser();
+    setupEventListeners();
+    loadVipData();
+    updateBalanceDisplay();
+    updateTransactionsDisplay();
+    updateVipLevelsDisplay();
+    startVipTimer();
+    
+    if (currentUser) {
+        checkDailyVipProfits();
+    }
+    
+    if (users.length === 0) {
+        users.push({
+            email: 'test@example.com',
+            password: '123456',
+            registrationDate: new Date().toISOString(),
+            balance: {
+                usdt: 0,
+                btc: 0,
+                eth: 0
+            },
+            isBanned: false,
+            referralCode: '991271'
+        });
+        localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
     }
 }
 
-function rejectWithdrawal(requestId) {
-    const requestIndex = withdrawalRequests.findIndex(req => req.id === requestId);
-    if (requestIndex === -1) return;
-    
-    withdrawalRequests[requestIndex].status = 'مرفوض';
-    localStorage.setItem('withdrawalRequests', JSON.stringify(withdrawalRequests));
-    
-    // تحديث المعاملة الأصلية
-    const transactionIndex = transactions.findIndex(t => 
-        t.id === requestId.replace('WDR-', 'TX')
-    );
-    
-    if (transactionIndex !== -1) {
-        transactions[transactionIndex].status = 'مرفوض';
-        localStorage.setItem('transactions', JSON.stringify(transactions));
-    }
-    
-    updateAdminStats();
-    showToast('تم رفض طلب السحب');
-}
-
-// بدء التطبيق عند تحميل الصفحة
+// بدء التطبيق
 document.addEventListener('DOMContentLoaded', function() {
     initializePage();
 });
