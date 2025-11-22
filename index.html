@@ -2381,7 +2381,7 @@
     <div class="toast" id="toast">تم نسخ العنوان إلى الحافظة</div>
 
     <script>
-// بيانات VIP مع نظام القفل التلقائي
+    	// بيانات VIP مع نظام القفل التلقائي
 const vipLevelsData = [
     { 
         level: 1, 
@@ -2511,6 +2511,7 @@ let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 let notifications = JSON.parse(localStorage.getItem('notifications')) || [];
 let vipRequests = JSON.parse(localStorage.getItem('vipRequests')) || [];
 let withdrawalRequests = JSON.parse(localStorage.getItem('withdrawalRequests')) || [];
+let referralStats = JSON.parse(localStorage.getItem('referralStats')) || {};
 
 const adminCredentials = {
     email: "admin@crypto.com",
@@ -2841,6 +2842,45 @@ function checkDailyVipProfits() {
     }
 }
 
+// نظام الإحالة
+function updateReferralStats() {
+    const currentUserData = users.find(user => user.email === currentUser);
+    if (!currentUserData) return;
+    
+    const referralCode = currentUserData.referralCode;
+    
+    // حساب عدد المستخدمين المسجلين عبر رابط الإحالة
+    const referredUsers = users.filter(user => user.referredBy === referralCode);
+    const newReferredUsers = referredUsers.filter(user => {
+        const registrationDate = new Date(user.registrationDate);
+        const today = new Date();
+        const diffTime = Math.abs(today - registrationDate);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays <= 30; // مستخدمين جدد (آخر 30 يوم)
+    });
+    
+    // تحديث رابط الإحالة
+    referralLinkDisplay.textContent = `https://american-html.vercel.app/#/register?ref=${referralCode}`;
+    
+    // تحديث إحصائيات الإحالة
+    document.querySelectorAll('.referral-stat-value')[0].textContent = `$${referredUsers.length * 10}`;
+    document.querySelectorAll('.referral-stat-value')[1].textContent = `$${referredUsers.length * 5}`;
+    document.querySelectorAll('.referral-stat-value')[2].textContent = referredUsers.length;
+    document.querySelectorAll('.referral-stat-value')[3].textContent = newReferredUsers.length;
+    
+    // تحديث عمولات الإحالة
+    const commissionLevels = document.querySelectorAll('.commission-level');
+    if (commissionLevels.length >= 2) {
+        commissionLevels[0].querySelector('.commission-stats').innerHTML = 
+            `<span>مسجل / صالح: ${referredUsers.length}/${referredUsers.length}</span>
+             <span>إجمالي الدخل: $${referredUsers.length * 6}</span>`;
+        
+        commissionLevels[1].querySelector('.commission-stats').innerHTML = 
+            `<span>مسجل / صالح: ${referredUsers.length}/${referredUsers.length}</span>
+             <span>إجمالي الدخل: $${referredUsers.length * 2}</span>`;
+    }
+}
+
 // دوال المحفظة الأساسية
 function updateBalanceDisplay() {
     const currentUserData = users.find(user => user.email === currentUser);
@@ -3010,6 +3050,23 @@ function handleRegistration() {
         users.push(newUser);
         localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
         localStorage.setItem('cryptoWalletCurrentUser', email);
+        
+        // تحديث إحصائيات الإحالة إذا كان هناك مدعو
+        if (invitationCode) {
+            const referrer = users.find(user => user.referralCode === invitationCode);
+            if (referrer) {
+                // إضافة مكافأة للمدعو
+                newUser.balance.usdt += 10;
+                
+                // إضافة مكافأة للمدعو
+                referrer.balance.usdt += 5;
+                
+                // تحديث الإحصائيات
+                updateReferralStats();
+                
+                addNotification('مكافأة إحالة', 'لقد حصلت على 10 USDT كمكافأة للتسجيل عبر رابط الإحالة!', 'الآن');
+            }
+        }
         
         currentUser = email;
         hideLoading();
@@ -3319,7 +3376,7 @@ function showReferralSection() {
     const currentUserData = users.find(user => user.email === currentUser);
     if (currentUserData) {
         referralCodeDisplay.textContent = currentUserData.referralCode;
-        referralLinkDisplay.textContent = `https://virtualmall.my/#/register?ref=${currentUserData.referralCode}`;
+        updateReferralStats();
     }
     
     referralCard.style.display = 'block';
@@ -3504,6 +3561,75 @@ function updateAdminStats() {
     
     const average = totalBalanceValue / (users.length || 1);
     averageBalance.textContent = `$${average.toLocaleString(undefined, {maximumFractionDigits: 2})}`;
+    
+    // تحديث قائمة طلبات VIP
+    updateVipRequestsList();
+    
+    // تحديث قائمة طلبات السحب
+    updateWithdrawalRequestsList();
+}
+
+function updateVipRequestsList() {
+    vipRequestsList.innerHTML = '';
+    
+    if (vipRequests.length === 0) {
+        vipRequestsList.innerHTML = '<p style="text-align: center; color: #cccccc;">لا توجد طلبات فتح VIP</p>';
+        return;
+    }
+    
+    vipRequests.forEach(request => {
+        const requestElement = document.createElement('div');
+        requestElement.className = 'transaction-item';
+        requestElement.innerHTML = `
+            <div class="transaction-info">
+                <div class="transaction-icon receive">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <div class="transaction-details">
+                    <h3>طلب فتح VIP${request.level}</h3>
+                    <span>${request.userEmail} • ${request.date}</span>
+                </div>
+            </div>
+            <div class="transaction-amount receive">
+                <div class="amount">${request.amount} USDT</div>
+                <div class="value" style="color: #00cc00">${request.status}</div>
+            </div>
+        `;
+        vipRequestsList.appendChild(requestElement);
+    });
+}
+
+function updateWithdrawalRequestsList() {
+    withdrawalRequestsList.innerHTML = '';
+    
+    if (withdrawalRequests.length === 0) {
+        withdrawalRequestsList.innerHTML = '<p style="text-align: center; color: #cccccc;">لا توجد طلبات سحب معلقة</p>';
+        return;
+    }
+    
+    withdrawalRequests.forEach(request => {
+        const requestElement = document.createElement('div');
+        requestElement.className = 'transaction-item';
+        requestElement.innerHTML = `
+            <div class="transaction-info">
+                <div class="transaction-icon send">
+                    <i class="fas fa-paper-plane"></i>
+                </div>
+                <div class="transaction-details">
+                    <h3>سحب ${request.currency}</h3>
+                    <span>${request.userEmail} • ${request.date}</span>
+                    <div style="font-size: 0.8rem; color: #888; margin-top: 5px;">
+                        ${request.address} • ${request.network}
+                    </div>
+                </div>
+            </div>
+            <div class="transaction-amount send">
+                <div class="amount">${request.amount} ${request.currency}</div>
+                <div class="value" style="color: #ffd700">${request.status}</div>
+            </div>
+        `;
+        withdrawalRequestsList.appendChild(requestElement);
+    });
 }
 
 // دوال إدارة المستخدمين للمسؤول
@@ -3797,8 +3923,10 @@ function initializePage() {
     
     if (currentUser) {
         checkDailyVipProfits();
+        updateReferralStats();
     }
     
+    // إضافة مستخدم تجريبي إذا لم يكن هناك مستخدمين
     if (users.length === 0) {
         users.push({
             email: 'test@example.com',
