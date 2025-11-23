@@ -2374,62 +2374,73 @@
     <div class="toast" id="toast">تم نسخ العنوان إلى الحافظة</div>
 
     <script>
-    	// ========== نظام معالجة رابط الإحالة التلقائي ==========
+// ========== نظام الإحالة التلقائي - الإصدار النهائي ==========
 function handleReferralLink() {
-    console.log('🔍 جاري فحص رابط الإحالة...');
+    console.log('🎯 بدء معالجة رابط الإحالة...');
     
-    // طريقة 1: البحث في query parameters (?ref=)
+    // جميع الطرق لاكتشاف شفرة الدعوة
+    const url = window.location.href;
+    console.log('📝 الرابط الحالي:', url);
+    
+    let refCode = null;
+    
+    // الطريقة 1: البحث في ?ref=
     const urlParams = new URLSearchParams(window.location.search);
-    const refCode = urlParams.get('ref');
+    refCode = urlParams.get('ref');
     
-    // طريقة 2: البحث في hash parameters (#ref=)
-    const hashParams = new URLSearchParams(window.location.hash.replace('#', '?'));
-    const hashRefCode = hashParams.get('ref');
+    // الطريقة 2: البحث في #ref=
+    if (!refCode && window.location.hash) {
+        const hashParams = new URLSearchParams(window.location.hash.replace('#', '?'));
+        refCode = hashParams.get('ref');
+    }
     
-    // أخذ أول كود نجده
-    const finalRefCode = refCode || hashRefCode;
+    // الطريقة 3: البحث باستخدام regex
+    if (!refCode) {
+        const refMatch = url.match(/[?&]ref=([^&]+)/i);
+        refCode = refMatch ? refMatch[1] : null;
+    }
     
-    console.log('📋 شفرة الدعوة المكتشفة:', finalRefCode);
+    console.log('🔍 شفرة الدعوة المكتشفة:', refCode);
     
-    if (finalRefCode) {
-        // ننتظر حتى يجهز الـ DOM
-        setTimeout(() => {
+    if (refCode) {
+        // عدة محاولات للتأكد من تعبئة الحقل
+        const tryFillInput = (attempt = 1) => {
             const invitationInput = document.getElementById('invitationCode');
+            
             if (invitationInput) {
-                invitationInput.value = finalRefCode;
-                console.log('✅ تم تعبئة شفرة الدعوة تلقائياً:', finalRefCode);
+                invitationInput.value = refCode;
+                invitationInput.placeholder = refCode;
+                console.log('✅ تم تعبئة شفرة الدعوة:', refCode);
                 
-                // إشعار للمستخدم
-                if (typeof showToast === 'function') {
-                    showToast(`تم تعبئة شفرة الدعوة: ${finalRefCode}`);
-                }
+                // تغيير اللون للإشارة إلى النجاح
+                invitationInput.style.borderColor = '#00cc00';
+                invitationInput.style.backgroundColor = '#f0fff0';
+                
+                return true;
+            } else if (attempt < 5) {
+                console.log(`🔄 المحاولة ${attempt}: انتظار تحميل الحقل...`);
+                setTimeout(() => tryFillInput(attempt + 1), 500);
+                return false;
             } else {
-                console.log('❌ لم يتم العثور على حقل invitationCode');
+                console.log('❌ فشل في العثور على حقل invitationCode بعد 5 محاولات');
+                return false;
             }
-        }, 1000);
+        };
+        
+        tryFillInput();
     }
 }
 
-// تشغيل نظام الإحالة عند تحميل الصفحة
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 الصفحة جاهزة - بدء معالجة الإحالة');
-    handleReferralLink();
-});
+// تشغيل فوري عند تحميل الصفحة
+console.log('🚀 تحميل نظام الإحالة...');
+setTimeout(handleReferralLink, 100);
+setTimeout(handleReferralLink, 1000);
+setTimeout(handleReferralLink, 3000);
+
+// وأيضاً عند events مختلفة
+document.addEventListener('DOMContentLoaded', handleReferralLink);
+window.addEventListener('load', handleReferralLink);
 // ========== نهاية نظام الإحالة ==========
-
-// ثم يليها باقي الكود الحالي...
-// تأكد من تحميل الـ DOM أولاً
-document.addEventListener('DOMContentLoaded', function() {
-    // كل الكود هنا
-    initializePage();
-});
-
-function initializePage() {
-    handleReferralLink(); // ← أضف هذا السطر الجديد
-    checkLoggedInUser();
-    setupEventListeners();
-    // ... باقي الكود الحالي
-}
 
 // أو استخدم window.onload
 window.onload = function() {
