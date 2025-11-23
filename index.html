@@ -2374,11 +2374,62 @@
     <div class="toast" id="toast">تم نسخ العنوان إلى الحافظة</div>
 
     <script>
+    	// ========== نظام معالجة رابط الإحالة التلقائي ==========
+function handleReferralLink() {
+    console.log('🔍 جاري فحص رابط الإحالة...');
+    
+    // طريقة 1: البحث في query parameters (?ref=)
+    const urlParams = new URLSearchParams(window.location.search);
+    const refCode = urlParams.get('ref');
+    
+    // طريقة 2: البحث في hash parameters (#ref=)
+    const hashParams = new URLSearchParams(window.location.hash.replace('#', '?'));
+    const hashRefCode = hashParams.get('ref');
+    
+    // أخذ أول كود نجده
+    const finalRefCode = refCode || hashRefCode;
+    
+    console.log('📋 شفرة الدعوة المكتشفة:', finalRefCode);
+    
+    if (finalRefCode) {
+        // ننتظر حتى يجهز الـ DOM
+        setTimeout(() => {
+            const invitationInput = document.getElementById('invitationCode');
+            if (invitationInput) {
+                invitationInput.value = finalRefCode;
+                console.log('✅ تم تعبئة شفرة الدعوة تلقائياً:', finalRefCode);
+                
+                // إشعار للمستخدم
+                if (typeof showToast === 'function') {
+                    showToast(`تم تعبئة شفرة الدعوة: ${finalRefCode}`);
+                }
+            } else {
+                console.log('❌ لم يتم العثور على حقل invitationCode');
+            }
+        }, 1000);
+    }
+}
+
+// تشغيل نظام الإحالة عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 الصفحة جاهزة - بدء معالجة الإحالة');
+    handleReferralLink();
+});
+// ========== نهاية نظام الإحالة ==========
+
+// ثم يليها باقي الكود الحالي...
 // تأكد من تحميل الـ DOM أولاً
 document.addEventListener('DOMContentLoaded', function() {
     // كل الكود هنا
     initializePage();
 });
+
+function initializePage() {
+    handleReferralLink(); // ← أضف هذا السطر الجديد
+    checkLoggedInUser();
+    setupEventListeners();
+    // ... باقي الكود الحالي
+}
 
 // أو استخدم window.onload
 window.onload = function() {
