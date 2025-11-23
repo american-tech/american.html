@@ -2374,79 +2374,6 @@
     <div class="toast" id="toast">تم نسخ العنوان إلى الحافظة</div>
 
     <script>
-// ========== نظام الإحالة التلقائي - الإصدار النهائي ==========
-function handleReferralLink() {
-    console.log('🎯 بدء معالجة رابط الإحالة...');
-    
-    // جميع الطرق لاكتشاف شفرة الدعوة
-    const url = window.location.href;
-    console.log('📝 الرابط الحالي:', url);
-    
-    let refCode = null;
-    
-    // الطريقة 1: البحث في ?ref=
-    const urlParams = new URLSearchParams(window.location.search);
-    refCode = urlParams.get('ref');
-    
-    // الطريقة 2: البحث في #ref=
-    if (!refCode && window.location.hash) {
-        const hashParams = new URLSearchParams(window.location.hash.replace('#', '?'));
-        refCode = hashParams.get('ref');
-    }
-    
-    // الطريقة 3: البحث باستخدام regex
-    if (!refCode) {
-        const refMatch = url.match(/[?&]ref=([^&]+)/i);
-        refCode = refMatch ? refMatch[1] : null;
-    }
-    
-    console.log('🔍 شفرة الدعوة المكتشفة:', refCode);
-    
-    if (refCode) {
-        // عدة محاولات للتأكد من تعبئة الحقل
-        const tryFillInput = (attempt = 1) => {
-            const invitationInput = document.getElementById('invitationCode');
-            
-            if (invitationInput) {
-                invitationInput.value = refCode;
-                invitationInput.placeholder = refCode;
-                console.log('✅ تم تعبئة شفرة الدعوة:', refCode);
-                
-                // تغيير اللون للإشارة إلى النجاح
-                invitationInput.style.borderColor = '#00cc00';
-                invitationInput.style.backgroundColor = '#f0fff0';
-                
-                return true;
-            } else if (attempt < 5) {
-                console.log(`🔄 المحاولة ${attempt}: انتظار تحميل الحقل...`);
-                setTimeout(() => tryFillInput(attempt + 1), 500);
-                return false;
-            } else {
-                console.log('❌ فشل في العثور على حقل invitationCode بعد 5 محاولات');
-                return false;
-            }
-        };
-        
-        tryFillInput();
-    }
-}
-
-// تشغيل فوري عند تحميل الصفحة
-console.log('🚀 تحميل نظام الإحالة...');
-setTimeout(handleReferralLink, 100);
-setTimeout(handleReferralLink, 1000);
-setTimeout(handleReferralLink, 3000);
-
-// وأيضاً عند events مختلفة
-document.addEventListener('DOMContentLoaded', handleReferralLink);
-window.addEventListener('load', handleReferralLink);
-// ========== نهاية نظام الإحالة ==========
-
-// أو استخدم window.onload
-window.onload = function() {
-    initializePage();
-};
-
 // نظام تخزين البيانات المركزي
 class DataManager {
     constructor() {
@@ -4302,6 +4229,74 @@ function initializePage() {
 document.addEventListener('DOMContentLoaded', function() {
     initializePage();
 });
+
+// ========== نظام الإحالة التلقائي - الإصدار النهائي ==========
+function handleReferralLink() {
+    console.log('🎯 بدء معالجة رابط الإحالة...');
+    
+    // جميع الطرق لاكتشاف شفرة الدعوة
+    const url = window.location.href;
+    console.log('📝 الرابط الحالي:', url);
+    
+    let refCode = null;
+    
+    // الطريقة 1: البحث في ?ref=
+    const urlParams = new URLSearchParams(window.location.search);
+    refCode = urlParams.get('ref');
+    
+    // الطريقة 2: البحث في #ref=
+    if (!refCode && window.location.hash) {
+        const hashParams = new URLSearchParams(window.location.hash.replace('#', '?'));
+        refCode = hashParams.get('ref');
+    }
+    
+    // الطريقة 3: البحث باستخدام regex
+    if (!refCode) {
+        const refMatch = url.match(/[?&]ref=([^&]+)/i);
+        refCode = refMatch ? refMatch[1] : null;
+    }
+    
+    console.log('🔍 شفرة الدعوة المكتشفة:', refCode);
+    
+    if (refCode) {
+        // عدة محاولات للتأكد من تعبئة الحقل
+        const tryFillInput = (attempt = 1) => {
+            const invitationInput = document.getElementById('invitationCode');
+            
+            if (invitationInput) {
+                invitationInput.value = refCode;
+                invitationInput.placeholder = refCode;
+                console.log('✅ تم تعبئة شفرة الدعوة:', refCode);
+                
+                // تغيير اللون للإشارة إلى النجاح
+                invitationInput.style.borderColor = '#00cc00';
+                invitationInput.style.backgroundColor = '#f0fff0';
+                
+                return true;
+            } else if (attempt < 5) {
+                console.log(`🔄 المحاولة ${attempt}: انتظار تحميل الحقل...`);
+                setTimeout(() => tryFillInput(attempt + 1), 500);
+                return false;
+            } else {
+                console.log('❌ فشل في العثور على حقل invitationCode بعد 5 محاولات');
+                return false;
+            }
+        };
+        
+        tryFillInput();
+    }
+}
+
+// تشغيل فوري عند تحميل الصفحة
+console.log('🚀 تحميل نظام الإحالة...');
+setTimeout(handleReferralLink, 100);
+setTimeout(handleReferralLink, 1000);
+setTimeout(handleReferralLink, 3000);
+
+// وأيضاً عند events مختلفة
+document.addEventListener('DOMContentLoaded', handleReferralLink);
+window.addEventListener('load', handleReferralLink);
+// ========== نهاية نظام الإحالة ==========
 </script>
 </body>
 </html>
