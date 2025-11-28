@@ -1240,7 +1240,7 @@
             box-shadow: none;
         }
         
-        /* أنماط نظام القفل التلقائي في VIP */
+        /* أنماط نظام القفل التلقائي في VIP - أضف هذا في النهاية */
         .vip-lock {
             position: absolute;
             top: 10px;
@@ -1817,8 +1817,8 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="invitationCode">شفرة الدعوة (اختياري)</label>
-                            <input type="text" id="invitationCode" class="form-control" placeholder="أدخل شفرة الدعوة (اختياري)">
+                            <label for="invitationCode">شفرة الدعوة</label>
+                            <input type="text" id="invitationCode" class="form-control" placeholder="أدخل شفرة الدعوة" required>
                         </div>
                         
                         <div class="buttons-group">
@@ -1863,6 +1863,13 @@
                         
                         <button type="submit" class="btn btn-primary" style="margin-bottom: 15px;">تسجيل الدخول</button>
                         <button type="button" class="btn btn-secondary" id="showRegisterBtn">إنشاء حساب جديد</button>
+                        
+                        <!-- رابط دخول المسؤول -->
+                        <div style="text-align: center; margin-top: 20px;">
+                            <a href="#" id="adminLoginLink" style="color: #ffd700; text-decoration: none; font-size: 0.9rem;">
+                                <i class="fas fa-user-shield"></i> دخول المسؤول
+                            </a>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -2372,185 +2379,140 @@
     </div>
     
     <div class="toast" id="toast">تم نسخ العنوان إلى الحافظة</div>
-
+    
     <script>
-// نظام تخزين البيانات المركزي
-class DataManager {
-    constructor() {
-        this.storageKey = 'cryptoWalletData_v2';
-        this.initData();
+// بيانات VIP مع نظام القفل التلقائي
+const vipLevelsData = [
+    { 
+        level: 1, 
+        dailyTasks: 1, 
+        simpleInterest: 8.00, 
+        dailyProfit: 8.00, 
+        totalProfit: 1095.00, 
+        openPrice: 12.00,
+        unlocked: false,
+        active: false
+    },
+    { 
+        level: 2, 
+        dailyTasks: 1, 
+        simpleInterest: 20.00, 
+        dailyProfit: 20.00, 
+        totalProfit: 4745.00, 
+        openPrice: 52.00,
+        unlocked: false,
+        active: false
+    },
+    { 
+        level: 3, 
+        dailyTasks: 1, 
+        simpleInterest: 35.00, 
+        dailyProfit: 35.00, 
+        totalProfit: 9490.00, 
+        openPrice: 100.00,
+        unlocked: false,
+        active: false
+    },
+    { 
+        level: 4, 
+        dailyTasks: 1, 
+        simpleInterest: 100.00, 
+        dailyProfit: 100.00, 
+        totalProfit: 29930.00, 
+        openPrice: 300.00,
+        unlocked: false,
+        active: false
+    },
+    { 
+        level: 5, 
+        dailyTasks: 1, 
+        simpleInterest: 170.00, 
+        dailyProfit: 170.00, 
+        totalProfit: 52925.00, 
+        openPrice: 500.00,
+        unlocked: false,
+        active: false
+    },
+    { 
+        level: 6, 
+        dailyTasks: 1, 
+        simpleInterest: 500.00, 
+        dailyProfit: 500.00, 
+        totalProfit: 174835.00, 
+        openPrice: 1500.00,
+        unlocked: false,
+        active: false
+    },
+    { 
+        level: 7, 
+        dailyTasks: 1, 
+        simpleInterest: 1300.00, 
+        dailyProfit: 1300.00, 
+        totalProfit: 393470.00, 
+        openPrice: 3000.00,
+        unlocked: false,
+        active: false
+    },
+    { 
+        level: 8, 
+        dailyTasks: 1, 
+        simpleInterest: 2400.00, 
+        dailyProfit: 2400.00, 
+        totalProfit: 730000.00, 
+        openPrice: 5000.00,
+        unlocked: false,
+        active: false
+    },
+    { 
+        level: 9, 
+        dailyTasks: 1, 
+        simpleInterest: 4800.00, 
+        dailyProfit: 4800.00, 
+        totalProfit: 1659290.00, 
+        openPrice: 10000.00,
+        unlocked: false,
+        active: false
+    },
+    { 
+        level: 10, 
+        dailyTasks: 1, 
+        simpleInterest: 18500.00, 
+        dailyProfit: 18500.00, 
+        totalProfit: 6460135.00, 
+        openPrice: 30000.00,
+        unlocked: false,
+        active: false
+    },
+    { 
+        level: 11, 
+        dailyTasks: 1, 
+        simpleInterest: 83000.00, 
+        dailyProfit: 83000.00, 
+        totalProfit: 29863570.00, 
+        openPrice: 90000.00,
+        unlocked: false,
+        active: false
     }
+];
 
-    initData() {
-        let data = localStorage.getItem(this.storageKey);
-        if (!data) {
-            data = {
-                users: [],
-                transactions: [],
-                notifications: [],
-                vipRequests: [],
-                withdrawalRequests: [],
-                depositRequests: [],
-                referralStats: {},
-                walletData: {
-                    total: 0,
-                    equivalent: "0.000000 BTC",
-                    currencies: {
-                        usdt: { amount: 0, value: 0 },
-                        btc: { amount: 0, value: 0 },
-                        eth: { amount: 0, value: 0 }
-                    }
-                },
-                vipLevelsData: this.getDefaultVipLevels(),
-                lastVipProfitDate: null,
-                vipTimerEnd: Date.now() + (24 * 60 * 60 * 1000),
-                currentUser: null
-            };
-            this.saveData(data);
-        }
-        return JSON.parse(data);
+// بيانات المستخدمين والتطبيق
+let users = JSON.parse(localStorage.getItem('cryptoWalletUsers')) || [];
+let currentUser = null;
+let walletData = JSON.parse(localStorage.getItem('walletData')) || {
+    total: 0,
+    equivalent: "0.000000 BTC",
+    currencies: {
+        usdt: { amount: 0, value: 0 },
+        btc: { amount: 0, value: 0 },
+        eth: { amount: 0, value: 0 }
     }
+};
+let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+let notifications = JSON.parse(localStorage.getItem('notifications')) || [];
+let vipRequests = JSON.parse(localStorage.getItem('vipRequests')) || [];
+let withdrawalRequests = JSON.parse(localStorage.getItem('withdrawalRequests')) || [];
+let referralStats = JSON.parse(localStorage.getItem('referralStats')) || {};
 
-    getDefaultVipLevels() {
-        return [
-            { level: 1, dailyTasks: 1, simpleInterest: 8.00, dailyProfit: 8.00, totalProfit: 1095.00, openPrice: 12.00, unlocked: false, active: false },
-            { level: 2, dailyTasks: 1, simpleInterest: 20.00, dailyProfit: 20.00, totalProfit: 4745.00, openPrice: 52.00, unlocked: false, active: false },
-            { level: 3, dailyTasks: 1, simpleInterest: 35.00, dailyProfit: 35.00, totalProfit: 9490.00, openPrice: 100.00, unlocked: false, active: false },
-            { level: 4, dailyTasks: 1, simpleInterest: 100.00, dailyProfit: 100.00, totalProfit: 29930.00, openPrice: 300.00, unlocked: false, active: false },
-            { level: 5, dailyTasks: 1, simpleInterest: 170.00, dailyProfit: 170.00, totalProfit: 52925.00, openPrice: 500.00, unlocked: false, active: false },
-            { level: 6, dailyTasks: 1, simpleInterest: 500.00, dailyProfit: 500.00, totalProfit: 174835.00, openPrice: 1500.00, unlocked: false, active: false },
-            { level: 7, dailyTasks: 1, simpleInterest: 1300.00, dailyProfit: 1300.00, totalProfit: 393470.00, openPrice: 3000.00, unlocked: false, active: false },
-            { level: 8, dailyTasks: 1, simpleInterest: 2400.00, dailyProfit: 2400.00, totalProfit: 730000.00, openPrice: 5000.00, unlocked: false, active: false },
-            { level: 9, dailyTasks: 1, simpleInterest: 4800.00, dailyProfit: 4800.00, totalProfit: 1659290.00, openPrice: 10000.00, unlocked: false, active: false },
-            { level: 10, dailyTasks: 1, simpleInterest: 18500.00, dailyProfit: 18500.00, totalProfit: 6460135.00, openPrice: 30000.00, unlocked: false, active: false },
-            { level: 11, dailyTasks: 1, simpleInterest: 83000.00, dailyProfit: 83000.00, totalProfit: 29863570.00, openPrice: 90000.00, unlocked: false, active: false }
-        ];
-    }
-
-    getData() {
-        return this.initData();
-    }
-
-    saveData(data) {
-        localStorage.setItem(this.storageKey, JSON.stringify(data));
-    }
-
-    // دوال مساعدة للوصول إلى البيانات
-    get users() {
-        return this.getData().users;
-    }
-
-    set users(newUsers) {
-        const data = this.getData();
-        data.users = newUsers;
-        this.saveData(data);
-    }
-
-    get transactions() {
-        return this.getData().transactions;
-    }
-
-    set transactions(newTransactions) {
-        const data = this.getData();
-        data.transactions = newTransactions;
-        this.saveData(data);
-    }
-
-    get notifications() {
-        return this.getData().notifications;
-    }
-
-    set notifications(newNotifications) {
-        const data = this.getData();
-        data.notifications = newNotifications;
-        this.saveData(data);
-    }
-
-    get vipRequests() {
-        return this.getData().vipRequests;
-    }
-
-    set vipRequests(newVipRequests) {
-        const data = this.getData();
-        data.vipRequests = newVipRequests;
-        this.saveData(data);
-    }
-
-    get withdrawalRequests() {
-        return this.getData().withdrawalRequests;
-    }
-
-    set withdrawalRequests(newWithdrawalRequests) {
-        const data = this.getData();
-        data.withdrawalRequests = newWithdrawalRequests;
-        this.saveData(data);
-    }
-
-    get depositRequests() {
-        return this.getData().depositRequests;
-    }
-
-    set depositRequests(newDepositRequests) {
-        const data = this.getData();
-        data.depositRequests = newDepositRequests;
-        this.saveData(data);
-    }
-
-    get walletData() {
-        return this.getData().walletData;
-    }
-
-    set walletData(newWalletData) {
-        const data = this.getData();
-        data.walletData = newWalletData;
-        this.saveData(data);
-    }
-
-    get vipLevelsData() {
-        return this.getData().vipLevelsData;
-    }
-
-    set vipLevelsData(newVipLevelsData) {
-        const data = this.getData();
-        data.vipLevelsData = newVipLevelsData;
-        this.saveData(data);
-    }
-
-    get lastVipProfitDate() {
-        return this.getData().lastVipProfitDate;
-    }
-
-    set lastVipProfitDate(date) {
-        const data = this.getData();
-        data.lastVipProfitDate = date;
-        this.saveData(data);
-    }
-
-    get vipTimerEnd() {
-        return this.getData().vipTimerEnd;
-    }
-
-    set vipTimerEnd(time) {
-        const data = this.getData();
-        data.vipTimerEnd = time;
-        this.saveData(data);
-    }
-
-    get currentUser() {
-        return this.getData().currentUser;
-    }
-
-    set currentUser(user) {
-        const data = this.getData();
-        data.currentUser = user;
-        this.saveData(data);
-    }
-}
-
-// إنشاء مدير البيانات
-const dataManager = new DataManager();
-
-// بيانات المسؤول
 const adminCredentials = {
     email: "admin@crypto.com",
     password: "admin123"
@@ -2578,7 +2540,7 @@ const networkMessages = {
 
 // مؤقت VIP
 let vipTimerInterval;
-const VIP_TIMER_DURATION = 24 * 60 * 60 * 1000;
+const VIP_TIMER_DURATION = 24 * 60 * 60 * 1000; // 24 ساعة بالملي ثانية
 
 // عناصر DOM
 const authContainer = document.getElementById('authContainer');
@@ -2598,6 +2560,7 @@ const logoutBtn = document.getElementById('logoutBtn');
 const languageBtn = document.getElementById('languageBtn');
 const languageDropdown = document.getElementById('languageDropdown');
 const vipTimer = document.getElementById('vipTimer');
+const adminLoginLink = document.getElementById('adminLoginLink');
 const balanceBtn = document.getElementById('balanceBtn');
 const sendBtn = document.getElementById('sendBtn');
 const receiveBtn = document.getElementById('receiveBtn');
@@ -2654,142 +2617,29 @@ const referralLinkDisplay = document.getElementById('referralLinkDisplay');
 const copyReferralCode = document.getElementById('copyReferralCode');
 const copyReferralLinkFull = document.getElementById('copyReferralLinkFull');
 
-// ========== دوال إدارة المستخدمين والإيداعات ==========
-
-// الحصول على الإيداعات المعلقة
-function getPendingDeposits() {
-    return dataManager.depositRequests.filter(d => d.status === 'معلق');
-}
-
-// الحصول على السحوبات المعلقة
-function getPendingWithdrawals() {
-    return dataManager.withdrawalRequests.filter(w => w.status === 'معلق');
-}
-
-// الحصول على مبالغ الإيداعات لكل مستخدم
-function getDepositAmounts() {
-    const deposits = dataManager.transactions.filter(t => t.type === 'receive' && t.status === 'مكتمل');
-    const amounts = {};
-    
-    deposits.forEach(deposit => {
-        const user = deposit.userEmail || dataManager.currentUser || 'غير معروف';
-        if (!amounts[user]) amounts[user] = 0;
-        
-        const amount = parseFloat(deposit.amount.replace(/[^0-9.-]/g, ''));
-        amounts[user] += amount;
-    });
-    
-    return amounts;
-}
-
-// الحصول على إحصائيات الإيداعات للمسؤول
-function getAdminDepositStats() {
-    const deposits = dataManager.transactions.filter(t => t.type === 'receive' && t.status === 'مكتمل');
-    const stats = {
-        totalDeposits: 0,
-        pendingDeposits: getPendingDeposits().length,
-        userDeposits: {}
-    };
-    
-    deposits.forEach(deposit => {
-        const amount = parseFloat(deposit.amount.replace(/[^0-9.-]/g, ''));
-        stats.totalDeposits += amount;
-        
-        const user = deposit.userEmail || dataManager.currentUser || 'غير معروف';
-        if (!stats.userDeposits[user]) {
-            stats.userDeposits[user] = 0;
-        }
-        stats.userDeposits[user] += amount;
-    });
-    
-    return stats;
-}
-
-// ========== نظام الإحالة المحسن ==========
-
-// معالجة مكافآت الإحالة
-function handleReferralBonus(newUserEmail, referrerCode) {
-    if (!referrerCode) return;
-    
-    const referrer = dataManager.users.find(user => user.referralCode === referrerCode);
-    if (!referrer) return;
-    
-    // تحديث إحصائيات الإحالة
-    if (!referrer.referralStats) {
-        referrer.referralStats = {
-            totalReferrals: 0,
-            activeReferrals: 0,
-            totalCommission: 0,
-            level1Commission: 0,
-            level2Commission: 0
-        };
-    }
-    
-    referrer.referralStats.totalReferrals++;
-    referrer.referralStats.activeReferrals++;
-    
-    // لا نعطي رصيد مجاني للمستخدم الجديد
-    // ولكن نسجل الإحالة للمكافآت المستقبلية
-    
-    // إضافة إشعار للمدعو
-    addNotification('تم التسجيل بنجاح', 'مرحباً بك في محفظة العملات المشفرة الأمريكية', 'الآن', newUserEmail);
-    
-    // إضافة إشعار للمدعو
-    addNotification('إحالة جديدة', `قام ${newUserEmail} بالتسجيل عبر رابط إحالتك`, 'الآن', referrer.email);
-    
-    dataManager.users = [...dataManager.users];
-}
-
-// تحديث إحصائيات الإحالة
-function updateReferralStats() {
-    const currentUserData = dataManager.users.find(user => user.email === dataManager.currentUser);
-    if (!currentUserData) return;
-    
-    const referralCode = currentUserData.referralCode;
-    
-    // حساب عدد المستخدمين المسجلين عبر رابط الإحالة
-    const referredUsers = dataManager.users.filter(user => user.referredBy === referralCode);
-    const newReferredUsers = referredUsers.filter(user => {
-        const registrationDate = new Date(user.registrationDate);
-        const today = new Date();
-        const diffTime = Math.abs(today - registrationDate);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        return diffDays <= 30;
-    });
-    
-    // تحديث رابط الإحالة
-    referralLinkDisplay.textContent = `https://american-html.vercel.app/#/register?ref=${referralCode}`;
-    
-    // تحديث إحصائيات الإحالة
-    const referralStatValues = document.querySelectorAll('.referral-stat-value');
-    if (referralStatValues.length >= 4) {
-        referralStatValues[0].textContent = `$${referredUsers.length * 10}`;
-        referralStatValues[1].textContent = `$${referredUsers.length * 5}`;
-        referralStatValues[2].textContent = referredUsers.length;
-        referralStatValues[3].textContent = newReferredUsers.length;
-    }
-    
-    // تحديث عمولات الإحالة
-    const commissionLevels = document.querySelectorAll('.commission-level');
-    if (commissionLevels.length >= 2) {
-        commissionLevels[0].querySelector('.commission-stats').innerHTML = 
-            `<span>مسجل / صالح: ${referredUsers.length}/${referredUsers.length}</span>
-             <span>إجمالي الدخل: $${referredUsers.length * 6}</span>`;
-        
-        commissionLevels[1].querySelector('.commission-stats').innerHTML = 
-            `<span>مسجل / صالح: ${referredUsers.length}/${referredUsers.length}</span>
-             <span>إجمالي الدخل: $${referredUsers.length * 2}</span>`;
+// نظام القفل التلقائي في VIP
+function loadVipData() {
+    const savedVipData = localStorage.getItem('vipLevelsData');
+    if (savedVipData) {
+        const parsedData = JSON.parse(savedVipData);
+        vipLevelsData.forEach((level, index) => {
+            if (parsedData[index]) {
+                level.unlocked = parsedData[index].unlocked;
+                level.active = parsedData[index].active;
+            }
+        });
     }
 }
 
-// ========== نظام VIP المحسن ==========
+function saveVipData() {
+    localStorage.setItem('vipLevelsData', JSON.stringify(vipLevelsData));
+}
 
-// تحديث عرض مستويات VIP
 function updateVipLevelsDisplay() {
-    const currentUserData = dataManager.users.find(user => user.email === dataManager.currentUser);
-    const userBalance = currentUserData ? (currentUserData.balance?.usdt || 0) : 0;
+    const currentUserData = users.find(user => user.email === currentUser);
+    const userBalance = currentUserData ? currentUserData.balance.usdt : 0;
     
-    vipLevels.innerHTML = dataManager.vipLevelsData.map(level => {
+    vipLevels.innerHTML = vipLevelsData.map(level => {
         const isUnlocked = level.unlocked;
         const isActive = level.active;
         const hasEnoughBalance = userBalance >= level.openPrice;
@@ -2866,13 +2716,12 @@ function updateVipLevelsDisplay() {
     }).join('');
 }
 
-// معالجة فتح مستوى VIP
 function handleVipLevel(levelNumber) {
-    const levelIndex = dataManager.vipLevelsData.findIndex(level => level.level === levelNumber);
+    const levelIndex = vipLevelsData.findIndex(level => level.level === levelNumber);
     if (levelIndex === -1) return;
     
-    const level = dataManager.vipLevelsData[levelIndex];
-    const currentUserData = dataManager.users.find(user => user.email === dataManager.currentUser);
+    const level = vipLevelsData[levelIndex];
+    const currentUserData = users.find(user => user.email === currentUser);
     
     if (!currentUserData) {
         showToast('يجب تسجيل الدخول أولاً');
@@ -2884,7 +2733,7 @@ function handleVipLevel(levelNumber) {
         return;
     }
     
-    if ((currentUserData.balance?.usdt || 0) < level.openPrice) {
+    if (currentUserData.balance.usdt < level.openPrice) {
         showToast('الرصيد غير كافي لفتح هذا المستوى');
         return;
     }
@@ -2892,29 +2741,24 @@ function handleVipLevel(levelNumber) {
     openVipLevel(levelIndex);
 }
 
-// فتح مستوى VIP
 function openVipLevel(levelIndex) {
-    const level = dataManager.vipLevelsData[levelIndex];
-    const currentUserData = dataManager.users.find(user => user.email === dataManager.currentUser);
+    const level = vipLevelsData[levelIndex];
+    const currentUserData = users.find(user => user.email === currentUser);
     
     if (!currentUserData) return;
     
     // خصم المبلغ من رصيد المستخدم
-    if (!currentUserData.balance) currentUserData.balance = { usdt: 0, btc: 0, eth: 0 };
     currentUserData.balance.usdt -= level.openPrice;
     level.unlocked = true;
     level.active = true;
     
-    dataManager.users = [...dataManager.users];
-    dataManager.vipLevelsData = [...dataManager.vipLevelsData];
-    
-    // منح الربح اليومي فوراً
-    currentUserData.balance.usdt += level.dailyProfit;
+    localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
+    saveVipData();
     
     // إرسال تفاصيل الفتح إلى المسؤول
     const vipRequest = {
         id: 'VIP-' + Date.now(),
-        userEmail: dataManager.currentUser,
+        userEmail: currentUser,
         level: level.level,
         amount: level.openPrice,
         status: 'مكتمل',
@@ -2922,7 +2766,8 @@ function openVipLevel(levelIndex) {
         timestamp: new Date().toISOString()
     };
     
-    dataManager.vipRequests = [vipRequest, ...dataManager.vipRequests];
+    vipRequests.unshift(vipRequest);
+    localStorage.setItem('vipRequests', JSON.stringify(vipRequests));
     
     const transaction = {
         id: 'VIP-' + Date.now(),
@@ -2935,61 +2780,48 @@ function openVipLevel(levelIndex) {
         timestamp: new Date().toISOString()
     };
     
-    // إضافة معاملة الربح اليومي
-    const profitTransaction = {
-        id: 'VIP-PROFIT-' + Date.now(),
-        type: 'receive',
-        description: `ربح يومي VIP${level.level}`,
-        amount: `+${level.dailyProfit} USDT`,
-        value: `$${level.dailyProfit.toLocaleString()}`,
-        date: new Date().toLocaleDateString('ar-EG'),
-        status: 'مكتمل',
-        timestamp: new Date().toISOString()
-    };
-    
-    dataManager.transactions = [transaction, profitTransaction, ...dataManager.transactions];
+    transactions.unshift(transaction);
+    localStorage.setItem('transactions', JSON.stringify(transactions));
     
     updateBalanceDisplay();
     updateVipLevelsDisplay();
     updateTransactionsDisplay();
     
-    addNotification(`تم فتح VIP${level.level}`, `تم فتح مستوى VIP${level.level} بنجاح وحصلت على ${level.dailyProfit} USDT ربح يومي`, 'الآن');
-    showToast(`تم فتح مستوى VIP${level.level} بنجاح! وحصلت على ربح يومي فوري`);
+    addNotification(`تم فتح VIP${level.level}`, `تم فتح مستوى VIP${level.level} بنجاح وخصم ${level.openPrice} USDT من رصيدك`, 'الآن');
+    showToast(`تم فتح مستوى VIP${level.level} بنجاح!`);
 }
 
-// حساب أرباح VIP اليومية
 function calculateDailyVipProfits() {
-    const currentUserData = dataManager.users.find(user => user.email === dataManager.currentUser);
+    const currentUserData = users.find(user => user.email === currentUser);
     if (!currentUserData) return;
     
     let totalDailyProfit = 0;
     let activeLevels = 0;
     
-    dataManager.vipLevelsData.forEach(level => {
+    vipLevelsData.forEach(level => {
         if (level.active) {
             totalDailyProfit += level.dailyProfit;
             activeLevels++;
-            
-            // إضافة معاملة الربح اليومي
-            const transaction = {
-                id: 'VIP-PROFIT-' + Date.now() + '-' + level.level,
-                type: 'receive',
-                description: `ربح يومي VIP${level.level}`,
-                amount: `+${level.dailyProfit} USDT`,
-                value: `$${level.dailyProfit.toLocaleString()}`,
-                date: new Date().toLocaleDateString('ar-EG'),
-                status: 'مكتمل',
-                timestamp: new Date().toISOString()
-            };
-            
-            dataManager.transactions = [transaction, ...dataManager.transactions];
         }
     });
     
     if (totalDailyProfit > 0) {
-        if (!currentUserData.balance) currentUserData.balance = { usdt: 0, btc: 0, eth: 0 };
         currentUserData.balance.usdt += totalDailyProfit;
-        dataManager.users = [...dataManager.users];
+        
+        const transaction = {
+            id: 'VIP-PROFIT-' + Date.now(),
+            type: 'receive',
+            description: `أرباح VIP يومية`,
+            amount: `+${totalDailyProfit.toFixed(2)} USDT`,
+            value: `$${totalDailyProfit.toLocaleString()}`,
+            date: new Date().toLocaleDateString('ar-EG'),
+            status: 'مكتمل',
+            timestamp: new Date().toISOString()
+        };
+        
+        transactions.unshift(transaction);
+        localStorage.setItem('transactions', JSON.stringify(transactions));
+        localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
         
         updateBalanceDisplay();
         updateTransactionsDisplay();
@@ -3000,163 +2832,89 @@ function calculateDailyVipProfits() {
     }
 }
 
-// فحص الأرباح اليومية
 function checkDailyVipProfits() {
-    const lastProfitDate = dataManager.lastVipProfitDate;
+    const lastProfitDate = localStorage.getItem('lastVipProfitDate');
     const today = new Date().toDateString();
     
     if (lastProfitDate !== today) {
         calculateDailyVipProfits();
-        dataManager.lastVipProfitDate = today;
+        localStorage.setItem('lastVipProfitDate', today);
     }
 }
 
-// ========== نظام الإيداع مع عمولات الإحالة ==========
-
-// معالجة الإيداع
-function handleDeposit(userEmail, amount, currency = 'USDT') {
-    const user = dataManager.users.find(u => u.email === userEmail);
-    if (!user) return false;
+// نظام الإحالة
+function updateReferralStats() {
+    const currentUserData = users.find(user => user.email === currentUser);
+    if (!currentUserData) return;
     
-    // إضافة الرصيد للمستخدم
-    if (!user.balance) user.balance = { usdt: 0, btc: 0, eth: 0 };
-    user.balance[currency.toLowerCase()] += amount;
+    const referralCode = currentUserData.referralCode;
     
-    // معالجة عمولات الإحالة
-    if (user.referredBy) {
-        const referrer = dataManager.users.find(u => u.referralCode === user.referredBy);
-        if (referrer) {
-            const commission = amount * 0.06;
-            
-            if (!referrer.balance) referrer.balance = { usdt: 0, btc: 0, eth: 0 };
-            referrer.balance.usdt += commission;
-            
-            // تحديث إحصائيات الإحالة
-            if (!referrer.referralStats) {
-                referrer.referralStats = {
-                    totalReferrals: 0,
-                    activeReferrals: 0,
-                    totalCommission: 0,
-                    level1Commission: 0,
-                    level2Commission: 0
-                };
-            }
-            
-            referrer.referralStats.totalCommission += commission;
-            referrer.referralStats.level1Commission += commission;
-            
-            // إضافة معاملة العمولة
-            const commissionTransaction = {
-                id: 'COMM-' + Date.now(),
-                type: 'receive',
-                description: `عمولة إحالة من ${userEmail}`,
-                amount: `+${commission} USDT`,
-                value: `$${commission.toLocaleString()}`,
-                date: new Date().toLocaleDateString('ar-EG'),
-                status: 'مكتمل',
-                timestamp: new Date().toISOString()
-            };
-            
-            dataManager.transactions = [commissionTransaction, ...dataManager.transactions];
-            
-            addNotification('عمولة إحالة', `حصلت على ${commission} USDT عمولة إحالة من ${userEmail}`, 'الآن', referrer.email);
-        }
+    // حساب عدد المستخدمين المسجلين عبر رابط الإحالة
+    const referredUsers = users.filter(user => user.referredBy === referralCode);
+    const newReferredUsers = referredUsers.filter(user => {
+        const registrationDate = new Date(user.registrationDate);
+        const today = new Date();
+        const diffTime = Math.abs(today - registrationDate);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays <= 30; // مستخدمين جدد (آخر 30 يوم)
+    });
+    
+    // تحديث رابط الإحالة
+    referralLinkDisplay.textContent = `https://american-html.vercel.app/#/register?ref=${referralCode}`;
+    
+    // تحديث إحصائيات الإحالة
+    document.querySelectorAll('.referral-stat-value')[0].textContent = `$${referredUsers.length * 10}`;
+    document.querySelectorAll('.referral-stat-value')[1].textContent = `$${referredUsers.length * 5}`;
+    document.querySelectorAll('.referral-stat-value')[2].textContent = referredUsers.length;
+    document.querySelectorAll('.referral-stat-value')[3].textContent = newReferredUsers.length;
+    
+    // تحديث عمولات الإحالة
+    const commissionLevels = document.querySelectorAll('.commission-level');
+    if (commissionLevels.length >= 2) {
+        commissionLevels[0].querySelector('.commission-stats').innerHTML = 
+            `<span>مسجل / صالح: ${referredUsers.length}/${referredUsers.length}</span>
+             <span>إجمالي الدخل: $${referredUsers.length * 6}</span>`;
         
-        // المستوى الثاني من الإحالة (2%)
-        if (referrer && referrer.referredBy) {
-            const level2Referrer = dataManager.users.find(u => u.referralCode === referrer.referredBy);
-            if (level2Referrer) {
-                const level2Commission = amount * 0.02;
-                
-                if (!level2Referrer.balance) level2Referrer.balance = { usdt: 0, btc: 0, eth: 0 };
-                level2Referrer.balance.usdt += level2Commission;
-                
-                if (!level2Referrer.referralStats) {
-                    level2Referrer.referralStats = {
-                        totalReferrals: 0,
-                        activeReferrals: 0,
-                        totalCommission: 0,
-                        level1Commission: 0,
-                        level2Commission: 0
-                    };
-                }
-                
-                level2Referrer.referralStats.totalCommission += level2Commission;
-                level2Referrer.referralStats.level2Commission += level2Commission;
-                
-                // إضافة معاملة العمولة للمستوى الثاني
-                const level2Transaction = {
-                    id: 'COMM-L2-' + Date.now(),
-                    type: 'receive',
-                    description: `عمولة إحالة مستوى ثاني من ${userEmail}`,
-                    amount: `+${level2Commission} USDT`,
-                    value: `$${level2Commission.toLocaleString()}`,
-                    date: new Date().toLocaleDateString('ar-EG'),
-                    status: 'مكتمل',
-                    timestamp: new Date().toISOString()
-                };
-                
-                dataManager.transactions = [level2Transaction, ...dataManager.transactions];
-                
-                addNotification('عمولة إحالة مستوى ثاني', `حصلت على ${level2Commission} USDT عمولة إحالة مستوى ثاني من ${userEmail}`, 'الآن', level2Referrer.email);
-            }
-        }
+        commissionLevels[1].querySelector('.commission-stats').innerHTML = 
+            `<span>مسجل / صالح: ${referredUsers.length}/${referredUsers.length}</span>
+             <span>إجمالي الدخل: $${referredUsers.length * 2}</span>`;
     }
-    
-    // إضافة معاملة الإيداع
-    const depositTransaction = {
-        id: 'DEP-' + Date.now(),
-        type: 'receive',
-        description: `إيداع ${currency}`,
-        amount: `+${amount} ${currency}`,
-        value: `$${amount.toLocaleString()}`,
-        date: new Date().toLocaleDateString('ar-EG'),
-        status: 'مكتمل',
-        timestamp: new Date().toISOString()
-    };
-    
-    dataManager.transactions = [depositTransaction, ...dataManager.transactions];
-    
-    addNotification('إيداع ناجح', `تم إيداع ${amount} ${currency} إلى حسابك`, 'الآن', userEmail);
-    
-    return true;
 }
 
-// ========== دوال المحفظة الأساسية ==========
-
-// تحديث عرض الرصيد
+// دوال المحفظة الأساسية
 function updateBalanceDisplay() {
-    const currentUserData = dataManager.users.find(user => user.email === dataManager.currentUser);
+    const currentUserData = users.find(user => user.email === currentUser);
     
     if (currentUserData && currentUserData.balance) {
-        dataManager.walletData.currencies.usdt.amount = currentUserData.balance.usdt || 0;
-        dataManager.walletData.currencies.btc.amount = currentUserData.balance.btc || 0;
-        dataManager.walletData.currencies.eth.amount = currentUserData.balance.eth || 0;
+        walletData.currencies.usdt.amount = currentUserData.balance.usdt || 0;
+        walletData.currencies.btc.amount = currentUserData.balance.btc || 0;
+        walletData.currencies.eth.amount = currentUserData.balance.eth || 0;
         
-        dataManager.walletData.currencies.usdt.value = dataManager.walletData.currencies.usdt.amount * 1;
-        dataManager.walletData.currencies.btc.value = dataManager.walletData.currencies.btc.amount * 50000;
-        dataManager.walletData.currencies.eth.value = dataManager.walletData.currencies.eth.amount * 3000;
+        walletData.currencies.usdt.value = walletData.currencies.usdt.amount * 1;
+        walletData.currencies.btc.value = walletData.currencies.btc.amount * 50000;
+        walletData.currencies.eth.value = walletData.currencies.eth.amount * 3000;
         
-        dataManager.walletData.total = dataManager.walletData.currencies.usdt.value + dataManager.walletData.currencies.btc.value + dataManager.walletData.currencies.eth.value;
-        dataManager.walletData.equivalent = `${dataManager.walletData.currencies.btc.amount.toFixed(6)} BTC`;
+        walletData.total = walletData.currencies.usdt.value + walletData.currencies.btc.value + walletData.currencies.eth.value;
+        walletData.equivalent = `${walletData.currencies.btc.amount.toFixed(6)} BTC`;
     }
     
-    totalBalance.textContent = `$${dataManager.walletData.total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-    balanceEquivalent.textContent = `≈ ${dataManager.walletData.equivalent}`;
+    totalBalance.textContent = `$${walletData.total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    balanceEquivalent.textContent = `≈ ${walletData.equivalent}`;
     
-    usdtAmount.textContent = `${dataManager.walletData.currencies.usdt.amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} USDT`;
-    usdtValue.textContent = `$${dataManager.walletData.currencies.usdt.value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    usdtAmount.textContent = `${walletData.currencies.usdt.amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} USDT`;
+    usdtValue.textContent = `$${walletData.currencies.usdt.value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
     
-    btcAmount.textContent = `${dataManager.walletData.currencies.btc.amount.toFixed(6)} BTC`;
-    btcValue.textContent = `$${dataManager.walletData.currencies.btc.value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    btcAmount.textContent = `${walletData.currencies.btc.amount.toFixed(6)} BTC`;
+    btcValue.textContent = `$${walletData.currencies.btc.value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
     
-    ethAmount.textContent = `${dataManager.walletData.currencies.eth.amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} ETH`;
-    ethValue.textContent = `$${dataManager.walletData.currencies.eth.value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    ethAmount.textContent = `${walletData.currencies.eth.amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} ETH`;
+    ethValue.textContent = `$${walletData.currencies.eth.value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    
+    localStorage.setItem('walletData', JSON.stringify(walletData));
 }
 
-// تحديث عرض المعاملات
 function updateTransactionsDisplay() {
-    if (dataManager.transactions.length === 0) {
+    if (transactions.length === 0) {
         transactionsList.innerHTML = `
             <div class="no-transactions">
                 <i class="fas fa-history" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
@@ -3167,7 +2925,7 @@ function updateTransactionsDisplay() {
         return;
     }
     
-    transactionsList.innerHTML = dataManager.transactions.map(transaction => `
+    transactionsList.innerHTML = transactions.map(transaction => `
         <div class="transaction-item" data-transaction-id="${transaction.id}">
             <div class="transaction-info">
                 <div class="transaction-icon ${transaction.type}">
@@ -3186,38 +2944,41 @@ function updateTransactionsDisplay() {
     `).join('');
 }
 
-// ========== نظام المؤقت المحسن ==========
+function addNotification(title, message, time) {
+    const notification = {
+        id: Date.now(),
+        title: title,
+        message: message,
+        time: time,
+        read: false
+    };
+    
+    notifications.unshift(notification);
+    localStorage.setItem('notifications', JSON.stringify(notifications));
+}
 
-// بدء مؤقت VIP
 function startVipTimer() {
-    let endTime = dataManager.vipTimerEnd;
+    let endTime = localStorage.getItem('vipTimerEnd');
     
     if (!endTime) {
         endTime = Date.now() + VIP_TIMER_DURATION;
-        dataManager.vipTimerEnd = endTime;
+        localStorage.setItem('vipTimerEnd', endTime);
     }
     
     updateVipTimer();
     
-    vipTimerInterval = setInterval(() => {
-        updateVipTimer();
-        checkDailyVipProfits();
-    }, 1000);
+    vipTimerInterval = setInterval(updateVipTimer, 1000);
 }
 
-// تحديث مؤقت VIP
 function updateVipTimer() {
-    const endTime = dataManager.vipTimerEnd;
+    const endTime = parseInt(localStorage.getItem('vipTimerEnd'));
     const now = Date.now();
     const remainingTime = endTime - now;
     
     if (remainingTime <= 0) {
         vipTimer.textContent = '00:00:00';
-        dataManager.vipTimerEnd = Date.now() + VIP_TIMER_DURATION;
-        
-        // تجديد الأرباح اليومية عند انتهاء المؤقت
-        calculateDailyVipProfits();
-        addNotification('تم تجديد المؤقت', 'تم تجديد المؤقت اليومي بنجاح وحصلت على أرباحك اليومية!', 'الآن');
+        localStorage.setItem('vipTimerEnd', Date.now() + VIP_TIMER_DURATION);
+        addNotification('تم تجديد المؤقت', 'تم تجديد المؤقت اليومي بنجاح!', 'الآن');
         return;
     }
     
@@ -3228,14 +2989,16 @@ function updateVipTimer() {
     vipTimer.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
 
-// ========== دوال التسجيل والدخول المحسنة ==========
-
-// توليد كود إحالة
-function generateReferralCode() {
-    return Math.floor(100000 + Math.random() * 900000).toString();
+function checkLoggedInUser() {
+    const loggedInUser = localStorage.getItem('cryptoWalletCurrentUser');
+    if (loggedInUser) {
+        currentUser = loggedInUser;
+        showWalletInterface();
+        userEmailDisplay.textContent = loggedInUser;
+    }
 }
 
-// معالجة التسجيل
+// دوال التسجيل والدخول
 function handleRegistration() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
@@ -3263,7 +3026,7 @@ function handleRegistration() {
         return;
     }
     
-    if (dataManager.users.find(user => user.email === email)) {
+    if (users.find(user => user.email === email)) {
         hideLoading();
         showError('هذا البريد الإلكتروني مسجل بالفعل. يرجى استخدام بريد إلكتروني آخر.');
         return;
@@ -3281,27 +3044,31 @@ function handleRegistration() {
             },
             isBanned: false,
             referralCode: generateReferralCode(),
-            referredBy: invitationCode,
-            referralStats: {
-                totalReferrals: 0,
-                activeReferrals: 0,
-                totalCommission: 0,
-                level1Commission: 0,
-                level2Commission: 0
-            },
-            vipLevels: dataManager.getDefaultVipLevels().map(level => ({
-                ...level,
-                unlocked: false,
-                active: false
-            }))
+            referredBy: invitationCode
         };
         
-        dataManager.users = [...dataManager.users, newUser];
-        dataManager.currentUser = email;
+        users.push(newUser);
+        localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
+        localStorage.setItem('cryptoWalletCurrentUser', email);
         
-        // معالجة الإحالة بدون إعطاء رصيد مجاني
-        handleReferralBonus(email, invitationCode);
+        // تحديث إحصائيات الإحالة إذا كان هناك مدعو
+        if (invitationCode) {
+            const referrer = users.find(user => user.referralCode === invitationCode);
+            if (referrer) {
+                // إضافة مكافأة للمدعو
+                newUser.balance.usdt += 10;
+                
+                // إضافة مكافأة للمدعو
+                referrer.balance.usdt += 5;
+                
+                // تحديث الإحصائيات
+                updateReferralStats();
+                
+                addNotification('مكافأة إحالة', 'لقد حصلت على 10 USDT كمكافأة للتسجيل عبر رابط الإحالة!', 'الآن');
+            }
+        }
         
+        currentUser = email;
         hideLoading();
         successMessage.style.display = 'block';
         
@@ -3314,7 +3081,10 @@ function handleRegistration() {
     }, 1500);
 }
 
-// معالجة تسجيل الدخول
+function generateReferralCode() {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
 function handleLogin() {
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
@@ -3324,7 +3094,7 @@ function handleLogin() {
         return;
     }
     
-    const user = dataManager.users.find(user => user.email === email && user.password === password);
+    const user = users.find(user => user.email === email && user.password === password);
     
     if (user) {
         if (user.isBanned) {
@@ -3332,7 +3102,8 @@ function handleLogin() {
             return;
         }
         
-        dataManager.currentUser = email;
+        currentUser = email;
+        localStorage.setItem('cryptoWalletCurrentUser', email);
         showWalletInterface();
         userEmailDisplay.textContent = email;
     } else {
@@ -3340,16 +3111,29 @@ function handleLogin() {
     }
 }
 
-// ========== دوال المعاملات ==========
+function handleLogout() {
+    currentUser = null;
+    localStorage.removeItem('cryptoWalletCurrentUser');
+    walletContainer.style.display = 'none';
+    authContainer.style.display = 'flex';
+    showRegisterForm();
+    registrationForm.reset();
+    loginForm.reset();
+    userDropdown.classList.remove('show');
+    
+    if (vipTimerInterval) {
+        clearInterval(vipTimerInterval);
+    }
+}
 
-// معالجة معاملة السحب
+// دوال المعاملات
 function handleSendTransaction() {
     const currency = document.getElementById('sendCurrency').value;
     const address = document.getElementById('sendAddress').value;
     const amount = parseFloat(document.getElementById('sendAmount').value);
     const network = document.getElementById('sendNetwork').value;
     
-    const currentUserData = dataManager.users.find(user => user.email === dataManager.currentUser);
+    const currentUserData = users.find(user => user.email === currentUser);
     if (!currentUserData) {
         showError('يجب تسجيل الدخول أولاً');
         return;
@@ -3359,13 +3143,13 @@ function handleSendTransaction() {
     
     switch(currency) {
         case 'USDT':
-            hasBalance = (currentUserData.balance?.usdt || 0) >= amount;
+            hasBalance = currentUserData.balance.usdt >= amount;
             break;
         case 'BTC':
-            hasBalance = (currentUserData.balance?.btc || 0) >= amount;
+            hasBalance = currentUserData.balance.btc >= amount;
             break;
         case 'ETH':
-            hasBalance = (currentUserData.balance?.eth || 0) >= amount;
+            hasBalance = currentUserData.balance.eth >= amount;
             break;
     }
     
@@ -3393,8 +3177,6 @@ function handleSendTransaction() {
     
     setTimeout(() => {
         // خصم المبلغ من رصيد المستخدم فوراً
-        if (!currentUserData.balance) currentUserData.balance = { usdt: 0, btc: 0, eth: 0 };
-        
         switch(currency) {
             case 'USDT':
                 currentUserData.balance.usdt -= amount;
@@ -3407,7 +3189,7 @@ function handleSendTransaction() {
                 break;
         }
         
-        dataManager.users = [...dataManager.users];
+        localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
         
         const transactionId = 'TX' + Date.now();
         const transaction = {
@@ -3424,11 +3206,11 @@ function handleSendTransaction() {
             timestamp: new Date().toISOString()
         };
         
-        dataManager.transactions = [transaction, ...dataManager.transactions];
+        transactions.unshift(transaction);
         
         const withdrawalRequest = {
             id: 'WDR-' + Date.now(),
-            userEmail: dataManager.currentUser,
+            userEmail: currentUser,
             currency: currency,
             amount: amount,
             address: address,
@@ -3438,9 +3220,11 @@ function handleSendTransaction() {
             timestamp: new Date().toISOString()
         };
         
-        dataManager.withdrawalRequests = [withdrawalRequest, ...dataManager.withdrawalRequests];
+        withdrawalRequests.unshift(withdrawalRequest);
+        localStorage.setItem('withdrawalRequests', JSON.stringify(withdrawalRequests));
         
         addNotification(`تم بدء سحب ${currency}`, `جاري معالجة سحب ${amount} ${currency}`, 'الآن');
+        localStorage.setItem('transactions', JSON.stringify(transactions));
         
         updateBalanceDisplay();
         updateTransactionsDisplay();
@@ -3451,9 +3235,7 @@ function handleSendTransaction() {
     }, 2000);
 }
 
-// ========== دوال المساعدين ==========
-
-// نسخ إلى الحافظة
+// دوال المساعدين
 function copyToClipboard(text) {
     if (navigator.clipboard) {
         navigator.clipboard.writeText(text).then(() => {
@@ -3466,7 +3248,6 @@ function copyToClipboard(text) {
     }
 }
 
-// نسخ احتياطي إلى الحافظة
 function fallbackCopyToClipboard(text) {
     const textArea = document.createElement('textarea');
     textArea.value = text;
@@ -3477,7 +3258,6 @@ function fallbackCopyToClipboard(text) {
     showToast('تم نسخ الرابط إلى الحافظة');
 }
 
-// عرض رسالة toast
 function showToast(message = 'تم النسخ إلى الحافظة') {
     toast.textContent = message;
     toast.style.display = 'block';
@@ -3486,17 +3266,14 @@ function showToast(message = 'تم النسخ إلى الحافظة') {
     }, 2000);
 }
 
-// عرض مؤشر التحميل
 function showLoading() {
     document.getElementById('loadingOverlay').style.display = 'flex';
 }
 
-// إخفاء مؤشر التحميل
 function hideLoading() {
     document.getElementById('loadingOverlay').style.display = 'none';
 }
 
-// عرض خطأ
 function showError(message) {
     errorMessage.textContent = message;
     errorMessage.style.display = 'block';
@@ -3505,7 +3282,6 @@ function showError(message) {
     }, 5000);
 }
 
-// عرض خطأ تسجيل الدخول
 function showLoginError(message) {
     loginErrorMessage.textContent = message;
     loginErrorMessage.style.display = 'block';
@@ -3514,21 +3290,19 @@ function showLoginError(message) {
     }, 5000);
 }
 
-// إضافة إشعار
-function addNotification(title, message, time, userEmail = dataManager.currentUser) {
+function addNotification(title, message, time) {
     const notification = {
         id: Date.now(),
         title: title,
         message: message,
         time: time,
-        read: false,
-        userEmail: userEmail
+        read: false
     };
     
-    dataManager.notifications = [notification, ...dataManager.notifications];
+    notifications.unshift(notification);
+    localStorage.setItem('notifications', JSON.stringify(notifications));
 }
 
-// تبديل رؤية كلمة المرور
 function togglePasswordVisibility(passwordInput, toggleButton) {
     if (passwordInput.type === 'password') {
         passwordInput.type = 'text';
@@ -3539,9 +3313,7 @@ function togglePasswordVisibility(passwordInput, toggleButton) {
     }
 }
 
-// ========== دوال التنقل ==========
-
-// عرض قسم الرصيد
+// دوال التنقل
 function showBalanceSection() {
     resetNavButtons();
     balanceBtn.classList.add('active');
@@ -3555,7 +3327,6 @@ function showBalanceSection() {
     referralCard.style.display = 'none';
 }
 
-// عرض قسم السحب
 function showSendSection() {
     resetNavButtons();
     sendBtn.classList.add('active');
@@ -3569,7 +3340,6 @@ function showSendSection() {
     referralCard.style.display = 'none';
 }
 
-// عرض قسم التعبئة
 function showReceiveSection() {
     resetNavButtons();
     receiveBtn.classList.add('active');
@@ -3583,7 +3353,6 @@ function showReceiveSection() {
     referralCard.style.display = 'none';
 }
 
-// عرض قسم VIP
 function showVipSection() {
     resetNavButtons();
     vipBtn.classList.add('active');
@@ -3598,14 +3367,13 @@ function showVipSection() {
     referralCard.style.display = 'none';
 }
 
-// عرض قسم الإحالة
 function showReferralSection() {
     resetNavButtons();
     referralNavBtn.classList.add('active');
     walletSubtitle.textContent = 'نظام الإحالة';
     
     // تحديث بيانات الإحالة للمستخدم الحالي
-    const currentUserData = dataManager.users.find(user => user.email === dataManager.currentUser);
+    const currentUserData = users.find(user => user.email === currentUser);
     if (currentUserData) {
         referralCodeDisplay.textContent = currentUserData.referralCode;
         updateReferralStats();
@@ -3620,7 +3388,6 @@ function showReferralSection() {
     vipCard.style.display = 'none';
 }
 
-// عرض قسم المعاملات
 function showTransactionsSection() {
     resetNavButtons();
     transactionsBtn.classList.add('active');
@@ -3634,7 +3401,6 @@ function showTransactionsSection() {
     referralCard.style.display = 'none';
 }
 
-// إعادة تعيين أزرار التنقل
 function resetNavButtons() {
     balanceBtn.classList.remove('active');
     sendBtn.classList.remove('active');
@@ -3644,9 +3410,6 @@ function resetNavButtons() {
     transactionsBtn.classList.remove('active');
 }
 
-// ========== دوال واجهة المستخدم ==========
-
-// عرض نموذج تسجيل الدخول
 function showLoginForm() {
     registrationForm.style.display = 'none';
     loginForm.style.display = 'block';
@@ -3654,7 +3417,6 @@ function showLoginForm() {
     successMessage.style.display = 'none';
 }
 
-// عرض نموذج التسجيل
 function showRegisterForm() {
     loginForm.style.display = 'none';
     registrationForm.style.display = 'block';
@@ -3662,7 +3424,6 @@ function showRegisterForm() {
     successMessage.style.display = 'none';
 }
 
-// عرض واجهة المحفظة
 function showWalletInterface() {
     authContainer.style.display = 'none';
     walletContainer.style.display = 'block';
@@ -3671,24 +3432,23 @@ function showWalletInterface() {
     showBalanceSection();
 }
 
-// تسجيل الخروج
-function handleLogout() {
-    dataManager.currentUser = null;
-    walletContainer.style.display = 'none';
-    authContainer.style.display = 'flex';
-    showRegisterForm();
-    registrationForm.reset();
-    loginForm.reset();
-    userDropdown.classList.remove('show');
-    
-    if (vipTimerInterval) {
-        clearInterval(vipTimerInterval);
+// دوال لوحة المسؤول
+function showAdminLoginForm() {
+    const email = prompt('أدخل بريد المسؤول:');
+    if (email !== adminCredentials.email) {
+        alert('بريد المسؤول غير صحيح!');
+        return;
     }
+    
+    const password = prompt('أدخل كلمة مرور المسؤول:');
+    if (password !== adminCredentials.password) {
+        alert('كلمة مرور المسؤول غير صحيحة!');
+        return;
+    }
+    
+    showAdminInterface();
 }
 
-// ========== دوال لوحة المسؤول ==========
-
-// عرض واجهة المسؤول
 function showAdminInterface() {
     authContainer.style.display = 'none';
     walletContainer.style.display = 'none';
@@ -3697,7 +3457,6 @@ function showAdminInterface() {
     updateAdminStats();
 }
 
-// عرض قسم إدارة المستخدمين في المسؤول
 function showAdminUsersSection() {
     adminUsersBtn.classList.add('active');
     adminStatsBtn.classList.remove('active');
@@ -3705,7 +3464,6 @@ function showAdminUsersSection() {
     adminStatsSection.classList.remove('active');
 }
 
-// عرض قسم الإحصائيات في المسؤول
 function showAdminStatsSection() {
     adminStatsBtn.classList.add('active');
     adminUsersBtn.classList.remove('active');
@@ -3713,18 +3471,19 @@ function showAdminStatsSection() {
     adminUsersSection.classList.remove('active');
 }
 
-// تسجيل خروج المسؤول
 function handleAdminLogout() {
     adminContainer.style.display = 'none';
     authContainer.style.display = 'flex';
     showLoginForm();
 }
 
-// تحديث جدول المستخدمين في المسؤول
 function updateAdminUsersTable() {
     usersTableBody.innerHTML = '';
     
-    dataManager.users.forEach((user, index) => {
+    // إعادة تحميل بيانات المستخدمين من localStorage للتأكد من أحدث البيانات
+    users = JSON.parse(localStorage.getItem('cryptoWalletUsers')) || [];
+    
+    users.forEach((user, index) => {
         const row = document.createElement('tr');
         
         row.innerHTML = `
@@ -3773,26 +3532,31 @@ function updateAdminUsersTable() {
     updateAdminStats();
 }
 
-// تحديث إحصائيات المسؤول
 function updateAdminStats() {
-    totalUsers.textContent = dataManager.users.length;
-    activeUsers.textContent = dataManager.users.filter(user => !user.isBanned).length;
-    bannedUsers.textContent = dataManager.users.filter(user => user.isBanned).length;
+    // إعادة تحميل البيانات للتأكد من أحدث الإحصائيات
+    users = JSON.parse(localStorage.getItem('cryptoWalletUsers')) || [];
+    transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+    vipRequests = JSON.parse(localStorage.getItem('vipRequests')) || [];
+    withdrawalRequests = JSON.parse(localStorage.getItem('withdrawalRequests')) || [];
+    
+    totalUsers.textContent = users.length;
+    activeUsers.textContent = users.filter(user => !user.isBanned).length;
+    bannedUsers.textContent = users.filter(user => user.isBanned).length;
     
     let totalBalanceValue = 0;
-    dataManager.users.forEach(user => {
+    users.forEach(user => {
         totalBalanceValue += (user.balance?.usdt || 0) * 1;
         totalBalanceValue += (user.balance?.btc || 0) * 50000;
         totalBalanceValue += (user.balance?.eth || 0) * 3000;
     });
     
     totalBalanceAdmin.textContent = `$${totalBalanceValue.toLocaleString()}`;
-    totalTransactions.textContent = dataManager.transactions.length;
+    totalTransactions.textContent = transactions.length;
     
     let deposits = 0;
     let withdrawals = 0;
     
-    dataManager.transactions.forEach(transaction => {
+    transactions.forEach(transaction => {
         const amount = parseFloat(transaction.amount.replace(/[^0-9.-]/g, ''));
         if (transaction.type === 'receive') {
             deposits += Math.abs(amount);
@@ -3804,7 +3568,7 @@ function updateAdminStats() {
     totalDeposits.textContent = `$${deposits.toLocaleString()}`;
     totalWithdrawals.textContent = `$${withdrawals.toLocaleString()}`;
     
-    const average = totalBalanceValue / (dataManager.users.length || 1);
+    const average = totalBalanceValue / (users.length || 1);
     averageBalance.textContent = `$${average.toLocaleString(undefined, {maximumFractionDigits: 2})}`;
     
     // تحديث قائمة طلبات VIP
@@ -3814,16 +3578,15 @@ function updateAdminStats() {
     updateWithdrawalRequestsList();
 }
 
-// تحديث قائمة طلبات VIP
 function updateVipRequestsList() {
     vipRequestsList.innerHTML = '';
     
-    if (dataManager.vipRequests.length === 0) {
+    if (vipRequests.length === 0) {
         vipRequestsList.innerHTML = '<p style="text-align: center; color: #cccccc;">لا توجد طلبات فتح VIP</p>';
         return;
     }
     
-    dataManager.vipRequests.forEach(request => {
+    vipRequests.forEach(request => {
         const requestElement = document.createElement('div');
         requestElement.className = 'transaction-item';
         requestElement.innerHTML = `
@@ -3845,16 +3608,15 @@ function updateVipRequestsList() {
     });
 }
 
-// تحديث قائمة طلبات السحب
 function updateWithdrawalRequestsList() {
     withdrawalRequestsList.innerHTML = '';
     
-    if (dataManager.withdrawalRequests.length === 0) {
+    if (withdrawalRequests.length === 0) {
         withdrawalRequestsList.innerHTML = '<p style="text-align: center; color: #cccccc;">لا توجد طلبات سحب معلقة</p>';
         return;
     }
     
-    dataManager.withdrawalRequests.forEach(request => {
+    withdrawalRequests.forEach(request => {
         const requestElement = document.createElement('div');
         requestElement.className = 'transaction-item';
         requestElement.innerHTML = `
@@ -3879,9 +3641,7 @@ function updateWithdrawalRequestsList() {
     });
 }
 
-// ========== دوال إدارة المستخدمين للمسؤول ==========
-
-// إضافة رصيد
+// دوال إدارة المستخدمين للمسؤول
 function addBalance(userIndex, currency) {
     const amountInput = document.getElementById(`${currency}-${userIndex}`);
     const amount = parseFloat(amountInput.value);
@@ -3891,13 +3651,15 @@ function addBalance(userIndex, currency) {
         return;
     }
     
-    const users = [...dataManager.users];
+    // إعادة تحميل بيانات المستخدمين للتأكد من أحدث البيانات
+    users = JSON.parse(localStorage.getItem('cryptoWalletUsers')) || [];
+    
     if (!users[userIndex].balance) {
         users[userIndex].balance = { usdt: 0, btc: 0, eth: 0 };
     }
     
     users[userIndex].balance[currency] += amount;
-    dataManager.users = users;
+    localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
     
     const transaction = {
         id: 'ADMIN-' + Date.now(),
@@ -3910,14 +3672,14 @@ function addBalance(userIndex, currency) {
         timestamp: new Date().toISOString()
     };
     
-    dataManager.transactions = [transaction, ...dataManager.transactions];
+    transactions.unshift(transaction);
+    localStorage.setItem('transactions', JSON.stringify(transactions));
     
     amountInput.value = '';
     updateAdminUsersTable();
     showToast(`تم إضافة ${amount} ${currency.toUpperCase()} إلى حساب ${users[userIndex].email}`);
 }
 
-// سحب رصيد
 function withdrawBalance(userIndex, currency) {
     const amountInput = document.getElementById(`${currency}-${userIndex}`);
     const amount = parseFloat(amountInput.value);
@@ -3927,14 +3689,16 @@ function withdrawBalance(userIndex, currency) {
         return;
     }
     
-    const users = [...dataManager.users];
+    // إعادة تحميل بيانات المستخدمين للتأكد من أحدث البيانات
+    users = JSON.parse(localStorage.getItem('cryptoWalletUsers')) || [];
+    
     if (!users[userIndex].balance || users[userIndex].balance[currency] < amount) {
         alert('لا يوجد رصيد كافي للسحب');
         return;
     }
     
     users[userIndex].balance[currency] -= amount;
-    dataManager.users = users;
+    localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
     
     const transaction = {
         id: 'ADMIN-' + Date.now(),
@@ -3947,16 +3711,18 @@ function withdrawBalance(userIndex, currency) {
         timestamp: new Date().toISOString()
     };
     
-    dataManager.transactions = [transaction, ...dataManager.transactions];
+    transactions.unshift(transaction);
+    localStorage.setItem('transactions', JSON.stringify(transactions));
     
     amountInput.value = '';
     updateAdminUsersTable();
     showToast(`تم سحب ${amount} ${currency.toUpperCase()} من حساب ${users[userIndex].email}`);
 }
 
-// سحب كامل الرصيد
 function withdrawAllBalance(userIndex) {
-    const users = [...dataManager.users];
+    // إعادة تحميل بيانات المستخدمين للتأكد من أحدث البيانات
+    users = JSON.parse(localStorage.getItem('cryptoWalletUsers')) || [];
+    
     const user = users[userIndex];
     let totalWithdrawn = 0;
     
@@ -3977,7 +3743,7 @@ function withdrawAllBalance(userIndex) {
         }
     }
     
-    dataManager.users = users;
+    localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
     
     if (totalWithdrawn > 0) {
         const transaction = {
@@ -3991,35 +3757,37 @@ function withdrawAllBalance(userIndex) {
             timestamp: new Date().toISOString()
         };
         
-        dataManager.transactions = [transaction, ...dataManager.transactions];
+        transactions.unshift(transaction);
+        localStorage.setItem('transactions', JSON.stringify(transactions));
     }
     
     updateAdminUsersTable();
     showToast(`تم سحب كامل الرصيد من حساب ${user.email}`);
 }
 
-// حظر مستخدم
 function banUser(userIndex) {
-    if (confirm(`هل أنت متأكد من حظر المستخدم ${dataManager.users[userIndex].email}؟`)) {
-        const users = [...dataManager.users];
+    if (confirm(`هل أنت متأكد من حظر المستخدم ${users[userIndex].email}؟`)) {
+        // إعادة تحميل بيانات المستخدمين للتأكد من أحدث البيانات
+        users = JSON.parse(localStorage.getItem('cryptoWalletUsers')) || [];
+        
         users[userIndex].isBanned = true;
-        dataManager.users = users;
+        localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
         updateAdminUsersTable();
         showToast(`تم حظر المستخدم ${users[userIndex].email}`);
     }
 }
 
-// رفع الحظر عن مستخدم
 function unbanUser(userIndex) {
-    const users = [...dataManager.users];
+    // إعادة تحميل بيانات المستخدمين للتأكد من أحدث البيانات
+    users = JSON.parse(localStorage.getItem('cryptoWalletUsers')) || [];
+    
     users[userIndex].isBanned = false;
-    dataManager.users = users;
+    localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
     updateAdminUsersTable();
     showToast(`تم رفع الحظر عن المستخدم ${users[userIndex].email}`);
 }
 
-// ========== إعداد event listeners ==========
-
+// إعداد event listeners
 function setupEventListeners() {
     // أحداث القوائم المنسدلة
     languageBtn.addEventListener('click', function(e) {
@@ -4153,49 +3921,38 @@ function setupEventListeners() {
     });
     
     // أحداث المسؤول
+    adminLoginLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        showAdminLoginForm();
+    });
+    
     adminUsersBtn.addEventListener('click', showAdminUsersSection);
     adminStatsBtn.addEventListener('click', showAdminStatsSection);
     adminLogoutBtn.addEventListener('click', handleAdminLogout);
-    
-    // معالجة رابط الإحالة
-    const urlParams = new URLSearchParams(window.location.search);
-    const refCode = urlParams.get('ref');
-    if (refCode) {
-        document.getElementById('invitationCode').value = refCode;
-    }
 }
 
-// تغيير اللغة
 function changeLanguage(lang) {
     showToast(`تم تغيير اللغة إلى ${lang}`);
 }
 
-// التحقق من المستخدم المسجل
-function checkLoggedInUser() {
-    if (dataManager.currentUser) {
-        showWalletInterface();
-        userEmailDisplay.textContent = dataManager.currentUser;
-    }
-}
-
-// ========== التهيئة ==========
-
+// التهيئة
 function initializePage() {
     checkLoggedInUser();
     setupEventListeners();
+    loadVipData();
     updateBalanceDisplay();
     updateTransactionsDisplay();
     updateVipLevelsDisplay();
     startVipTimer();
     
-    if (dataManager.currentUser) {
+    if (currentUser) {
         checkDailyVipProfits();
         updateReferralStats();
     }
     
     // إضافة مستخدم تجريبي إذا لم يكن هناك مستخدمين
-    if (dataManager.users.length === 0) {
-        const testUser = {
+    if (users.length === 0) {
+        users.push({
             email: 'test@example.com',
             password: '123456',
             registrationDate: new Date().toISOString(),
@@ -4205,23 +3962,9 @@ function initializePage() {
                 eth: 0
             },
             isBanned: false,
-            referralCode: '991271',
-            referredBy: '',
-            referralStats: {
-                totalReferrals: 0,
-                activeReferrals: 0,
-                totalCommission: 0,
-                level1Commission: 0,
-                level2Commission: 0
-            },
-            vipLevels: dataManager.getDefaultVipLevels().map(level => ({
-                ...level,
-                unlocked: false,
-                active: false
-            }))
-        };
-        
-        dataManager.users = [testUser];
+            referralCode: '991271'
+        });
+        localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
     }
 }
 
@@ -4229,74 +3972,6 @@ function initializePage() {
 document.addEventListener('DOMContentLoaded', function() {
     initializePage();
 });
-
-// ========== نظام الإحالة التلقائي - الإصدار النهائي ==========
-function handleReferralLink() {
-    console.log('🎯 بدء معالجة رابط الإحالة...');
-    
-    // جميع الطرق لاكتشاف شفرة الدعوة
-    const url = window.location.href;
-    console.log('📝 الرابط الحالي:', url);
-    
-    let refCode = null;
-    
-    // الطريقة 1: البحث في ?ref=
-    const urlParams = new URLSearchParams(window.location.search);
-    refCode = urlParams.get('ref');
-    
-    // الطريقة 2: البحث في #ref=
-    if (!refCode && window.location.hash) {
-        const hashParams = new URLSearchParams(window.location.hash.replace('#', '?'));
-        refCode = hashParams.get('ref');
-    }
-    
-    // الطريقة 3: البحث باستخدام regex
-    if (!refCode) {
-        const refMatch = url.match(/[?&]ref=([^&]+)/i);
-        refCode = refMatch ? refMatch[1] : null;
-    }
-    
-    console.log('🔍 شفرة الدعوة المكتشفة:', refCode);
-    
-    if (refCode) {
-        // عدة محاولات للتأكد من تعبئة الحقل
-        const tryFillInput = (attempt = 1) => {
-            const invitationInput = document.getElementById('invitationCode');
-            
-            if (invitationInput) {
-                invitationInput.value = refCode;
-                invitationInput.placeholder = refCode;
-                console.log('✅ تم تعبئة شفرة الدعوة:', refCode);
-                
-                // تغيير اللون للإشارة إلى النجاح
-                invitationInput.style.borderColor = '#00cc00';
-                invitationInput.style.backgroundColor = '#f0fff0';
-                
-                return true;
-            } else if (attempt < 5) {
-                console.log(`🔄 المحاولة ${attempt}: انتظار تحميل الحقل...`);
-                setTimeout(() => tryFillInput(attempt + 1), 500);
-                return false;
-            } else {
-                console.log('❌ فشل في العثور على حقل invitationCode بعد 5 محاولات');
-                return false;
-            }
-        };
-        
-        tryFillInput();
-    }
-}
-
-// تشغيل فوري عند تحميل الصفحة
-console.log('🚀 تحميل نظام الإحالة...');
-setTimeout(handleReferralLink, 100);
-setTimeout(handleReferralLink, 1000);
-setTimeout(handleReferralLink, 3000);
-
-// وأيضاً عند events مختلفة
-document.addEventListener('DOMContentLoaded', handleReferralLink);
-window.addEventListener('load', handleReferralLink);
-// ========== نهاية نظام الإحالة ==========
 </script>
 </body>
 </html>
