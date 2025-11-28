@@ -2379,8 +2379,52 @@
     </div>
     
     <div class="toast" id="toast">تم نسخ العنوان إلى الحافظة</div>
-    
+
     <script>
+// =============================================
+// نظام التخزين المركزي المحاكي
+// =============================================
+
+// مفتاح التخزين المركزي في localStorage
+const CENTRAL_STORAGE_KEY = 'cryptoWalletCentralData';
+
+// تهيئة التخزين المركزي
+function initializeCentralStorage() {
+    let centralData = localStorage.getItem(CENTRAL_STORAGE_KEY);
+    
+    if (!centralData) {
+        // إنشاء بيانات أولية
+        centralData = {
+            users: [],
+            transactions: [],
+            notifications: [],
+            vipRequests: [],
+            withdrawalRequests: [],
+            referralStats: {},
+            vipLevelsData: [],
+            lastVipProfitDate: null,
+            vipTimerEnd: null
+        };
+        localStorage.setItem(CENTRAL_STORAGE_KEY, JSON.stringify(centralData));
+    }
+    
+    return JSON.parse(localStorage.getItem(CENTRAL_STORAGE_KEY));
+}
+
+// الحصول على البيانات من التخزين المركزي
+function getCentralData() {
+    return JSON.parse(localStorage.getItem(CENTRAL_STORAGE_KEY)) || initializeCentralStorage();
+}
+
+// حفظ البيانات في التخزين المركزي
+function saveCentralData(data) {
+    localStorage.setItem(CENTRAL_STORAGE_KEY, JSON.stringify(data));
+}
+
+// =============================================
+// بيانات التطبيق
+// =============================================
+
 // بيانات VIP مع نظام القفل التلقائي
 const vipLevelsData = [
     { 
@@ -2495,8 +2539,9 @@ const vipLevelsData = [
     }
 ];
 
-// بيانات المستخدمين والتطبيق
-let users = JSON.parse(localStorage.getItem('cryptoWalletUsers')) || [];
+// بيانات المستخدمين والتطبيق (يتم تحميلها من التخزين المركزي)
+let centralData = getCentralData();
+let users = centralData.users || [];
 let currentUser = null;
 let walletData = JSON.parse(localStorage.getItem('walletData')) || {
     total: 0,
@@ -2507,11 +2552,11 @@ let walletData = JSON.parse(localStorage.getItem('walletData')) || {
         eth: { amount: 0, value: 0 }
     }
 };
-let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
-let notifications = JSON.parse(localStorage.getItem('notifications')) || [];
-let vipRequests = JSON.parse(localStorage.getItem('vipRequests')) || [];
-let withdrawalRequests = JSON.parse(localStorage.getItem('withdrawalRequests')) || [];
-let referralStats = JSON.parse(localStorage.getItem('referralStats')) || {};
+let transactions = centralData.transactions || [];
+let notifications = centralData.notifications || [];
+let vipRequests = centralData.vipRequests || [];
+let withdrawalRequests = centralData.withdrawalRequests || [];
+let referralStats = centralData.referralStats || {};
 
 const adminCredentials = {
     email: "admin@crypto.com",
@@ -2542,7 +2587,59 @@ const networkMessages = {
 let vipTimerInterval;
 const VIP_TIMER_DURATION = 24 * 60 * 60 * 1000; // 24 ساعة بالملي ثانية
 
+// =============================================
+// دوال التخزين المحسنة
+// =============================================
+
+// حفظ جميع البيانات في التخزين المركزي
+function saveAllData() {
+    const centralData = {
+        users: users,
+        transactions: transactions,
+        notifications: notifications,
+        vipRequests: vipRequests,
+        withdrawalRequests: withdrawalRequests,
+        referralStats: referralStats,
+        vipLevelsData: vipLevelsData,
+        lastVipProfitDate: localStorage.getItem('lastVipProfitDate'),
+        vipTimerEnd: localStorage.getItem('vipTimerEnd')
+    };
+    saveCentralData(centralData);
+}
+
+// تحميل جميع البيانات من التخزين المركزي
+function loadAllData() {
+    const centralData = getCentralData();
+    users = centralData.users || [];
+    transactions = centralData.transactions || [];
+    notifications = centralData.notifications || [];
+    vipRequests = centralData.vipRequests || [];
+    withdrawalRequests = centralData.withdrawalRequests || [];
+    referralStats = centralData.referralStats || {};
+    
+    // تحميل بيانات VIP
+    if (centralData.vipLevelsData && centralData.vipLevelsData.length > 0) {
+        vipLevelsData.forEach((level, index) => {
+            if (centralData.vipLevelsData[index]) {
+                level.unlocked = centralData.vipLevelsData[index].unlocked;
+                level.active = centralData.vipLevelsData[index].active;
+            }
+        });
+    }
+    
+    // تحميل التواريخ
+    if (centralData.lastVipProfitDate) {
+        localStorage.setItem('lastVipProfitDate', centralData.lastVipProfitDate);
+    }
+    if (centralData.vipTimerEnd) {
+        localStorage.setItem('vipTimerEnd', centralData.vipTimerEnd);
+    }
+}
+
+// =============================================
 // عناصر DOM
+// =============================================
+
 const authContainer = document.getElementById('authContainer');
 const walletContainer = document.getElementById('walletContainer');
 const adminContainer = document.getElementById('adminContainer');
@@ -2617,23 +2714,9 @@ const referralLinkDisplay = document.getElementById('referralLinkDisplay');
 const copyReferralCode = document.getElementById('copyReferralCode');
 const copyReferralLinkFull = document.getElementById('copyReferralLinkFull');
 
+// =============================================
 // نظام القفل التلقائي في VIP
-function loadVipData() {
-    const savedVipData = localStorage.getItem('vipLevelsData');
-    if (savedVipData) {
-        const parsedData = JSON.parse(savedVipData);
-        vipLevelsData.forEach((level, index) => {
-            if (parsedData[index]) {
-                level.unlocked = parsedData[index].unlocked;
-                level.active = parsedData[index].active;
-            }
-        });
-    }
-}
-
-function saveVipData() {
-    localStorage.setItem('vipLevelsData', JSON.stringify(vipLevelsData));
-}
+// =============================================
 
 function updateVipLevelsDisplay() {
     const currentUserData = users.find(user => user.email === currentUser);
@@ -2752,8 +2835,8 @@ function openVipLevel(levelIndex) {
     level.unlocked = true;
     level.active = true;
     
-    localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
-    saveVipData();
+    // حفظ البيانات في التخزين المركزي
+    saveAllData();
     
     // إرسال تفاصيل الفتح إلى المسؤول
     const vipRequest = {
@@ -2767,7 +2850,6 @@ function openVipLevel(levelIndex) {
     };
     
     vipRequests.unshift(vipRequest);
-    localStorage.setItem('vipRequests', JSON.stringify(vipRequests));
     
     const transaction = {
         id: 'VIP-' + Date.now(),
@@ -2781,7 +2863,9 @@ function openVipLevel(levelIndex) {
     };
     
     transactions.unshift(transaction);
-    localStorage.setItem('transactions', JSON.stringify(transactions));
+    
+    // حفظ البيانات
+    saveAllData();
     
     updateBalanceDisplay();
     updateVipLevelsDisplay();
@@ -2820,8 +2904,7 @@ function calculateDailyVipProfits() {
         };
         
         transactions.unshift(transaction);
-        localStorage.setItem('transactions', JSON.stringify(transactions));
-        localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
+        saveAllData();
         
         updateBalanceDisplay();
         updateTransactionsDisplay();
@@ -2839,10 +2922,14 @@ function checkDailyVipProfits() {
     if (lastProfitDate !== today) {
         calculateDailyVipProfits();
         localStorage.setItem('lastVipProfitDate', today);
+        saveAllData();
     }
 }
 
+// =============================================
 // نظام الإحالة
+// =============================================
+
 function updateReferralStats() {
     const currentUserData = users.find(user => user.email === currentUser);
     if (!currentUserData) return;
@@ -2881,7 +2968,10 @@ function updateReferralStats() {
     }
 }
 
+// =============================================
 // دوال المحفظة الأساسية
+// =============================================
+
 function updateBalanceDisplay() {
     const currentUserData = users.find(user => user.email === currentUser);
     
@@ -2954,7 +3044,7 @@ function addNotification(title, message, time) {
     };
     
     notifications.unshift(notification);
-    localStorage.setItem('notifications', JSON.stringify(notifications));
+    saveAllData();
 }
 
 function startVipTimer() {
@@ -2963,6 +3053,7 @@ function startVipTimer() {
     if (!endTime) {
         endTime = Date.now() + VIP_TIMER_DURATION;
         localStorage.setItem('vipTimerEnd', endTime);
+        saveAllData();
     }
     
     updateVipTimer();
@@ -2978,6 +3069,7 @@ function updateVipTimer() {
     if (remainingTime <= 0) {
         vipTimer.textContent = '00:00:00';
         localStorage.setItem('vipTimerEnd', Date.now() + VIP_TIMER_DURATION);
+        saveAllData();
         addNotification('تم تجديد المؤقت', 'تم تجديد المؤقت اليومي بنجاح!', 'الآن');
         return;
     }
@@ -2998,7 +3090,10 @@ function checkLoggedInUser() {
     }
 }
 
-// دوال التسجيل والدخول
+// =============================================
+// دوال التسجيل والدخول المحسنة
+// =============================================
+
 function handleRegistration() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
@@ -3026,6 +3121,9 @@ function handleRegistration() {
         return;
     }
     
+    // تحميل البيانات الحالية للتأكد من عدم وجود تكرار
+    loadAllData();
+    
     if (users.find(user => user.email === email)) {
         hideLoading();
         showError('هذا البريد الإلكتروني مسجل بالفعل. يرجى استخدام بريد إلكتروني آخر.');
@@ -3048,7 +3146,10 @@ function handleRegistration() {
         };
         
         users.push(newUser);
-        localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
+        
+        // حفظ البيانات في التخزين المركزي
+        saveAllData();
+        
         localStorage.setItem('cryptoWalletCurrentUser', email);
         
         // تحديث إحصائيات الإحالة إذا كان هناك مدعو
@@ -3060,6 +3161,9 @@ function handleRegistration() {
                 
                 // إضافة مكافأة للمدعو
                 referrer.balance.usdt += 5;
+                
+                // حفظ البيانات بعد التحديث
+                saveAllData();
                 
                 // تحديث الإحصائيات
                 updateReferralStats();
@@ -3094,6 +3198,9 @@ function handleLogin() {
         return;
     }
     
+    // تحميل البيانات الحالية
+    loadAllData();
+    
     const user = users.find(user => user.email === email && user.password === password);
     
     if (user) {
@@ -3126,7 +3233,10 @@ function handleLogout() {
     }
 }
 
+// =============================================
 // دوال المعاملات
+// =============================================
+
 function handleSendTransaction() {
     const currency = document.getElementById('sendCurrency').value;
     const address = document.getElementById('sendAddress').value;
@@ -3189,7 +3299,7 @@ function handleSendTransaction() {
                 break;
         }
         
-        localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
+        saveAllData();
         
         const transactionId = 'TX' + Date.now();
         const transaction = {
@@ -3221,10 +3331,9 @@ function handleSendTransaction() {
         };
         
         withdrawalRequests.unshift(withdrawalRequest);
-        localStorage.setItem('withdrawalRequests', JSON.stringify(withdrawalRequests));
+        saveAllData();
         
         addNotification(`تم بدء سحب ${currency}`, `جاري معالجة سحب ${amount} ${currency}`, 'الآن');
-        localStorage.setItem('transactions', JSON.stringify(transactions));
         
         updateBalanceDisplay();
         updateTransactionsDisplay();
@@ -3235,7 +3344,10 @@ function handleSendTransaction() {
     }, 2000);
 }
 
+// =============================================
 // دوال المساعدين
+// =============================================
+
 function copyToClipboard(text) {
     if (navigator.clipboard) {
         navigator.clipboard.writeText(text).then(() => {
@@ -3290,19 +3402,6 @@ function showLoginError(message) {
     }, 5000);
 }
 
-function addNotification(title, message, time) {
-    const notification = {
-        id: Date.now(),
-        title: title,
-        message: message,
-        time: time,
-        read: false
-    };
-    
-    notifications.unshift(notification);
-    localStorage.setItem('notifications', JSON.stringify(notifications));
-}
-
 function togglePasswordVisibility(passwordInput, toggleButton) {
     if (passwordInput.type === 'password') {
         passwordInput.type = 'text';
@@ -3313,7 +3412,10 @@ function togglePasswordVisibility(passwordInput, toggleButton) {
     }
 }
 
+// =============================================
 // دوال التنقل
+// =============================================
+
 function showBalanceSection() {
     resetNavButtons();
     balanceBtn.classList.add('active');
@@ -3432,7 +3534,10 @@ function showWalletInterface() {
     showBalanceSection();
 }
 
-// دوال لوحة المسؤول
+// =============================================
+// دوال لوحة المسؤول المحسنة
+// =============================================
+
 function showAdminLoginForm() {
     const email = prompt('أدخل بريد المسؤول:');
     if (email !== adminCredentials.email) {
@@ -3480,8 +3585,8 @@ function handleAdminLogout() {
 function updateAdminUsersTable() {
     usersTableBody.innerHTML = '';
     
-    // إعادة تحميل بيانات المستخدمين من localStorage للتأكد من أحدث البيانات
-    users = JSON.parse(localStorage.getItem('cryptoWalletUsers')) || [];
+    // تحميل أحدث البيانات من التخزين المركزي
+    loadAllData();
     
     users.forEach((user, index) => {
         const row = document.createElement('tr');
@@ -3533,11 +3638,8 @@ function updateAdminUsersTable() {
 }
 
 function updateAdminStats() {
-    // إعادة تحميل البيانات للتأكد من أحدث الإحصائيات
-    users = JSON.parse(localStorage.getItem('cryptoWalletUsers')) || [];
-    transactions = JSON.parse(localStorage.getItem('transactions')) || [];
-    vipRequests = JSON.parse(localStorage.getItem('vipRequests')) || [];
-    withdrawalRequests = JSON.parse(localStorage.getItem('withdrawalRequests')) || [];
+    // تحميل أحدث البيانات
+    loadAllData();
     
     totalUsers.textContent = users.length;
     activeUsers.textContent = users.filter(user => !user.isBanned).length;
@@ -3641,7 +3743,10 @@ function updateWithdrawalRequestsList() {
     });
 }
 
+// =============================================
 // دوال إدارة المستخدمين للمسؤول
+// =============================================
+
 function addBalance(userIndex, currency) {
     const amountInput = document.getElementById(`${currency}-${userIndex}`);
     const amount = parseFloat(amountInput.value);
@@ -3651,15 +3756,15 @@ function addBalance(userIndex, currency) {
         return;
     }
     
-    // إعادة تحميل بيانات المستخدمين للتأكد من أحدث البيانات
-    users = JSON.parse(localStorage.getItem('cryptoWalletUsers')) || [];
+    // تحميل أحدث البيانات
+    loadAllData();
     
     if (!users[userIndex].balance) {
         users[userIndex].balance = { usdt: 0, btc: 0, eth: 0 };
     }
     
     users[userIndex].balance[currency] += amount;
-    localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
+    saveAllData();
     
     const transaction = {
         id: 'ADMIN-' + Date.now(),
@@ -3673,7 +3778,7 @@ function addBalance(userIndex, currency) {
     };
     
     transactions.unshift(transaction);
-    localStorage.setItem('transactions', JSON.stringify(transactions));
+    saveAllData();
     
     amountInput.value = '';
     updateAdminUsersTable();
@@ -3689,8 +3794,8 @@ function withdrawBalance(userIndex, currency) {
         return;
     }
     
-    // إعادة تحميل بيانات المستخدمين للتأكد من أحدث البيانات
-    users = JSON.parse(localStorage.getItem('cryptoWalletUsers')) || [];
+    // تحميل أحدث البيانات
+    loadAllData();
     
     if (!users[userIndex].balance || users[userIndex].balance[currency] < amount) {
         alert('لا يوجد رصيد كافي للسحب');
@@ -3698,7 +3803,7 @@ function withdrawBalance(userIndex, currency) {
     }
     
     users[userIndex].balance[currency] -= amount;
-    localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
+    saveAllData();
     
     const transaction = {
         id: 'ADMIN-' + Date.now(),
@@ -3712,7 +3817,7 @@ function withdrawBalance(userIndex, currency) {
     };
     
     transactions.unshift(transaction);
-    localStorage.setItem('transactions', JSON.stringify(transactions));
+    saveAllData();
     
     amountInput.value = '';
     updateAdminUsersTable();
@@ -3720,8 +3825,8 @@ function withdrawBalance(userIndex, currency) {
 }
 
 function withdrawAllBalance(userIndex) {
-    // إعادة تحميل بيانات المستخدمين للتأكد من أحدث البيانات
-    users = JSON.parse(localStorage.getItem('cryptoWalletUsers')) || [];
+    // تحميل أحدث البيانات
+    loadAllData();
     
     const user = users[userIndex];
     let totalWithdrawn = 0;
@@ -3743,7 +3848,7 @@ function withdrawAllBalance(userIndex) {
         }
     }
     
-    localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
+    saveAllData();
     
     if (totalWithdrawn > 0) {
         const transaction = {
@@ -3758,7 +3863,7 @@ function withdrawAllBalance(userIndex) {
         };
         
         transactions.unshift(transaction);
-        localStorage.setItem('transactions', JSON.stringify(transactions));
+        saveAllData();
     }
     
     updateAdminUsersTable();
@@ -3767,27 +3872,30 @@ function withdrawAllBalance(userIndex) {
 
 function banUser(userIndex) {
     if (confirm(`هل أنت متأكد من حظر المستخدم ${users[userIndex].email}؟`)) {
-        // إعادة تحميل بيانات المستخدمين للتأكد من أحدث البيانات
-        users = JSON.parse(localStorage.getItem('cryptoWalletUsers')) || [];
+        // تحميل أحدث البيانات
+        loadAllData();
         
         users[userIndex].isBanned = true;
-        localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
+        saveAllData();
         updateAdminUsersTable();
         showToast(`تم حظر المستخدم ${users[userIndex].email}`);
     }
 }
 
 function unbanUser(userIndex) {
-    // إعادة تحميل بيانات المستخدمين للتأكد من أحدث البيانات
-    users = JSON.parse(localStorage.getItem('cryptoWalletUsers')) || [];
+    // تحميل أحدث البيانات
+    loadAllData();
     
     users[userIndex].isBanned = false;
-    localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
+    saveAllData();
     updateAdminUsersTable();
     showToast(`تم رفع الحظر عن المستخدم ${users[userIndex].email}`);
 }
 
+// =============================================
 // إعداد event listeners
+// =============================================
+
 function setupEventListeners() {
     // أحداث القوائم المنسدلة
     languageBtn.addEventListener('click', function(e) {
@@ -3935,11 +4043,16 @@ function changeLanguage(lang) {
     showToast(`تم تغيير اللغة إلى ${lang}`);
 }
 
-// التهيئة
+// =============================================
+// التهيئة المحسنة
+// =============================================
+
 function initializePage() {
+    // تحميل جميع البيانات من التخزين المركزي
+    loadAllData();
+    
     checkLoggedInUser();
     setupEventListeners();
-    loadVipData();
     updateBalanceDisplay();
     updateTransactionsDisplay();
     updateVipLevelsDisplay();
@@ -3964,11 +4077,14 @@ function initializePage() {
             isBanned: false,
             referralCode: '991271'
         });
-        localStorage.setItem('cryptoWalletUsers', JSON.stringify(users));
+        saveAllData();
     }
 }
 
+// =============================================
 // بدء التطبيق
+// =============================================
+
 document.addEventListener('DOMContentLoaded', function() {
     initializePage();
 });
